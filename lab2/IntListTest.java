@@ -41,11 +41,11 @@ public class IntListTest {
     
     @Test
     public void testSquareListRecursive() {
-        // TODO: test for correctness
-        // TODO: test for non-destructiveness
+        IntList L = IntList.list(1, 2, 3);
+        IntList Y = IntList.squareListRecursive(L);
+        assertEquals(IntList.list(1, 4, 9), Y);
         
         // TODO: remove the placeholder line below
-        assertTrue(false);
     }
 
     /* Run the unit tests in this file. */
