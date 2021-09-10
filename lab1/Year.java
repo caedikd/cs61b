@@ -8,9 +8,7 @@ public class Year {
         if (((year % 400) == 0) || ((year % 100 != 0) && (year % 4) == 0)){
             return true;    // TODO: YOUR CODE HERE
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /** Print whether YEAR is a a leap year on System.out. */
