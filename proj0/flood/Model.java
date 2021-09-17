@@ -28,7 +28,6 @@ class Model {
 
     /** Limit on number of colors that may be used in a puzzle. */
     static final int MAX_COLORS = 10;
-    private Object HashSet;
 
     /** A Model whose initial state is given by INITIAL with NCOLORS>2 colors.
      *  INITIAL[r][c] is the color row r and column c.
@@ -226,14 +225,10 @@ class Model {
      *  in RESULT. Returns RESULT. */
     HashSet<Place> findRegion(Place start, int color, HashSet<Place> result) {
         /* pass in a lambda function, checks if its the same color as start */
-        forNeighbors(start, (p) -> {
-            int val = get(p);
-            if (val == color && !(result.contains(p))) {
-                result.add(p);
-                findRegion(p, color, result);
-            }
-
-        });
+        if (get(start) == color && !result.contains(start)) {
+            result.add(start);
+            forNeighbors(start, place -> findRegion(place, color, result));
+        }
         return result;
 
     }

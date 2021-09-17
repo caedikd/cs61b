@@ -21,7 +21,6 @@ class PuzzleGenerator implements PuzzleSource {
         for (int[] row : puzzle) {
             for (int col = 0; col < height; col += 1) {
                 row[col] = _random.nextInt(ncolors);
-
             }
         }
         Model model = new Model(puzzle, ncolors);

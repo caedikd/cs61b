@@ -1,6 +1,5 @@
 package flood;
 
-import java.sql.SQLOutput;
 
 /** Functions for solving a Flood puzzle.
  *  @author Caedi Seim
