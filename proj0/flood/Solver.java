@@ -1,7 +1,9 @@
 package flood;
 
+import java.sql.SQLOutput;
+
 /** Functions for solving a Flood puzzle.
- *  @author
+ *  @author Caedi Seim
  */
 class Solver {
 
@@ -38,7 +40,10 @@ class Solver {
         num = 0;
         while (!work.solved()) {
             num += 1;
-            // FIXME
+            int best = chooseBestMove(work);
+            work.setActiveRegionColor(best);
+
+
         }
         return num;
     }
@@ -89,7 +94,16 @@ class Solver {
         int bestMove, maxSize;
         bestMove = -1;
         maxSize = -1;
-        // FIXME
+        int currentColor = 0;
+        while (currentColor <= model.ncolors()) {
+
+            if (model.adjacentCells(currentColor).size() > maxSize) {
+                maxSize = model.adjacentCells(currentColor).size();
+                bestMove = currentColor;
+            }
+
+            currentColor++;
+        }
         return new int[] { bestMove, maxSize };
     }
 
