@@ -50,7 +50,7 @@ public class TrReader extends Reader {
             }
 
         }
-        return chars.length;
+        return act;
 
     }
 
