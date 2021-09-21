@@ -13,11 +13,10 @@ public class Translate {
         /* NOTE: The try {...} catch is a technicality to keep Java happy. */
         char[] buffer = new char[S.length()];
         try {
-            StringReader S2 = new StringReader(S);
-            S2.read(buffer, from.length(), to.length());
-            String S3 = S2.toString();
-            return S3;
-             //TODO: REPLACE THIS LINE WITH YOUR CODE.
+            StringReader str = new StringReader(S);
+            str.read(buffer, from.length(), to.length());
+            String S2 = new String(buffer);
+            return S2; //TODO: REPLACE THIS LINE WITH YOUR CODE.
         } catch (IOException e) {
             return null;
         }
