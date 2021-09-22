@@ -1,20 +1,28 @@
 /** A WeirdList holds a sequence of integers.
- * @author your name here
+ * @author Caedi
  */
-public class WeirdList {
+public class WeirdList{
     /** The empty sequence of integers. */
+    public int _head;
+    public WeirdList _tail;
     public static final WeirdList EMPTY =
-        null;  // TODO: REPLACE THIS LINE
+            new EmptyWeirdList();
+    //pointing to something useful now
 
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
-    public WeirdList(int head, WeirdList tail) { 
-        /* TODO: FILL IN */ 
+    public WeirdList(int head, WeirdList tail) {
+        _head = head;
+        _tail = tail;
     }
+
+    //through subtypes we can have the same object
+    //act in different ways based on the context it is in.
+
 
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
     public int length() {
-        return 0;  // TODO: REPLACE THIS LINE
+        return 1 + _tail.length();
     }
 
     /** Return a string containing my contents as a sequence of numerals
@@ -22,13 +30,14 @@ public class WeirdList {
      *  5, 4, and 2, this returns " 5 4 2". */
     @Override
     public String toString() {
-        return ""; // TODO: REPLACE THIS LINE
+        return " " + this._head + _tail.toString();
     }
 
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
      *  sequence, and return a WeirdList of the resulting values. */
     public WeirdList map(IntUnaryFunction func) {
-        return null;  // TODO: REPLACE THIS LINE
+
+        return new WeirdList(func.apply(_head), _tail.map(func));  // TODO: REPLACE THIS LINE
     }
 
     /*
@@ -61,8 +70,24 @@ public class WeirdList {
      * }
      * You are NOT required to do this, just an extra thing you can
      * do if you want to avoid making a separate .java file. */
+    private static class EmptyWeirdList extends WeirdList {
+        public EmptyWeirdList() {
+            super(0, null);
+        }
 
+        public int length() {
+            return 0;
+        }
+        public WeirdList map (IntUnaryFunction func) {
+            return this;
+        }
+        public String toString() {
+            return "";
+        }
+    }
 }
+
+
 
 /*
  * Hint: The first non-trivial thing you'll probably do to WeirdList
