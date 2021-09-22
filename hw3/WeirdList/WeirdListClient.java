@@ -10,7 +10,9 @@ class WeirdListClient {
     static int sum(WeirdList L) {
         //want to apply some sort of sum function and return the
         //resulting number. Create a new class that extents unary function
-        return ; // TODO: REPLACE THIS LINE
+        Summer summr = new Summer();
+        L.map(summr);
+        return summr.sum; // TODO: REPLACE THIS LINE
     }
 
     /* IMPORTANT: YOU ARE NOT ALLOWED TO USE RECURSION IN ADD AND SUM
@@ -26,7 +28,14 @@ class WeirdListClient {
      * HINT: Try checking out the IntUnaryFunction interface.
      *       Can we use it somehow?
      */
-    public class Summer extends IntUnaryFunction{
+    private static class Summer implements IntUnaryFunction{
+        public int sum = 0;
+
+        @Override
+        public int apply(int x) {
+            sum += x;
+            return x;
+        }
 
     }
 }
