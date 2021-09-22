@@ -6,7 +6,7 @@ public class WeirdList{
     public int _head;
     public WeirdList _tail;
     public static final WeirdList EMPTY =
-            new EmptyWeirdList();
+            new EmptyWeirdList(0, null);
     //pointing to something useful now
 
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
@@ -71,7 +71,7 @@ public class WeirdList{
      * You are NOT required to do this, just an extra thing you can
      * do if you want to avoid making a separate .java file. */
     private static class EmptyWeirdList extends WeirdList {
-        public EmptyWeirdList() {
+        public EmptyWeirdList(int head, WeirdList tail) {
             super(0, null);
         }
 
