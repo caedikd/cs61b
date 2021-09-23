@@ -227,21 +227,32 @@ public class Table implements Iterable<Table.TableRow> {
                 //        be joined to all the rows of t2, then the second row
                 //        of t1 should be joined to all of the rows of t2,
                 //        etc.
-                if (_tableIter1.hasNext()){
-                    if (_tableIter2.hasNext()){
-                        _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+
+                if (_tableIter2.hasNext()) {
+                    _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
                         /*gets the first row of t1 joined to all rows of t2 by repeatedly
                             calling next on the t2 iterator
                         * */
-                    }
-                    _currRow1 = _tableIter1.next();
-                    //gets the next row of table1 so it can do it all over again
+                    //has next calls next row next row next row tableiter2 is done
+                    //then has nex changes to else if and adds to the next row the
+                    //next time hasNext is called it goes to tableIter2.hasNext
+                    //because we reset tableIter2, and does this until there is no more 
+                    return true;
                 }
+                else if (_tableIter1.hasNext()) {
+                    _currRow1 = _tableIter1.next();
+                    //set the current row to the new next
+
+                    _tableIter2 = _table2.iterator();
+                    //reset the iterator to the beginning?
+
+                    _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+                    //join the rows with tableiter2
+                }
+                //gets the next row of table1 so it can do it all over again
+
             }
-            //UPDATE THE _NEXT ROW TO THE NEXT JOINED ROW
-            //how to get joined row
-            //You will need to use the iterators from each of the tables
-            //to output all of the combinations of the row.
+
 
             return _nextRow != null;
         }
