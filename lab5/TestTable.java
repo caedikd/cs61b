@@ -152,7 +152,7 @@ public class TestTable {
         assertEquals("Header is incorrect.", expectedJoined.headerList(),
                 joined.headerList());
 
-        for (int i = 0; i < expectedJoined.numColumns(); i += 1) {
+        for (int i = 0; i < expectedJoined.numRows(); i += 1) {
             testRow(joined.getRow(i), expectedJoined.getRow(i));
         }
     }
