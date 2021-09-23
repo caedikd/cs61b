@@ -229,11 +229,13 @@ public class Table implements Iterable<Table.TableRow> {
                 //        etc.
                 if (_tableIter1.hasNext()){
                     if (_tableIter2.hasNext()){
-                        _nextRow = _currRow1.joinRows(_tableIter1.next(), _tableIter2.next());
-                        return true;
+                        _nextRow = TableRow.joinRows(_currRow1, _tableIter2.next());
+                        /*gets the first row of t1 joined to all rows of t2 by repeatedly
+                            calling next on the t2 iterator
+                        * */
                     }
                     _currRow1 = _tableIter1.next();
-                    _tableIter2 = _table2.iterator();
+                    //gets the next row of table1 so it can do it all over again
                 }
             }
             //UPDATE THE _NEXT ROW TO THE NEXT JOINED ROW
