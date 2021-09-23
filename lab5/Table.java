@@ -212,6 +212,8 @@ public class Table implements Iterable<Table.TableRow> {
             _tableIter1 = t1.iterator();
             _tableIter2 = t2.iterator();
             _currRow1 = _tableIter1.next();
+            //uses the iterator of _tableIter to get the individual row
+            //of row 1
         }
 
         @Override
@@ -225,7 +227,20 @@ public class Table implements Iterable<Table.TableRow> {
                 //        be joined to all the rows of t2, then the second row
                 //        of t1 should be joined to all of the rows of t2,
                 //        etc.
+                if (_tableIter1.hasNext()){
+                    if (_tableIter2.hasNext()){
+                        _nextRow = _currRow1.joinRows(_tableIter1.next(), _tableIter2.next());
+                        return true;
+                    }
+                    _currRow1 = _tableIter1.next();
+                    _tableIter2 = _table2.iterator();
+                }
             }
+            //UPDATE THE _NEXT ROW TO THE NEXT JOINED ROW
+            //how to get joined row
+            //You will need to use the iterators from each of the tables
+            //to output all of the combinations of the row.
+
             return _nextRow != null;
         }
 
