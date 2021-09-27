@@ -13,5 +13,12 @@ class FixedRotor extends Rotor {
         super(name, perm);
     }
 
+    @Override
+    int setting() {
+        _setting = super.setting();
+        return _setting;
+    }
+
+    public static int _setting;
     // FIXME ?
 }
