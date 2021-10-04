@@ -164,7 +164,7 @@ public abstract class PermutationTest {
     }
 
 
-    @Test(expected = EnigmaException.class)
+    @Test
     public void testNoCycles() {
         Permutation p = getNewPermutation("()", getNewAlphabet("ABCD"));
         assertEquals('A', p.permute('A'));
@@ -182,10 +182,10 @@ public abstract class PermutationTest {
         assertEquals('A',p.permute('B'));
     }
 
-    @Test
+    @Test(expected = EnigmaException.class)
     public void testSpaces() {
         Permutation p = getNewPermutation("(A B) (C D)", getNewAlphabet("ABCD"));
-        assertEquals('A',p.permute('B'));
+        p.permute('A');
     }
 
     @Test(expected = EnigmaException.class)
