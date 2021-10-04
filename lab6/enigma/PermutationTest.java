@@ -182,6 +182,8 @@ public abstract class PermutationTest {
         assertEquals(4, p.invert(6));
         assertEquals(9, p.invert(9));
         assertEquals(8, p.invert(8));
+        assertEquals(2, p.invert(13));
+
 
     }
 
@@ -202,7 +204,8 @@ public abstract class PermutationTest {
         assertEquals(6, p.permute(4));
         assertEquals(1, p.permute(3));
         assertEquals(9, p.permute(9));
-        assertEquals(8, p.invert(8));
+        assertEquals(8, p.permute(8));
+        assertEquals(1, p.permute(13));
 
         //        NAVALA.put("I", "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
         //        NAVALA_MAP.put("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
