@@ -96,8 +96,38 @@ public abstract class PermutationTest {
     public void testNotInAlphabet() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals("not in alphabet", p.invert('F'));
-
     }
+
+    @Test(expected = EnigmaException.class)
+    public void testNoAlphabet() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet(""));
+        p.invert('F');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testAlphabetNotInPerm() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("TRS"));
+        p.invert('B');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testWrongForm() {
+        Permutation p = getNewPermutation("(BACD) (AB) (B)", getNewAlphabet("ABCD"));
+        p.invert('B');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testWrongForm2() {
+        Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
+        p.invert('A');
+    }
+
+
+
+
+
+
+
 
 
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
