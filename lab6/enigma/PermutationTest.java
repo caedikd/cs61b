@@ -99,6 +99,8 @@ public abstract class PermutationTest {
         assertEquals('F', p.invert('F'));
         assertEquals('E', p.invert('1'));
         assertEquals('1', p.invert('2'));
+        assertEquals('4', p.invert('4'));
+        assertEquals('3', p.invert('3'));
     }
 
 
@@ -118,6 +120,19 @@ public abstract class PermutationTest {
         assertEquals('F', p.permute('F'));
         assertEquals('1', p.permute('E'));
         assertEquals('B', p.permute('D'));
+        assertEquals('4', p.permute('4'));
+        assertEquals('3', p.permute('3'));
+
+        //        NAVALA.put("I", "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
+        //        NAVALA_MAP.put("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
+        Permutation b = getNewPermutation(NAVALA.get("I"), getNewAlphabet(NAVALA_MAP.get("I")));
+        assertEquals('M' , b.permute('C'));
+        assertEquals('S' , b.permute('S'));
+        assertEquals('N' , b.permute('K'));
+
+
+
+
     }
 
     @Test
@@ -136,6 +151,8 @@ public abstract class PermutationTest {
         assertEquals(5, p.invert(5));
         assertEquals(7, p.invert(4));
         assertEquals(4, p.invert(6));
+        assertEquals(9, p.invert(9));
+        assertEquals(8, p.invert(8));
     }
 
     @Test
@@ -154,6 +171,14 @@ public abstract class PermutationTest {
         assertEquals(5, p.permute(5));
         assertEquals(6, p.permute(4));
         assertEquals(1, p.permute(3));
+        assertEquals(9, p.permute(9));
+        assertEquals(8, p.invert(8));
+
+        //        NAVALA.put("I", "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
+        //        NAVALA_MAP.put("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
+        Permutation b = getNewPermutation(NAVALA.get("I"), getNewAlphabet(NAVALA_MAP.get("I")));
+        assertEquals(20 , b.permute(17));
+
     }
 
 
