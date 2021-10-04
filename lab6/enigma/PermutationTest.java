@@ -105,8 +105,8 @@ public abstract class PermutationTest {
         //NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
         //        NAVALA_MAP.put("Gamma", "FSOKANUERHMBTIYCWLQPZXVGJD");
         Permutation c = getNewPermutation(NAVALA.get("Gamma"), getNewAlphabet(NAVALA_MAP.get("Gamma")));
-        assertEquals('F', c.invert('S'));
-        assertEquals('J', c.invert('D'));
+        assertEquals('B', c.invert('S'));
+        assertEquals('Z', c.invert('D'));
 
         //        NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
         //        NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
@@ -160,7 +160,7 @@ public abstract class PermutationTest {
         assertEquals('B', d.permute('F'));
         assertEquals('Z', d.permute('S'));
         assertEquals('C', d.permute('A'));
-        assertEquals('L', d.permute('Y'));
+        assertEquals('N', d.permute('Y'));
         assertEquals('M', d.permute('M'));
     }
 
@@ -182,7 +182,7 @@ public abstract class PermutationTest {
         assertEquals(4, p.invert(6));
         assertEquals(9, p.invert(9));
         assertEquals(8, p.invert(8));
-        
+
     }
 
     @Test
