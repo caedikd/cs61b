@@ -157,6 +157,39 @@ public abstract class PermutationTest {
         p.permute('P');
     }
 
+    @Test(expected = EnigmaException.class)
+    public void testNoCyclesNoIndex() {
+        Permutation p = getNewPermutation(" ", getNewAlphabet("ABCD"));
+        p.permute('A');
+    }
+
+
+    @Test(expected = EnigmaException.class)
+    public void testNoCycles() {
+        Permutation p = getNewPermutation("()", getNewAlphabet("ABCD"));
+        assertEquals('A', p.permute('A'));
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testMultipleinAlphabet() {
+        Permutation p = getNewPermutation("(ABCB)", getNewAlphabet("ABCD"));
+       p.permute('B');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testNoSpaces() {
+        Permutation p = getNewPermutation("(AB)(CD)", getNewAlphabet("ABCD"));
+        p.permute('B');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testSpaces() {
+        Permutation p = getNewPermutation("(A B) (C D)", getNewAlphabet("ABCD"));
+        p.permute('B');
+    }
+
+
+
 
 
 
