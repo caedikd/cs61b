@@ -19,6 +19,22 @@ abstract class Permutation {
      * Whitespace is ignored.
      * */
 
+    public Alphabet _alphabet;
+    public String _cycles;
+    public String[] _arrayCycles;
+
+    Permutation(String cycles, Alphabet alphabet) {
+        //what instance variables I want to track for
+        _alphabet = alphabet;
+        _cycles = cycles.replaceAll("[)(]", "");
+        /* String method to replace all the parentheses in cycles
+         */
+        _arrayCycles = _cycles.split(" ");
+        //for (String c: arrayOfStrings) {
+        //   addCycle(c);
+        //}
+    }
+
     /**
      * Returns the size of the alphabet I permute.
      */

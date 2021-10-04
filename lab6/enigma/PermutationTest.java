@@ -3,6 +3,7 @@ package enigma;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
+
 import static org.junit.Assert.*;
 
 import static enigma.TestUtils.*;
@@ -81,6 +82,23 @@ public abstract class PermutationTest {
         Permutation perm = getNewPermutation("", alpha);
         checkPerm("identity", UPPER_STRING, UPPER_STRING, perm, alpha);
     }
+
+    @Test
+    public void testInvertChar() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        assertEquals('B', p.invert('A'));
+        assertEquals('D', p.invert('B'));
+        assertEquals('C', p.permute('A'));
+        assertEquals(2, p.permute(0));
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testNotInAlphabet() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        assertEquals("not in alphabet", p.invert('F'));
+
+    }
+
 
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
 }
