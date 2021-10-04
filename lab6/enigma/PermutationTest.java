@@ -86,8 +86,13 @@ public abstract class PermutationTest {
     @Test
     public void testInvertChar() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        //edge cases too
         assertEquals('B', p.invert('A'));
+        assertEquals(1, p.permute(3));
+        assertEquals(3, p.invert(1));
+        assertEquals(2, p.permute(0));
         assertEquals('D', p.invert('B'));
+        assertEquals('B', p.permute('D'));
         assertEquals('C', p.permute('A'));
         assertEquals(2, p.permute(0));
     }
@@ -100,6 +105,8 @@ public abstract class PermutationTest {
         assertEquals('E', p.permute('E'));
         assertEquals('F', p.permute('F'));
         assertEquals(2, p.permute(0));
+        assertEquals(4, p.permute(4));
+
     }
 
     @Test(expected = EnigmaException.class)
