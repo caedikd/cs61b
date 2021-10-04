@@ -92,6 +92,16 @@ public abstract class PermutationTest {
         assertEquals(2, p.permute(0));
     }
 
+    public void testPermuteChar() {
+        Permutation p = getNewPermutation("(BACD) (F)", getNewAlphabet("ABCDEF"));
+        assertEquals('B', p.invert('A'));
+        assertEquals('D', p.invert('B'));
+        assertEquals('C', p.permute('A'));
+        assertEquals('E', p.permute('E'));
+        assertEquals('F', p.permute('F'));
+        assertEquals(2, p.permute(0));
+    }
+
     @Test(expected = EnigmaException.class)
     public void testNotInAlphabet() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
@@ -133,6 +143,13 @@ public abstract class PermutationTest {
         Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
         p.invert(8);
     }
+
+    @Test(expected = EnigmaException.class)
+    public void testCharDoesntExist() {
+        Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
+        p.permute('P');
+    }
+
 
 
 
