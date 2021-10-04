@@ -90,7 +90,6 @@ public abstract class PermutationTest {
         assertEquals('D', p.invert('B'));
         assertEquals('C', p.permute('A'));
         assertEquals(2, p.permute(0));
-        assertEquals(p._alphabet, "ABCD");
     }
 
     @Test(expected = EnigmaException.class)
