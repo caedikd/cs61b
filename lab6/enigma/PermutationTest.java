@@ -90,6 +90,7 @@ public abstract class PermutationTest {
         assertEquals('D', p.invert('B'));
         assertEquals('C', p.permute('A'));
         assertEquals(2, p.permute(0));
+        assertEquals(p._alphabet, "ABCD");
     }
 
     @Test(expected = EnigmaException.class)
@@ -117,9 +118,21 @@ public abstract class PermutationTest {
     }
 
     @Test(expected = EnigmaException.class)
+    public void testWrongForm3() {
+        Permutation p = getNewPermutation("(BACD)(AB)(B)", getNewAlphabet("ABCD"));
+        p.invert('B');
+    }
+
+    @Test(expected = EnigmaException.class)
     public void testWrongForm2() {
         Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
         p.invert('A');
+    }
+
+    @Test(expected = EnigmaException.class)
+    public void testWrongIndex() {
+        Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
+        p.invert(8);
     }
 
 
