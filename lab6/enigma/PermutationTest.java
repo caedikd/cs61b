@@ -109,8 +109,26 @@ public abstract class PermutationTest {
         assertEquals(2, p.permute(0));
         assertEquals(4, p.permute(4));
     }
-    
 
+    @Test
+    public void testInvertInt() {
+        Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
+        assertEquals(2, p.invert(3));
+        assertEquals(3, p.invert(1));
+        assertEquals(5, p.invert(5));
+        assertEquals(7, p.invert(4));
+        assertEquals(4, p.invert(6));
+    }
+
+    @Test
+    public void testPermuteInt() {
+        Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
+        assertEquals(0, p.permute(1));
+        assertEquals(7, p.permute(6));
+        assertEquals(5, p.permute(5));
+        assertEquals(6, p.permute(4));
+        assertEquals(1, p.permute(3));
+    }
 
 
     @Test(expected = EnigmaException.class)
