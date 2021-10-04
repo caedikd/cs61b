@@ -157,14 +157,34 @@ public abstract class PermutationTest {
         p.permute('P');
     }
 
+//    @Test
+//    public void testalphabet() {
+//        Alphabet A = getNewAlphabet("ABCD");
+//        A.
+//        Permutation p = getNewPermutation("(ABCD) ", A);
+//        assertEquals('B', p.permute('A'));
+//        assertEquals(A, p.);
+//    }
+
     @Test
-    public void testalphabet() {
-        Permutation p = getNewPermutation("(ABCD) ", getNewAlphabet("ABCD"));
-        assertEquals('B', p.permute('A'));
-        assertEquals(getNewAlphabet("ABCD"),getNewAlphabet());
+    public void testPermutations() {
+        Permutation test = getNewPermutation(NAVALA.get("II"), getNewAlphabet(UPPER_STRING));
+        assertEquals('X', test.permute('I'));
+        assertEquals(23, test.permute(8));
+        assertEquals('I', test.invert('X'));
+        assertEquals('V', test.permute('X'));
+        assertEquals(21, test.permute(23));
+        assertEquals('F', test.permute('W'));
+        assertEquals(5, test.permute(22));
+        assertEquals('R', test.permute('G'));
+        assertEquals(17, test.permute(6));
+        assertEquals('A', test.permute('A'));
+        assertEquals(0, test.permute(0));
+        assertEquals('Q', test.permute('Q'));
+        assertEquals(16, test.permute(16));
+        assertEquals(16, test.invert(16));
     }
 
-    
 
     @Test(expected = EnigmaException.class)
     public void testMultipleinAlphabet() {
