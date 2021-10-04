@@ -101,6 +101,23 @@ public abstract class PermutationTest {
         assertEquals('1', p.invert('2'));
         assertEquals('4', p.invert('4'));
         assertEquals('3', p.invert('3'));
+
+        //NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
+        //        NAVALA_MAP.put("Gamma", "FSOKANUERHMBTIYCWLQPZXVGJD");
+        Permutation c = getNewPermutation(NAVALA.get("Gamma"), getNewAlphabet(NAVALA_MAP.get("Gamma")));
+        assertEquals('F', c.invert('S'));
+        assertEquals('J', c.invert('D'));
+
+        //        NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
+        //        NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
+        Permutation d = getNewPermutation(NAVALB.get("III"), getNewAlphabet(NAVALB_MAP.get("III")));
+        assertEquals('B', d.invert('E'));
+        assertEquals('M', d.invert('M'));
+        assertEquals('I', d.invert('S'));
+        assertEquals('Z', d.invert('A'));
+        assertEquals('L', d.invert('Y'));
+
+
     }
 
 
@@ -130,9 +147,21 @@ public abstract class PermutationTest {
         assertEquals('S' , b.permute('S'));
         assertEquals('N' , b.permute('K'));
 
+        //NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
+        //        NAVALA_MAP.put("Gamma", "FSOKANUERHMBTIYCWLQPZXVGJD");
+        Permutation c = getNewPermutation(NAVALA.get("Gamma"), getNewAlphabet(NAVALA_MAP.get("Gamma")));
+        assertEquals('Q', c.permute('S'));
+        assertEquals('A', c.permute('E'));
 
-
-
+        //        NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
+        //        NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
+        Permutation d = getNewPermutation(NAVALB.get("III"), getNewAlphabet(NAVALB_MAP.get("III")));
+        assertEquals('K', d.permute('E'));
+        assertEquals('B', d.permute('F'));
+        assertEquals('Z', d.permute('S'));
+        assertEquals('C', d.permute('A'));
+        assertEquals('L', d.permute('Y'));
+        assertEquals('M', d.permute('M'));
     }
 
     @Test
@@ -153,6 +182,7 @@ public abstract class PermutationTest {
         assertEquals(4, p.invert(6));
         assertEquals(9, p.invert(9));
         assertEquals(8, p.invert(8));
+        
     }
 
     @Test
