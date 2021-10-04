@@ -176,17 +176,24 @@ public abstract class PermutationTest {
        p.permute('B');
     }
 
-    @Test(expected = EnigmaException.class)
+    @Test
     public void testNoSpaces() {
         Permutation p = getNewPermutation("(AB)(CD)", getNewAlphabet("ABCD"));
-        p.permute('B');
+        assertEquals('A',p.permute('B'));
+    }
+
+    @Test
+    public void testSpaces() {
+        Permutation p = getNewPermutation("(A B) (C D)", getNewAlphabet("ABCD"));
+        assertEquals('A',p.permute('B'));
     }
 
     @Test(expected = EnigmaException.class)
-    public void testSpaces() {
-        Permutation p = getNewPermutation("(A B) (C D)", getNewAlphabet("ABCD"));
-        p.permute('B');
+    public void testNoChar() {
+        Permutation p = getNewPermutation("ABCD", getNewAlphabet("ABCD"));
+        p.permute('E');
     }
+
 
 
 
