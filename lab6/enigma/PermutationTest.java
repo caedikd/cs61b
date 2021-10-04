@@ -85,7 +85,7 @@ public abstract class PermutationTest {
 
     @Test
     public void testInvertChar() {
-        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        Permutation a = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals('D', a.invert('B'));
         assertEquals('A', a.invert('C'));
 
@@ -104,7 +104,7 @@ public abstract class PermutationTest {
 
     @Test
     public void testPermuteChar() {
-        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        Permutation a = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals('A', a.permute('B'));
         assertEquals('D', a.permute('C'));
 
@@ -122,7 +122,7 @@ public abstract class PermutationTest {
 
     @Test
     public void testInvertInt() {
-        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        Permutation a = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals(3, a.invert(1));
         assertEquals(0, a.invert(2));
 
@@ -140,7 +140,7 @@ public abstract class PermutationTest {
 
     @Test
     public void testPermuteInt() {
-        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        Permutation a = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         assertEquals(0, a.permute(1));
         assertEquals(3, a.permute(2));
 
