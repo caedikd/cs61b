@@ -85,33 +85,51 @@ public abstract class PermutationTest {
 
     @Test
     public void testInvertChar() {
-        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-        //edge cases too
-        assertEquals('B', p.invert('A'));
-        assertEquals(1, p.permute(3));
-        assertEquals(3, p.invert(1));
-        assertEquals(2, p.permute(0));
+        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        assertEquals('D', a.invert('B'));
+        assertEquals('A', a.invert('C'));
+
+        Permutation q = getNewPermutation("(A1) (B2) (C3)", getNewAlphabet("ABC123"));
+        assertEquals('A', q.invert('1'));
+        assertEquals('2', q.invert('B'));
+
+        Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
+        assertEquals('C', p.invert('D'));
         assertEquals('D', p.invert('B'));
-        assertEquals('B', p.permute('D'));
-        assertEquals('C', p.permute('A'));
-        assertEquals(2, p.permute(0));
+        assertEquals('F', p.invert('F'));
+        assertEquals('E', p.invert('1'));
+        assertEquals('1', p.invert('2'));
     }
 
 
     @Test
     public void testPermuteChar() {
-        Permutation p = getNewPermutation("(BACD) (F)", getNewAlphabet("ABCDEF"));
-        assertEquals('B', p.invert('A'));
-        assertEquals('D', p.invert('B'));
-        assertEquals('C', p.permute('A'));
-        assertEquals('E', p.permute('E'));
+        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        assertEquals('A', a.permute('B'));
+        assertEquals('D', a.permute('C'));
+
+        Permutation q = getNewPermutation("(A1) (B2) (C3)", getNewAlphabet("ABC123"));
+        assertEquals('A', q.permute('1'));
+        assertEquals('2', q.permute('B'));
+
+        Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
+        assertEquals('A', p.permute('B'));
+        assertEquals('2', p.permute('1'));
         assertEquals('F', p.permute('F'));
-        assertEquals(2, p.permute(0));
-        assertEquals(4, p.permute(4));
+        assertEquals('1', p.permute('E'));
+        assertEquals('B', p.permute('D'));
     }
 
     @Test
     public void testInvertInt() {
+        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        assertEquals(3, a.invert(1));
+        assertEquals(0, a.invert(2));
+
+        Permutation q = getNewPermutation("(A1) (B2) (C3)", getNewAlphabet("ABC123"));
+        assertEquals(0, q.invert(3));
+        assertEquals(4, q.invert(1));
+
         Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
         assertEquals(2, p.invert(3));
         assertEquals(3, p.invert(1));
@@ -122,6 +140,14 @@ public abstract class PermutationTest {
 
     @Test
     public void testPermuteInt() {
+        Permutation a = getNewPermutation("BACD", getNewAlphabet("ABCD"));
+        assertEquals(0, a.permute(1));
+        assertEquals(3, a.permute(2));
+
+        Permutation q = getNewPermutation("(A1) (B2) (C3)", getNewAlphabet("ABC123"));
+        assertEquals(0, q.permute(3));
+        assertEquals(4, q.permute(1));
+
         Permutation p = getNewPermutation("(BACD) (12E) (F)", getNewAlphabet("ABCDEF1234"));
         assertEquals(0, p.permute(1));
         assertEquals(7, p.permute(6));
