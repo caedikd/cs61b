@@ -51,6 +51,9 @@ class Rotor {
 
     /** Set setting() to POSN.  */
     void set(int posn) {
+        if (posn >= alphabet().size()) {
+            throw new EnigmaException("No position");
+        }
         _setting = posn;
     }
 
@@ -65,14 +68,13 @@ class Rotor {
         int conversion = _permutation.permute(_permutation.wrap(p + _setting));
         return permutation().wrap(conversion - _setting);
 
-        //return _permutation.permute((p + _setting) % size());
-        //FIXME
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        return _permutation.invert((e + _setting) % size());
+        int conversion = _permutation.invert((e + _setting) % size());
+        return permutation().wrap(conversion - _setting);
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left

@@ -2,6 +2,7 @@ package enigma;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.*;
 
 import static enigma.EnigmaException.*;
 
@@ -27,9 +28,10 @@ class Permutation {
         //what instance variables I want to track for
         _alphabet = alphabet;
         _cycles = cycles.replaceAll("[)(]", "");
-        /* String method to replace all the parentheses in cycles
-         */
+        _cycles = _cycles.replaceAll("^\\s+", "");
         _arrayCycles = _cycles.split(" ");
+
+
         //for (String c: arrayOfStrings) {
          //   addCycle(c);
         //}
@@ -47,8 +49,6 @@ class Permutation {
             for(int j = 0; i < _arrayCycles[i].length(); j++){
             }
         }
-
-        // arrayCycles
     }
 
     /** Return the value of P modulo the size of this permutation. */
@@ -62,7 +62,7 @@ class Permutation {
 
     /** Returns the size of the alphabet I permute. */
     int size() {
-        return _alphabet.size(); // FIXME
+        return _alphabet.size();
     }
 
     /** Return the result of applying this permutation to P modulo the
@@ -72,18 +72,6 @@ class Permutation {
         // For example,if the newly mapped char is 'C' and our Alphabet is the default
         // alphabet, we should return 2?
         char find = _alphabet.toChar(wrap(p));
-//        for(int i = 0; i < _arrayCycles.length + 1; i++){
-//            if (_arrayCycles[i].length() == 0){
-//                return p;
-//            }
-//            for(int j = 0; i < _arrayCycles[i].length(); j++){
-//                if(find == _arrayCycles[i].charAt(j)){
-//                    return _alphabet.toInt(_alphabet.toChar(wrap(p+1)));
-//                }
-//            }
-//        }
-//        return 0;
-// FIXME
         char to = permute(find);
         return _alphabet.toInt(to);
     }
@@ -91,18 +79,6 @@ class Permutation {
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-//        char find = _alphabet.toChar(wrap(c));
-//        for (int i = 0; i < _arrayCycles.length + 1; i++) {
-//            if (_arrayCycles[i].length() == 0){
-//                return c;
-//            }
-//            for (int j = 0; i < _arrayCycles[i].length(); j++) {
-//                if (find == _arrayCycles[i].charAt(j)) {
-//                    return wrap(c-1);
-//                }
-//            }
-//        }
-//        return 0;
         char find = _alphabet.toChar(wrap(c));
         char to = invert(find);
         return _alphabet.toInt(to);
@@ -114,7 +90,10 @@ class Permutation {
     char permute(char p) {
         // map the int p modulo alphabet size to the next character in the cycle
         //use wrap?
-        for (int i = 0; i < _arrayCycles.length + 1; i++) {
+        if (_alphabet.contains(p) == false) {
+            throw error("<not in alphabet>");
+        }
+        for (int i = 0; i < _arrayCycles.length; i++) {
             if (_arrayCycles[i].length() == 0){
                 return p;
             }
@@ -127,13 +106,16 @@ class Permutation {
                 }
             }
         }
-        return p;//_cycles.charAt(wrap(index + 1));  // FIXME
+        return p;
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
+        if (_alphabet.contains(c) == false) {
+            throw error("<not in alphabet>");
+        }
         int find = _alphabet.toInt(c);
-        for (int i = 0; i < _arrayCycles.length + 1; i++) {
+        for (int i = 0; i < _arrayCycles.length; i++) {
             if (_arrayCycles[i].length() == 0){
                 return c;
             }

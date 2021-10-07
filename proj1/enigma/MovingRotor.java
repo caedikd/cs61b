@@ -1,5 +1,7 @@
 package enigma;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
+
 import static enigma.EnigmaException.*;
 
 /** Class that represents a rotating rotor in the enigma machine.
@@ -12,27 +14,27 @@ class MovingRotor extends Rotor {
      *  The Rotor is initally in its 0 setting (first character of its
      *  alphabet).
      */
+
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
         _perm = perm;
         _notches = notches;
         _setting = 0;
-        // FIXME
     }
 
     @Override
     boolean atNotch() {
         //if the setting is equal to the int that the notch
         //is supposed to be
-        for (int i = 0; i < alphabet().size(); i++) {
-            if (super.setting() == alphabet().toInt(_notches.charAt(i))) {
+        for (int i = 0; i < _notches.length(); i++) {
+            if (_setting == alphabet().toInt(_notches.charAt(i))) {
                 return true;
             }
-
         }
         return super.atNotch();
     }
 
+    @Override
     boolean rotates() {
         return true;
     }
@@ -49,10 +51,32 @@ class MovingRotor extends Rotor {
 
     @Override
     void advance() {
-        //super.convertForward(1);
+        _setting += 1;
     }
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    @Override
+    void set(int posn) {
+        _setting += posn;
+    }
+
+    @Override
+    int setting(){
+        return _setting;
+    }
+
+    @Override
+    int convertForward(int p) {
+        int conversion = _perm.permute(_perm.wrap(p + _setting));
+        return permutation().wrap(conversion - _setting);
+    }
+
+    @Override
+    int convertBackward(int e) {
+        int conversion = _perm.invert((e + _setting) % size());
+        return permutation().wrap(conversion - _setting);
+    }
+
+
     private String _notches;
 
     private Permutation _perm;
