@@ -79,10 +79,31 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        //Machine process = new Machine();
-        while (_config.hasNext()) {
+        Machine process = readConfig();
+        String words;
+        while (_input.hasNextLine()) {
+            if (!_input.hasNext("[*]")) {
+                throw new EnigmaException("Wrong format for config no *");
+            }
+            else {
+                setUp(process, _input.nextLine());
+                words = _input.nextLine();
+                while (words.isEmpty()) {
+                    words = _input.nextLine();
+                }
+                while (!(words.contains("*"))) {
+                    String result = process.convert(words.replaceAll("\\s", ""));
+                    if (words.isEmpty()) {
+                        _output.println();
+                    }
+                    else {
+                        printMessageLine(result);
+                    }
+
+                }
+
+            }
         }
-        // FIXME
     }
 
     /** Return an Enigma machine configured from the contents of configuration
@@ -151,13 +172,14 @@ Other left line will be rotor config lines, you can use readRotor() to read them
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        //create a new scanner out of settings
-        // read rotor names into array call insertrotors onto that then read next item
-        //and call set rotors and then read the rest of the line and create a new permutation
-        //and pass to set plugboard or call permutation on empty string
+        /* create a new scanner out of settings
+         read rotor names into array call insertrotors onto that then read next item
+        and call set rotors and then read the rest of the line and create a new permutation
+        and pass to set plugboard or call permutation on empty string */
         Scanner settingScan = new Scanner(settings);
         String[] scans = new String[M.numRotors()];
-        if (settingScan.next() == "*") {
+        if (settingScan.hasNext("[*]")) {
+            settingScan.next();
             for (int i = 0; i < M.numRotors(); i++) {
                 scans[i] = (settingScan.next());
             }
