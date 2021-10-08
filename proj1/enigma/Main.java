@@ -77,33 +77,26 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine process = readConfig();
+        String setting = _input.nextLine();
         while (_input.hasNextLine()) {
-            if (!_input.hasNext("[*].*")) {
-                throw new EnigmaException("Wrong format for config no *");
+            setUp(process, setting);
+            String word = _input.nextLine();
+            while (word.isEmpty()) {
+                word = _input.nextLine();
             }
-            else {
-                String words = _input.nextLine();
-                setUp(process, words);
-                words = _input.nextLine();
-                while (words.isEmpty()) {
-                    words = _input.nextLine();
-                }while (!(words.contains("*"))) {
-                    String result = process.convert(words.replaceAll("\\s", ""));
-                    if (words.isEmpty()) {
-                        _output.println();
+            while (!word.contains("*")) {
+                String result = process.convert(word.replaceAll("\\s", ""));
+                printMessageLine(result);
+                if (!_input.hasNextLine()) {
 
-                    }
-                    else {
-                        printMessageLine(result);
-                        break;
-
-                    }
+                    break;
+                }
+                else {
+                    word = _input.nextLine();
 
                 }
-
             }
         }
-
     }
 
     /** Return an Enigma machine configured from the contents of configuration
