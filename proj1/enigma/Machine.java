@@ -1,5 +1,6 @@
 package enigma;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -66,16 +67,14 @@ class Machine {
             throw new EnigmaException("Wrong Order");
         }
 
+        _inserted = new Rotor[_numRotors];
+
         for (int i = 0; i < rotors.length; i++) {
             if (i != 0 && _allRotors.get(rotors[i]).reflecting()) {
                 throw new EnigmaException("Wrong Order");
             }
             _inserted[i] = _allRotors.get(rotors[i]);
         }
-
-//        if (_inserted.length != _numRotors){
-//            throw new EnigmaException("Wrong number of Rotors");
-//        }
 
     }
 
@@ -87,20 +86,22 @@ class Machine {
             throw new EnigmaException("Wrong set string");
         }
 
-        //if the character is not in the alphabet, throw exception
         for (int j = 0; j < setting.length(); j++){
             if (_alphabet.contains(setting.charAt(j)) == false){
                 throw new EnigmaException("Set characters not in Alphabet");
             }
         }
 
-        for (int i = 0; i < numRotors(); i++) {
+        if (!_inserted[0].reflecting()) {
+            throw new EnigmaException("Missing Reflector");
+        }
+
+        for (int i = 0; i < numRotors() - 1; i++) {
             /*
             get the rotor at the hashmap and set it to the letters
              */
-            _inserted[i].set(setting.charAt(i));
+            _inserted[i + 1].set(setting.charAt(i));
         }
-
     }
 
     /** Set the plugboard to PLUGBOARD. */
@@ -111,42 +112,73 @@ class Machine {
     /** Returns the result of converting the input character C (as an
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
-//    int convert(int c) {
-//        int plugged = _plugBoard.permute(c);
-//
-//
-//        for (int i = numRotors() - 1; i > 0; i--) {
-//            if (_inserted[i].atNotch()) {
-//                if (i != numRotors() - 1) {
-//                    if (i - 1 != 0) {
-//                        _inserted[i - 1].advance();
-//                        _inserted[i].advance();
-//                    }
-//                    else {
-//                        _inserted[i].advance();
-//                    }
-//                }
-//                else {
-//                    _inserted[i - 1].advance();
-//                }
-//            }
-//        }
-//        _inserted[numRotors()-1].advance();
-//
-//
-//        /*
-//        convert the input character
-//        maybe call permutation on
-//        first advances the machine (moving rotors as appropriate), then
-//        passes the character C through the entire machine - which may be many rotors
-//         */
-//        // FIXME
-//    }
+    int convert(int c) {
+        /*
+        first look for places that need to be advanced, add them to a
+        data structure, and then advance them by calling .advance
+         */
+        ArrayList<Rotor> needAdvancing = new ArrayList<>();
+
+        needAdvancing.add(_inserted[_numRotors - 1]);
+        for (int i = numRotors() - 2; i >= 0; i--) {
+            if (_inserted[i].rotates() && (_inserted[i].atNotch() || _inserted[i+1].atNotch())) {
+                /*
+                will do the double step when the value on the right is at notch (i+1?)
+                 */
+                needAdvancing.add(_inserted[i]);
+            }
+        }
+
+        for (int j = 0; j < needAdvancing.size(); j++) {
+            needAdvancing.get(j).advance();
+        }
+
+        c = c % _alphabet.size();
+        int plugged = _plugBoard.permute(c);
+        for (int i = _inserted.length - 1; i >= 0; i--) {
+            plugged = _inserted[i].convertForward(c);
+        }
+
+        for (int i = 0; i < _inserted.length; i--) {
+            plugged = _inserted[i].convertForward(c);
+        }
+
+        for (int i = numRotors() - 1; i > 0; i++) {
+            plugged = _inserted[i].convertBackward(c);
+        }
+        plugged = _plugBoard.permute(plugged);
+        return plugged;
+        /*
+        convert the input character
+        maybe call permutation on
+        first advances the machine (moving rotors as appropriate), then
+        passes the character C through the entire machine - which may be many rotors
+         */
+    }
 
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly. */
     String convert(String msg) {
-        return ""; // FIXME
+        /*
+        It should advance before every character,
+        which should be handled by another method.
+         */
+        String converted = "";
+        for (int i = 0; i < msg.length(); i++) {
+            int val = _alphabet.toInt(msg.charAt(i));
+            converted += convert(val);
+        }
+        return converted; // FIXME
+    }
+
+    String[] insert(){
+        String[] inserted = new String[_inserted.length];
+        int i = 0;
+        for (Rotor r: _inserted){
+            inserted[i] = r.name();
+            i++;
+        }
+        return inserted;
     }
 
     /** Common alphabet of my rotors. */
@@ -159,7 +191,7 @@ class Machine {
     private HashMap<String, Rotor> _allRotors;
 
     //keep array
-    public Rotor[]_inserted = new Rotor[_numRotors];
+    public Rotor[] _inserted;
 
     private Permutation _plugBoard;
 

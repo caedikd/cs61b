@@ -15,7 +15,7 @@ public class RotorTest {
     }
 
     @Test
-    public void testRotorConvertF() {
+    public void testRotorConvertForward() {
         Alphabet a = new Alphabet("ABCD");
         Permutation p = new Permutation("(BACD)", a);
         Rotor r = new Rotor("I", p);
@@ -30,7 +30,7 @@ public class RotorTest {
     }
 
     @Test
-    public void testRotorConvertB() {
+    public void testRotorConvertBackward() {
         Alphabet a = new Alphabet("ABCD");
         Permutation p = new Permutation("(BACD)", a);
         Rotor r = new Rotor("I", p);

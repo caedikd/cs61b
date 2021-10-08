@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static enigma.EnigmaException.*;
 
 /** Enigma simulator.
- *  @author
+ *  @author Caedi Seim
  */
 public final class Main {
 
@@ -77,6 +79,9 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
+        //Machine process = new Machine();
+        while (_config.hasNext()) {
+        }
         // FIXME
     }
 
@@ -85,8 +90,32 @@ public final class Main {
     private Machine readConfig() {
         try {
             // FIXME
+            /*
+            In a complete config file, several first lines will
+            give you alphabet, pawls number, rotor number etc.
+
+Other left line will be rotor config lines, you can use readRotor() to read them or you can write other method if you like.
+             */
             _alphabet = new Alphabet();
-            return new Machine(_alphabet, 2, 1, null);
+            int numRotors = 0;
+            int numPawls = 0;
+            HashMap<String, Rotor> alls = new HashMap<String, Rotor>();
+
+            if (_config.hasNext()) {
+                _alphabet = new Alphabet(_config.next());
+            }
+            if (_config.hasNext()) {
+                numRotors = Integer.parseInt(_config.next());
+            }
+            if (_config.hasNext()) {
+                numPawls = Integer.parseInt(_config.next());
+            }
+            while (_config.hasNextLine()) {
+                _currName = _config.next();
+                alls.put(_currName, readRotor());
+            }
+
+            return new Machine(_alphabet, numRotors, numPawls, alls);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
@@ -95,7 +124,25 @@ public final class Main {
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            return null; // FIXME
+            String type = _config.next();
+            String notches = type;
+            String cycles = "";
+            while (_config.hasNext("\\(.*")) {
+                cycles += _config.next();
+            }
+            Permutation p = new Permutation(cycles, _alphabet);
+            if (type.charAt(0) == 'M') {
+                notches = notches.substring(1);
+                return new MovingRotor(_currName, p, notches);
+            }
+
+            else if (type.charAt(0) == 'R') {
+                return new Reflector(_currName, p);
+            }
+
+            else {
+                return new FixedRotor(_currName, p);
+            }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -104,13 +151,51 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        // FIXME
+        //create a new scanner out of settings
+        // read rotor names into array call insertrotors onto that then read next item
+        //and call set rotors and then read the rest of the line and create a new permutation
+        //and pass to set plugboard or call permutation on empty string
+        Scanner settingScan = new Scanner(settings);
+        String[] scans = new String[M.numRotors()];
+        if (settingScan.next() == "*") {
+            for (int i = 0; i < M.numRotors(); i++) {
+                scans[i] = (settingScan.next());
+            }
+        }
+        if (scans.length != M.numRotors()) {
+            throw new EnigmaException("Wrong numbers of rotors in Config");
+        }
+        M.insertRotors(scans);
+        String setChars = "";
+        if (settingScan.hasNext()) {
+            setChars = settingScan.next();
+        }
+        M.setRotors(setChars);
+        String cycles = "";
+        while (settingScan.hasNext()) {
+            cycles += settingScan.next();
+        }
+        Permutation p = new Permutation(cycles, _alphabet);
+        M.setPlugboard(p);
+
     }
 
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        // FIXME
+        if (msg.length() == 0) {
+            _output.println();
+        }
+        while (msg.length() > 0) {
+            if (msg.length() <= 5) {
+                _output.println(msg);
+                msg = "";
+            }
+            else {
+                _output.print(msg.substring(0, 5) + " ");
+                msg = msg.substring (5, msg.length());
+            }
+        }
     }
 
     /** Alphabet used in this machine. */
@@ -124,4 +209,6 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
+
+    private String _currName;
 }

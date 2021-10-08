@@ -19,7 +19,48 @@ public class MachineTest {
 
     @Test
     public void setRotorsTest() {
+        String set = "ABCDE";
+        Alphabet a = new Alphabet(UPPER_STRING);
+        Permutation p = new Permutation(NAVALA.get("I"), a);
+        HashMap<String, Rotor> allRotors = new HashMap<>();
 
+        /*
+        The rotors that should actually be inserted
+         */
+        Reflector reflector = new Reflector("I", new Permutation(NAVALA.get("I"), a));
+        MovingRotor movingRotor1 = new MovingRotor("II", new Permutation(NAVALA.get("II"), a), "A");
+        MovingRotor movingRotor2 = new MovingRotor("III", new Permutation(NAVALA.get("III"), a), "A");
+        MovingRotor movingRotor3 = new MovingRotor("IV", new Permutation(NAVALA.get("IV"), a), "A");
+        MovingRotor movingRotor4 = new MovingRotor("V", new Permutation(NAVALA.get("V"), a), "A");
+        FixedRotor fixedRotor1 = new FixedRotor("Beta", new Permutation(NAVALA.get("Beta"), a));
+
+        /*
+        The extra rotors that should be in the hashmap
+         */
+        Reflector reflector1 = new Reflector("VI", new Permutation(NAVALA.get("VI"), a));
+        MovingRotor movingRotor5 =  new MovingRotor("VII", new Permutation(NAVALA.get("VII"), a), "A");
+        MovingRotor movingRotor6 = new MovingRotor("VIII", new Permutation(NAVALA.get("VIII"), a), "A");
+
+        allRotors.put("I", reflector);
+        allRotors.put("II", movingRotor1);
+        allRotors.put("III", movingRotor2);
+        allRotors.put("IV", movingRotor3);
+        allRotors.put("V", movingRotor4);
+        allRotors.put("Beta", fixedRotor1);
+        allRotors.put("VI", reflector1);
+        allRotors.put("VII", movingRotor5);
+        allRotors.put("VIII", movingRotor6);
+
+        int numRotor = 6;
+        int pawls = 4;
+        /*
+        String that contains the names of rotors that should happen
+         */
+        String[] realRotors = {"I", "Beta", "II", "III", "IV", "V"};
+        Machine test1 = new Machine(a, 6, 4, allRotors);
+        test1.insertRotors(realRotors);
+        test1.setRotors(set);
+        assertEquals(65, test1._inserted[1].setting());
     }
 
     /*
@@ -39,7 +80,6 @@ public class MachineTest {
         NAVALA.put("C",
                   "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
                   + "(PW) (QZ) (SX) (UY)");
-    }
      */
     @Test
     public void insertRotorsTest() {
@@ -85,11 +125,7 @@ public class MachineTest {
         assertEquals(4, test1.numPawls());
 
         test1.insertRotors(realRotors);
-        assertEquals(test1._inserted, realRotors);
-
+        assertArrayEquals(realRotors, test1.insert());
     }
-
-
-
 
 }
