@@ -17,21 +17,12 @@ class MovingRotor extends Rotor {
 
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
-        _perm = perm;
         _notches = notches;
-        _setting = 0;
     }
 
     @Override
     boolean atNotch() {
-        //if the setting is equal to the int that the notch
-        //is supposed to be
-        for (int i = 0; i < _notches.length(); i++) {
-            if (this._setting == alphabet().toInt(_notches.charAt(i))) {
-                return true;
-            }
-        }
-        return false;
+        return _notches.indexOf(permutation().alphabet().toChar(setting())) != -1;
     }
 
     @Override
@@ -51,7 +42,7 @@ class MovingRotor extends Rotor {
 
     @Override
     void advance() {
-        this.set(this._setting + 1);
+        this.set(permutation().wrap(setting() + 1));
     }
 
 //    @Override

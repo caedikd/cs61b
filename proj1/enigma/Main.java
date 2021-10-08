@@ -88,7 +88,6 @@ public final class Main {
                 while (words.isEmpty()) {
                     words = _input.nextLine();
                 }while (!(words.contains("*"))) {
-                    System.out.println(words);
                     String result = process.convert(words.replaceAll("\\s", ""));
                     if (words.isEmpty()) {
                         _output.println();
@@ -96,15 +95,15 @@ public final class Main {
                     }
                     else {
                         printMessageLine(result);
-                        if (_input.hasNextLine()){
-                            _input.nextLine();
-                        }
+                        break;
+
                     }
 
                 }
 
             }
         }
+
     }
 
     /** Return an Enigma machine configured from the contents of configuration

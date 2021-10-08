@@ -41,29 +41,7 @@ class Machine {
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
-        /*
-        we need to put the corresponding rotor object in, meaning
-        we need to have something that will transform a rotor name
-        to the actual object it represents
-        - position in the string should guarantee the type of rotor
-        - ex. rotors[0] is the reflector and rotos[rotors.length - 1] is the fast moving
-        Ways to do this?
-        - check if the names of the string rotors are equal to the names
-        of
-        0-reflector
-        1- moving
-        2- moving
-        3- fast moving?
-         */
 
-        /*
-        first add reflector
-        _allrotors is a bag of rotors that we dont use all of them
-        so what does string[] rotors represent
-         */
-
-        //check if the starting rotor is a reflector
-        //can there be more than 1 reflectors?
         if (_allRotors.get(rotors[0]).reflecting() == false) {
             throw new EnigmaException("Wrong Order");
         }
