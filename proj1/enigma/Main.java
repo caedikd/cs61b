@@ -188,6 +188,7 @@ public final class Main {
         String cycles = "";
         while (settingScan.hasNext()) {
             cycles += settingScan.next();
+            cycles += " ";
         }
         Permutation p = new Permutation(cycles, _alphabet);
         M.setPlugboard(p);
