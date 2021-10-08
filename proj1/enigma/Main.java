@@ -88,11 +88,11 @@ public final class Main {
                 String result = process.convert(word.replaceAll("\\s", ""));
                 printMessageLine(result);
                 if (!_input.hasNextLine()) {
-
                     break;
                 }
                 else {
                     word = _input.nextLine();
+                    setting = word;
 
                 }
             }
