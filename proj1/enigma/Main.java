@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 import static enigma.EnigmaException.*;
 
@@ -80,24 +77,28 @@ public final class Main {
      *  results to _output. */
     private void process() {
         Machine process = readConfig();
-        String words;
         while (_input.hasNextLine()) {
-            if (!_input.hasNext("[*]")) {
+            if (!_input.hasNext("[*].*")) {
                 throw new EnigmaException("Wrong format for config no *");
             }
             else {
-                setUp(process, _input.nextLine());
+                String words = _input.nextLine();
+                setUp(process, words);
                 words = _input.nextLine();
                 while (words.isEmpty()) {
                     words = _input.nextLine();
-                }
-                while (!(words.contains("*"))) {
+                }while (!(words.contains("*"))) {
+                    System.out.println(words);
                     String result = process.convert(words.replaceAll("\\s", ""));
                     if (words.isEmpty()) {
                         _output.println();
+
                     }
                     else {
                         printMessageLine(result);
+                        if (_input.hasNextLine()){
+                            _input.nextLine();
+                        }
                     }
 
                 }
@@ -110,13 +111,6 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
-            // FIXME
-            /*
-            In a complete config file, several first lines will
-            give you alphabet, pawls number, rotor number etc.
-
-Other left line will be rotor config lines, you can use readRotor() to read them or you can write other method if you like.
-             */
             _alphabet = new Alphabet();
             int numRotors = 0;
             int numPawls = 0;
@@ -131,11 +125,13 @@ Other left line will be rotor config lines, you can use readRotor() to read them
             if (_config.hasNext()) {
                 numPawls = Integer.parseInt(_config.next());
             }
-            while (_config.hasNextLine()) {
-                _currName = _config.next();
-                alls.put(_currName, readRotor());
+            _name = _config.next();
+            while (_config.hasNext()) {
+                alls.put(_name, readRotor());
+                if (_config.hasNext()){
+                    _name = _config.next();
+                }
             }
-
             return new Machine(_alphabet, numRotors, numPawls, alls);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
@@ -145,25 +141,28 @@ Other left line will be rotor config lines, you can use readRotor() to read them
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            String type = _config.next();
+            String type = _config.next().toUpperCase();
             String notches = type;
             String cycles = "";
             while (_config.hasNext("\\(.*")) {
                 cycles += _config.next();
+                cycles += " ";
             }
+
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
-                return new MovingRotor(_currName, p, notches);
+                return new MovingRotor(_name, p, notches);
             }
 
             else if (type.charAt(0) == 'R') {
-                return new Reflector(_currName, p);
+                return new Reflector(_name, p);
             }
 
             else {
-                return new FixedRotor(_currName, p);
+                return new FixedRotor(_name, p);
             }
+
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -178,6 +177,7 @@ Other left line will be rotor config lines, you can use readRotor() to read them
         and pass to set plugboard or call permutation on empty string */
         Scanner settingScan = new Scanner(settings);
         String[] scans = new String[M.numRotors()];
+
         if (settingScan.hasNext("[*]")) {
             settingScan.next();
             for (int i = 0; i < M.numRotors(); i++) {
@@ -232,5 +232,14 @@ Other left line will be rotor config lines, you can use readRotor() to read them
     /** File for encoded/decoded messages. */
     private PrintStream _output;
 
-    private String _currName;
+    private String _notches;
+
+    private String temp;
+
+    private String _name;
+
+    private String perm;
+
+    private String _notch;
+
 }

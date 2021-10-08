@@ -27,11 +27,11 @@ class MovingRotor extends Rotor {
         //if the setting is equal to the int that the notch
         //is supposed to be
         for (int i = 0; i < _notches.length(); i++) {
-            if (_setting == alphabet().toInt(_notches.charAt(i))) {
+            if (this._setting == alphabet().toInt(_notches.charAt(i))) {
                 return true;
             }
         }
-        return super.atNotch();
+        return false;
     }
 
     @Override
@@ -51,30 +51,30 @@ class MovingRotor extends Rotor {
 
     @Override
     void advance() {
-        _setting += 1;
+        this.set(this._setting + 1);
     }
 
-    @Override
-    void set(int posn) {
-        _setting += posn;
-    }
-
-    @Override
-    int setting(){
-        return _setting;
-    }
-
-    @Override
-    int convertForward(int p) {
-        int conversion = _perm.permute(_perm.wrap(p + _setting));
-        return permutation().wrap(conversion - _setting);
-    }
-
-    @Override
-    int convertBackward(int e) {
-        int conversion = _perm.invert((e + _setting) % size());
-        return permutation().wrap(conversion - _setting);
-    }
+//    @Override
+//    void set(int posn) {
+//        _setting += posn;
+//    }
+//
+//    @Override
+//    int setting(){
+//        return _setting;
+//    }
+//
+//    @Override
+//    int convertForward(int p) {
+//        int conversion = _perm.permute(_perm.wrap(p + _setting));
+//        return permutation().wrap(conversion - _setting);
+//    }
+//
+//    @Override
+//    int convertBackward(int e) {
+//        int conversion = _perm.invert((e + _setting) % size());
+//        return permutation().wrap(conversion - _setting);
+//    }
 
 
     private String _notches;

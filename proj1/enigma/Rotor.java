@@ -51,15 +51,12 @@ class Rotor {
 
     /** Set setting() to POSN.  */
     void set(int posn) {
-        if (posn >= alphabet().size()) {
-            throw new EnigmaException("No position");
-        }
-        _setting = posn;
+        _setting = posn % alphabet().size();
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        _setting = cposn;
+        _setting = alphabet().toInt(cposn);
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)

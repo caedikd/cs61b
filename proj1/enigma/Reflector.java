@@ -11,7 +11,6 @@ class Reflector extends FixedRotor {
      * is PERM. */
     Reflector(String name, Permutation perm) {
         super(name, perm);
-        _setting = 0;
         // FIXME
     }
 
@@ -25,12 +24,12 @@ class Reflector extends FixedRotor {
         return true;
     }
 
-    int setting() {
-        return _setting = 0; // FIXME
-    }
-    /* reflectors can only ever be at the 0 setting
-    because they don't move
-     */
+//    int setting() {
+//        return _setting = 0; // FIXME
+//    }
+//    /* reflectors can only ever be at the 0 setting
+//    because they don't move
+//     */
 
 
     @Override
@@ -40,6 +39,6 @@ class Reflector extends FixedRotor {
         }
     }
 
-    private int _setting;
+//    private int _setting;
 
 }
