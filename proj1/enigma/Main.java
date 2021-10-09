@@ -121,11 +121,17 @@ public final class Main {
             int numPawls = 0;
             alls = new HashMap<String, Rotor>();
 
-            if (_config.hasNextInt()) {
-                throw new EnigmaException("Bad config");
-            }
+//            if (_config.hasNextInt()) {
+//                throw new EnigmaException("Bad config");
+//            }
             if (_config.hasNext()) {
-                _alphabet = new Alphabet(_config.next());
+                String conf = _config.next();
+                if (conf.length() > 1) {
+                    _alphabet = new Alphabet(conf);
+                }
+                else {
+                    throw new EnigmaException("Bad config");
+                }
             }
             if (_config.hasNextInt()) {
                 numRotors = _config.nextInt();
