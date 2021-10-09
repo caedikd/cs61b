@@ -64,7 +64,6 @@ class Machine {
         if (setting.length() != numRotors() - 1) {
             throw new EnigmaException("Wrong set string");
         }
-
         for (int j = 0; j < setting.length(); j++){
             if (_alphabet.contains(setting.charAt(j)) == false){
                 throw new EnigmaException("Set characters not in Alphabet");
@@ -99,10 +98,11 @@ class Machine {
         boolean[] advance = new boolean[numRotors()];
         advance[_inserted.length - 1] = true;
         for (int i = numRotors() - 2; i > 0; i--) {
-            advance[i] = ((_inserted[i].atNotch() && _inserted[i-1].rotates()) || _inserted[i+1].atNotch());
+            advance[i] = ((_inserted[i+1].atNotch() || _inserted[i-1].rotates() && _inserted[i].atNotch()));
+            System.out.println(advance[i]);
 
         }
-        for (int i = 1; i < advance.length; i++) {
+        for (int i = 1; i < _numRotors; i++) {
             if (advance[i]){
                 _inserted[i].advance();
             }
@@ -145,11 +145,11 @@ class Machine {
         return converted; // FIXME
     }
 
-    String[] insert(){
-        String[] inserted = new String[_inserted.length];
+    Rotor[] insert(){
+        Rotor[] inserted = new Rotor[_inserted.length];
         int i = 0;
         for (Rotor r: _inserted){
-            inserted[i] = r.name();
+            inserted[i] = r;
             i++;
         }
         return inserted;
@@ -164,7 +164,6 @@ class Machine {
 
     private HashMap<String, Rotor> _allRotors;
 
-    //keep array
     public Rotor[] _inserted;
 
     private Permutation _plugBoard;

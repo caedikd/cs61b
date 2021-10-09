@@ -15,5 +15,6 @@ class FixedRotor extends Rotor {
 
 
 
+
     // FIXME ?
 }
