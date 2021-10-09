@@ -157,13 +157,17 @@ public final class Main {
     private Rotor readRotor() {
         try {
             String type = _config.next().toUpperCase();
-            String notches = type;
-            String cycles = "";
-            while (_config.hasNext("\\(.*")) {
-                cycles += _config.next();
-                cycles += " ";
+            if (type.contains("(") || type.contains(")")) {
+                throw new EnigmaException("Bad config");
             }
 
+            String notches = type;
+            String cycles = "";
+            while (_config.hasNext("\\(.*\\)")) {
+                    cycles += _config.next();
+                    cycles += " ";
+            }
+            
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
