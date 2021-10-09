@@ -208,6 +208,10 @@ public final class Main {
         Scanner settingScan = new Scanner(settings);
         ArrayList<String> scans = new ArrayList<>(M.numRotors());
 
+        if (!settings.contains("*")) {
+            throw new EnigmaException("no settings");
+        }
+
         if (settings.split(" ").length - 1 < M.numRotors()) {
             throw new EnigmaException("Wrong amount of Arguments");
         }

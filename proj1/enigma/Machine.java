@@ -1,9 +1,7 @@
 
 package enigma;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Collection;
 
 import static enigma.EnigmaException.*;
 
@@ -15,7 +13,8 @@ class Machine {
     /** A new Enigma machine with alphabet ALPHA, 1 < NUMROTORS rotor slots,
      *  and 0 <= PAWLS < NUMROTORS pawls.  ALLROTORS contains all the
      *  available rotors. */
-    Machine(Alphabet alpha, int numRotors, int pawls, HashMap<String, Rotor> allRotors) {
+    Machine(Alphabet alpha, int numRotors, int pawls,
+            HashMap<String, Rotor> allRotors) {
         _alphabet = alpha;
         _numRotors = numRotors;
         _pawls = pawls;
