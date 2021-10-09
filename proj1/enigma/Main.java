@@ -233,6 +233,16 @@ public final class Main {
         if (settingScan.hasNext()) {
             setChars = settingScan.next();
         }
+
+        int numMoving = 0;
+        for (int j = 0; j < M._inserted.length; j++) {
+            if (M._inserted[j].rotates()) {
+                numMoving++;
+            }
+        }
+        if (numMoving != M.numPawls()) {
+            throw new EnigmaException("Wrong num of settings");
+        }
         M.setRotors(setChars);
         String cycles = "";
         while (settingScan.hasNext()) {
