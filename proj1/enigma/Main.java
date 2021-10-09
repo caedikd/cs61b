@@ -208,15 +208,11 @@ public final class Main {
         Scanner settingScan = new Scanner(settings);
         ArrayList<String> scans = new ArrayList<>(M.numRotors());
 
-        if (!settings.contains("*")) {
-            throw new EnigmaException("no settings");
-        }
-
         if (settings.split(" ").length - 1 < M.numRotors()) {
             throw new EnigmaException("Wrong amount of Arguments");
         }
 
-        if (settingScan.hasNext("[*]")) {
+        if (settingScan.hasNext("^\\*.")) {
             settingScan.next();
             for (int i = 0; i < M.numRotors(); i++) {
                 String n = (settingScan.next());
@@ -230,6 +226,9 @@ public final class Main {
                     scans.add(n);
                 }
             }
+        }
+        else {
+            throw new EnigmaException("no settings");
         }
         if (scans.size() != M.numRotors()) {
             throw new EnigmaException("Wrong numbers of rotors in Config");
