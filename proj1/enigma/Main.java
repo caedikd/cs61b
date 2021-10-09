@@ -116,14 +116,14 @@ public final class Main {
      */
     private Machine readConfig() {
         try {
+            if (!_input.hasNext()) {
+                throw new EnigmaException("Nothing to see here");
+            }
             _alphabet = new Alphabet();
             int numRotors = 0;
             int numPawls = 0;
             alls = new HashMap<String, Rotor>();
 
-//            if (_config.hasNextInt()) {
-//                throw new EnigmaException("Bad config");
-//            }
             if (_config.hasNext()) {
                 String conf = _config.next();
                 if (conf.length() > 1) {
@@ -133,6 +133,7 @@ public final class Main {
                     throw new EnigmaException("Bad config");
                 }
             }
+
             if (_config.hasNextInt()) {
                 numRotors = _config.nextInt();
             }
