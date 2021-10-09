@@ -91,6 +91,9 @@ public final class Main {
         Machine process = readConfig();
         String setting = _input.nextLine();
         while (_input.hasNextLine()) {
+            if (!setting.contains("*")) {
+                throw new EnigmaException("wrong settings form");
+            }
             setUp(process, setting);
             String word = _input.nextLine();
             while (word.isEmpty()) {
