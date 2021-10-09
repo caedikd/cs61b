@@ -134,6 +134,7 @@ public class MachineTest {
         String[] insert = new String[]{"B", "Beta", "III", "II", "V"};
         m.insertRotors(insert);
         m.setRotors("AAAZ");
+        System.out.println(m.convert("AAAAA"));
         //assertEquals("TIKSN", m.convert("AAAAA"));
 
 

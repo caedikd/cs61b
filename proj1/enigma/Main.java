@@ -159,19 +159,22 @@ public final class Main {
             String type = _config.next().toUpperCase();
             String notches = type;
             String cycles = "";
-            while (_config.hasNext("([^\\)]+)\\)")) {
+            while (_config.hasNext("\\(.*")) {
                 cycles += _config.next();
                 cycles += " ";
             }
-
 
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
                 return new MovingRotor(_name, p, notches);
-            } else if (type.charAt(0) == 'R') {
+            }
+
+            else if (type.charAt(0) == 'R') {
                 return new Reflector(_name, p);
-            } else {
+            }
+
+            else {
                 return new FixedRotor(_name, p);
             }
 
@@ -179,6 +182,7 @@ public final class Main {
             throw error("bad rotor description");
         }
     }
+
 
     /**
      * Set M according to the specification given on SETTINGS,
