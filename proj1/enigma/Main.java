@@ -163,9 +163,7 @@ public final class Main {
                 cycles += _config.next();
                 cycles += " ";
             }
-            if (!_config.hasNext("([^\\)]+)\\)")) {
-                throw new EnigmaException("Bad config");
-            }
+
 
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
