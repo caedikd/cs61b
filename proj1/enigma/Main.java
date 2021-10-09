@@ -94,6 +94,7 @@ public final class Main {
             String word = _input.nextLine();
             while (word.isEmpty()) {
                 word = _input.nextLine();
+                _output.println();
             }
             while (!word.contains("*")) {
                 String result = process.convert(word.replaceAll("\\s", ""));
