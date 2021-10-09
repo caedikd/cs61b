@@ -118,7 +118,7 @@ public final class Main {
             _alphabet = new Alphabet();
             int numRotors = 0;
             int numPawls = 0;
-            HashMap<String, Rotor> alls = new HashMap<String, Rotor>();
+            alls = new HashMap<String, Rotor>();
 
             if (_config.hasNextInt()) {
                 throw new EnigmaException("Bad config");
@@ -167,7 +167,7 @@ public final class Main {
                     cycles += _config.next();
                     cycles += " ";
             }
-            
+
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
@@ -198,18 +198,34 @@ public final class Main {
         and call set rotors and then read the rest of the line and create a new permutation
         and pass to set plugboard or call permutation on empty string */
         Scanner settingScan = new Scanner(settings);
-        String[] scans = new String[M.numRotors()];
+        ArrayList<String> scans = new ArrayList<>(M.numRotors());
+
+        if (settings.split(" ").length - 1 < M.numRotors()) {
+            throw new EnigmaException("Wrong amount of Arguments");
+        }
 
         if (settingScan.hasNext("[*]")) {
             settingScan.next();
             for (int i = 0; i < M.numRotors(); i++) {
-                scans[i] = (settingScan.next());
+                String n = (settingScan.next());
+                if (scans.contains(n)) {
+                    throw new EnigmaException("Duplicate Rotor name");
+                }
+                else {
+                    scans.add(n);
+                }
             }
         }
-        if (scans.length != M.numRotors()) {
+        if (scans.size() != M.numRotors()) {
             throw new EnigmaException("Wrong numbers of rotors in Config");
         }
-        M.insertRotors(scans);
+        String[] scansTo = new String[scans.size()];
+        int i = 0;
+        for (String r: scans) {
+            scansTo[i] = r;
+            i++;
+        }
+        M.insertRotors(scansTo);
         String setChars = "";
         if (settingScan.hasNext()) {
             setChars = settingScan.next();
@@ -264,6 +280,7 @@ public final class Main {
      */
     private PrintStream _output;
 
+    private HashMap<String, Rotor> alls;
 
     private String _name;
 
