@@ -120,14 +120,23 @@ public final class Main {
             int numPawls = 0;
             HashMap<String, Rotor> alls = new HashMap<String, Rotor>();
 
+            if (_config.hasNextInt()) {
+                throw new EnigmaException("Bad config");
+            }
             if (_config.hasNext()) {
                 _alphabet = new Alphabet(_config.next());
             }
-            if (_config.hasNext()) {
-                numRotors = Integer.parseInt(_config.next());
+            if (_config.hasNextInt()) {
+                numRotors = _config.nextInt();
             }
-            if (_config.hasNext()) {
-                numPawls = Integer.parseInt(_config.next());
+            else {
+                throw new EnigmaException("Bad config");
+            }
+            if (_config.hasNextInt()) {
+                numPawls = _config.nextInt();
+            }
+            else {
+                throw new EnigmaException("Bad config");
             }
             _name = _config.next();
             while (_config.hasNext()) {
@@ -150,9 +159,12 @@ public final class Main {
             String type = _config.next().toUpperCase();
             String notches = type;
             String cycles = "";
-            while (_config.hasNext("\\(.*")) {
+            while (_config.hasNext("([^\\)]+)\\)")) {
                 cycles += _config.next();
                 cycles += " ";
+            }
+            if (!_config.hasNext("([^\\)]+)\\)")) {
+                throw new EnigmaException("Bad config");
             }
 
             Permutation p = new Permutation(cycles, _alphabet);

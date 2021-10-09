@@ -99,7 +99,6 @@ class Machine {
         advance[_inserted.length - 1] = true;
         for (int i = numRotors() - 2; i > 0; i--) {
             advance[i] = ((_inserted[i+1].atNotch() || _inserted[i-1].rotates() && _inserted[i].atNotch()));
-            System.out.println(advance[i]);
 
         }
         for (int i = 1; i < _numRotors; i++) {
