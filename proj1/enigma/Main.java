@@ -211,6 +211,9 @@ public final class Main {
                 if (scans.contains(n)) {
                     throw new EnigmaException("Duplicate Rotor name");
                 }
+                else if (!alls.containsKey(n)) {
+                    throw new EnigmaException("Bad Rotor name");
+                }
                 else {
                     scans.add(n);
                 }
