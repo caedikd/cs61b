@@ -1,3 +1,4 @@
+
 package enigma;
 
 import java.io.File;
@@ -14,15 +15,17 @@ import static enigma.EnigmaException.*;
  */
 public final class Main {
 
-    /** Process a sequence of encryptions and decryptions, as
-     *  specified by ARGS, where 1 <= ARGS.length <= 3.
-     *  ARGS[0] is the name of a configuration file.
-     *  ARGS[1] is optional; when present, it names an input file
-     *  containing messages.  Otherwise, input comes from the standard
-     *  input.  ARGS[2] is optional; when present, it names an output
-     *  file for processed messages.  Otherwise, output goes to the
-     *  standard output. Exits normally if there are no errors in the input;
-     *  otherwise with code 1. */
+    /**
+     * Process a sequence of encryptions and decryptions, as
+     * specified by ARGS, where 1 <= ARGS.length <= 3.
+     * ARGS[0] is the name of a configuration file.
+     * ARGS[1] is optional; when present, it names an input file
+     * containing messages.  Otherwise, input comes from the standard
+     * input.  ARGS[2] is optional; when present, it names an output
+     * file for processed messages.  Otherwise, output goes to the
+     * standard output. Exits normally if there are no errors in the input;
+     * otherwise with code 1.
+     */
     public static void main(String... args) {
         try {
             new Main(args).process();
@@ -33,7 +36,9 @@ public final class Main {
         System.exit(1);
     }
 
-    /** Check ARGS and open the necessary files (see comment on main). */
+    /**
+     * Check ARGS and open the necessary files (see comment on main).
+     */
     Main(String[] args) {
         if (args.length < 1 || args.length > 3) {
             throw error("Only 1, 2, or 3 command-line arguments allowed");
@@ -54,7 +59,9 @@ public final class Main {
         }
     }
 
-    /** Return a Scanner reading from the file named NAME. */
+    /**
+     * Return a Scanner reading from the file named NAME.
+     */
     private Scanner getInput(String name) {
         try {
             return new Scanner(new File(name));
@@ -63,7 +70,9 @@ public final class Main {
         }
     }
 
-    /** Return a PrintStream writing to the file named NAME. */
+    /**
+     * Return a PrintStream writing to the file named NAME.
+     */
     private PrintStream getOutput(String name) {
         try {
             return new PrintStream(new File(name));
@@ -72,9 +81,11 @@ public final class Main {
         }
     }
 
-    /** Configure an Enigma machine from the contents of configuration
-     *  file _config and apply it to the messages in _input, sending the
-     *  results to _output. */
+    /**
+     * Configure an Enigma machine from the contents of configuration
+     * file _config and apply it to the messages in _input, sending the
+     * results to _output.
+     */
     private void process() {
         Machine process = readConfig();
         String setting = _input.nextLine();
@@ -89,8 +100,7 @@ public final class Main {
                 printMessageLine(result);
                 if (!_input.hasNextLine()) {
                     break;
-                }
-                else {
+                } else {
                     word = _input.nextLine();
                     setting = word;
 
@@ -99,8 +109,10 @@ public final class Main {
         }
     }
 
-    /** Return an Enigma machine configured from the contents of configuration
-     *  file _config. */
+    /**
+     * Return an Enigma machine configured from the contents of configuration
+     * file _config.
+     */
     private Machine readConfig() {
         try {
             _alphabet = new Alphabet();
@@ -120,7 +132,7 @@ public final class Main {
             _name = _config.next();
             while (_config.hasNext()) {
                 alls.put(_name, readRotor());
-                if (_config.hasNext()){
+                if (_config.hasNext()) {
                     _name = _config.next();
                 }
             }
@@ -130,7 +142,9 @@ public final class Main {
         }
     }
 
-    /** Return a rotor, reading its description from _config. */
+    /**
+     * Return a rotor, reading its description from _config.
+     */
     private Rotor readRotor() {
         try {
             String type = _config.next().toUpperCase();
@@ -145,13 +159,9 @@ public final class Main {
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
                 return new MovingRotor(_name, p, notches);
-            }
-
-            else if (type.charAt(0) == 'R') {
+            } else if (type.charAt(0) == 'R') {
                 return new Reflector(_name, p);
-            }
-
-            else {
+            } else {
                 return new FixedRotor(_name, p);
             }
 
@@ -160,8 +170,10 @@ public final class Main {
         }
     }
 
-    /** Set M according to the specification given on SETTINGS,
-     *  which must have the format specified in the assignment. */
+    /**
+     * Set M according to the specification given on SETTINGS,
+     * which must have the format specified in the assignment.
+     */
     private void setUp(Machine M, String settings) {
         /* create a new scanner out of settings
          read rotor names into array call insertrotors onto that then read next item
@@ -195,8 +207,10 @@ public final class Main {
 
     }
 
-    /** Print MSG in groups of five (except that the last group may
-     *  have fewer letters). */
+    /**
+     * Print MSG in groups of five (except that the last group may
+     * have fewer letters).
+     */
     private void printMessageLine(String msg) {
         if (msg.length() == 0) {
             _output.println();
@@ -205,34 +219,36 @@ public final class Main {
             if (msg.length() <= 5) {
                 _output.println(msg);
                 msg = "";
-            }
-            else {
+            } else {
                 _output.print(msg.substring(0, 5) + " ");
-                msg = msg.substring (5, msg.length());
+                msg = msg.substring(5, msg.length());
             }
         }
     }
 
-    /** Alphabet used in this machine. */
+    /**
+     * Alphabet used in this machine.
+     */
     private Alphabet _alphabet;
 
-    /** Source of input messages. */
+    /**
+     * Source of input messages.
+     */
     private Scanner _input;
 
-    /** Source of machine configuration. */
+    /**
+     * Source of machine configuration.
+     */
     private Scanner _config;
 
-    /** File for encoded/decoded messages. */
+    /**
+     * File for encoded/decoded messages.
+     */
     private PrintStream _output;
 
-    private String _notches;
-
-    private String temp;
 
     private String _name;
 
-    private String perm;
 
-    private String _notch;
 
 }

@@ -98,32 +98,15 @@ class Machine {
          */
         boolean[] advance = new boolean[numRotors()];
         advance[_inserted.length - 1] = true;
-        for (int i = numRotors() - 2; i >= 0; i--) {
-            //if (_inserted[i].rotates() && (_inserted[i].atNotch() || _inserted[i+1].atNotch())) {
-                /*
-                will do the double step when the value on the right is at notch (i+1?)
-                 */
-            advance[i] = (_inserted[i].atNotch() || _inserted[i+1].atNotch());
-            //}
-        }
+        for (int i = numRotors() - 2; i > 0; i--) {
+            advance[i] = ((_inserted[i].atNotch() && _inserted[i-1].rotates()) || _inserted[i+1].atNotch());
 
-//        for (Rotor r: needAdvancing) {
-//            r.advance();
-//        }
-        for (int i = 0; i < advance.length; i++) {
+        }
+        for (int i = 1; i < advance.length; i++) {
             if (advance[i]){
                 _inserted[i].advance();
             }
         }
-//            else if (_inserted)
-//            if (_inserted[i].rotates()) {
-//                if ((_inserted[i + 1].atNotch())) {
-//                    toAdvance.add(_inserted[i]);
-//                }
-//                else if (_inserted[i-1].rotates() && _inserted[i].atNotch()) {
-//                    toAdvance.add(_inserted[i - 1]);
-//                }
-//            }
 
         // conversions forward and backward
         int result = c;

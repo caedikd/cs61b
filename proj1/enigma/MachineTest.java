@@ -131,10 +131,10 @@ public class MachineTest {
         test.put("C", new FixedRotor("C", new Permutation(cycles12, a)));
 
         Machine m = new Machine(a, 5, 3, test);
-        String[] insert = new String[]{"B", "Beta", "I", "II", "III"};
+        String[] insert = new String[]{"B", "Beta", "III", "II", "V"};
         m.insertRotors(insert);
-        m.setRotors("AAAA");
-        System.out.println(m.convert("HELLOWORLD"));
+        m.setRotors("AAAZ");
+        System.out.println(m.convert("AAA"));
 
 
 

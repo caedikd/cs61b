@@ -11,7 +11,6 @@ class Rotor {
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
-        _setting = 0;
     }
 
     /** Return my name. */
