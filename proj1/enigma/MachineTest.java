@@ -1,12 +1,9 @@
 package enigma;
 
 import org.junit.Test;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
-import java.util.HashSet;
-import java.util.HashMap;
 
 import java.util.HashMap;
+
 
 import static org.junit.Assert.*;
 
@@ -15,10 +12,6 @@ import static enigma.TestUtils.*;
 
 public class MachineTest {
 
-    public void checkRotors() {
-
-    }
-
     @Test
     public void setRotorsTest() {
         String set = "ABCDE";
@@ -26,22 +19,27 @@ public class MachineTest {
         Permutation p = new Permutation(NAVALA.get("I"), a);
         HashMap<String, Rotor> allRotors = new HashMap<>();
 
-        /*
-        The rotors that should actually be inserted
-         */
-        Reflector reflector = new Reflector("I", new Permutation(NAVALA.get("I"), a));
-        MovingRotor movingRotor1 = new MovingRotor("II", new Permutation(NAVALA.get("II"), a), "A");
-        MovingRotor movingRotor2 = new MovingRotor("III", new Permutation(NAVALA.get("III"), a), "A");
-        MovingRotor movingRotor3 = new MovingRotor("IV", new Permutation(NAVALA.get("IV"), a), "A");
-        MovingRotor movingRotor4 = new MovingRotor("V", new Permutation(NAVALA.get("V"), a), "A");
-        FixedRotor fixedRotor1 = new FixedRotor("Beta", new Permutation(NAVALA.get("Beta"), a));
 
-        /*
-        The extra rotors that should be in the hashmap
-         */
-        Reflector reflector1 = new Reflector("VI", new Permutation(NAVALA.get("VI"), a));
-        MovingRotor movingRotor5 =  new MovingRotor("VII", new Permutation(NAVALA.get("VII"), a), "A");
-        MovingRotor movingRotor6 = new MovingRotor("VIII", new Permutation(NAVALA.get("VIII"), a), "A");
+        Reflector reflector = new Reflector("I",
+                new Permutation(NAVALA.get("I"), a));
+        MovingRotor movingRotor1 = new MovingRotor("II",
+                new Permutation(NAVALA.get("II"), a), "A");
+        MovingRotor movingRotor2 = new MovingRotor("III",
+                new Permutation(NAVALA.get("III"), a), "A");
+        MovingRotor movingRotor3 = new MovingRotor("IV",
+                new Permutation(NAVALA.get("IV"), a), "A");
+        MovingRotor movingRotor4 = new MovingRotor("V",
+                new Permutation(NAVALA.get("V"), a), "A");
+        FixedRotor fixedRotor1 = new FixedRotor("Beta",
+                new Permutation(NAVALA.get("Beta"), a));
+
+
+        Reflector reflector1 = new Reflector("VI",
+                new Permutation(NAVALA.get("VI"), a));
+        MovingRotor movingRotor5 =  new MovingRotor("VII",
+                new Permutation(NAVALA.get("VII"), a), "A");
+        MovingRotor movingRotor6 = new MovingRotor("VIII",
+                new Permutation(NAVALA.get("VIII"), a), "A");
 
         allRotors.put("I", reflector);
         allRotors.put("II", movingRotor1);
@@ -55,14 +53,13 @@ public class MachineTest {
 
         int numRotor = 6;
         int pawls = 4;
-        /*
-        String that contains the names of rotors that should happen
-         */
+
         String[] realRotors = {"I", "Beta", "II", "III", "IV", "V"};
         Machine test1 = new Machine(a, 6, 4, allRotors);
         test1.insertRotors(realRotors);
         test1.setRotors(set);
-        assertEquals(0, test1._inserted[1].setting());
+        Rotor[] r = test1.insert();
+        assertEquals(0, r[1].setting());
     }
 
     /*
@@ -117,29 +114,36 @@ public class MachineTest {
         String cycles11 = String.valueOf(NAVALA.get("B"));
         String cycles12 = String.valueOf(NAVALA.get("C"));
 
-        test.put("I", new MovingRotor("I", new Permutation(cycles1, a), "Q"));
-        test.put("II", new MovingRotor("II", new Permutation(cycles2, a), "E"));
-        test.put("III", new MovingRotor("III", new Permutation(cycles3, a), "V"));
-        test.put("IV", new MovingRotor("IV", new Permutation(cycles4, a), "J"));
-        test.put("V", new MovingRotor("V", new Permutation(cycles5, a), "Z"));
-        test.put("VI", new MovingRotor("VI", new Permutation(cycles6, a), "ZM"));
-        test.put("VII", new MovingRotor("VII", new Permutation(cycles7, a), "ZM"));
-        test.put("VIII", new MovingRotor("VIII", new Permutation(cycles8, a), "ZM"));
-        test.put("Beta", new FixedRotor("Beta", new Permutation(cycles9, a)));
-        test.put("Gamma", new FixedRotor("Gamma", new Permutation(cycles10, a)));
-        test.put("B", new Reflector("B", new Permutation(cycles11, a)));
-        test.put("C", new FixedRotor("C", new Permutation(cycles12, a)));
+        test.put("I", new MovingRotor("I",
+                new Permutation(cycles1, a), "Q"));
+        test.put("II", new MovingRotor("II",
+                new Permutation(cycles2, a), "E"));
+        test.put("III", new MovingRotor("III",
+                new Permutation(cycles3, a), "V"));
+        test.put("IV", new MovingRotor("IV",
+                new Permutation(cycles4, a), "J"));
+        test.put("V", new MovingRotor("V",
+                new Permutation(cycles5, a), "Z"));
+        test.put("VI", new MovingRotor("VI",
+                new Permutation(cycles6, a), "ZM"));
+        test.put("VII", new MovingRotor("VII",
+                new Permutation(cycles7, a), "ZM"));
+        test.put("VIII", new MovingRotor("VIII",
+                new Permutation(cycles8, a), "ZM"));
+        test.put("Beta", new FixedRotor("Beta",
+                new Permutation(cycles9, a)));
+        test.put("Gamma", new FixedRotor("Gamma",
+                new Permutation(cycles10, a)));
+        test.put("B", new Reflector("B",
+                new Permutation(cycles11, a)));
+        test.put("C", new FixedRotor("C",
+                new Permutation(cycles12, a)));
 
         Machine m = new Machine(a, 5, 3, test);
         String[] insert = new String[]{"B", "Beta", "III", "II", "V"};
         m.insertRotors(insert);
         m.setRotors("AAAZ");
         System.out.println(m.convert("AAAAA"));
-        //assertEquals("TIKSN", m.convert("AAAAA"));
-
-
-
-
 
     }
 
@@ -150,22 +154,27 @@ public class MachineTest {
         Permutation p = new Permutation(NAVALA.get("I"), a);
         HashMap<String, Rotor> allRotors = new HashMap<>();
 
-        /*
-        The rotors that should actually be inserted
-         */
-        Reflector reflector = new Reflector("I", new Permutation(NAVALA.get("I"), a));
-        MovingRotor movingRotor1 = new MovingRotor("II", new Permutation(NAVALA.get("II"), a), "A");
-        MovingRotor movingRotor2 = new MovingRotor("III", new Permutation(NAVALA.get("III"), a), "A");
-        MovingRotor movingRotor3 = new MovingRotor("IV", new Permutation(NAVALA.get("IV"), a), "A");
-        MovingRotor movingRotor4 = new MovingRotor("V", new Permutation(NAVALA.get("V"), a), "A");
-        FixedRotor fixedRotor1 = new FixedRotor("Beta", new Permutation(NAVALA.get("Beta"), a));
 
-        /*
-        The extra rotors that should be in the hashmap
-         */
-        Reflector reflector1 = new Reflector("VI", new Permutation(NAVALA.get("VI"), a));
-        MovingRotor movingRotor5 =  new MovingRotor("VII", new Permutation(NAVALA.get("VII"), a), "A");
-        MovingRotor movingRotor6 = new MovingRotor("VIII", new Permutation(NAVALA.get("VIII"), a), "A");
+        Reflector reflector = new Reflector("I",
+                new Permutation(NAVALA.get("I"), a));
+        MovingRotor movingRotor1 = new MovingRotor("II",
+                new Permutation(NAVALA.get("II"), a), "A");
+        MovingRotor movingRotor2 = new MovingRotor("III",
+                new Permutation(NAVALA.get("III"), a), "A");
+        MovingRotor movingRotor3 = new MovingRotor("IV",
+                new Permutation(NAVALA.get("IV"), a), "A");
+        MovingRotor movingRotor4 = new MovingRotor("V",
+                new Permutation(NAVALA.get("V"), a), "A");
+        FixedRotor fixedRotor1 = new FixedRotor("Beta",
+                new Permutation(NAVALA.get("Beta"), a));
+
+
+        Reflector reflector1 = new Reflector("VI",
+                new Permutation(NAVALA.get("VI"), a));
+        MovingRotor movingRotor5 =  new MovingRotor("VII",
+                new Permutation(NAVALA.get("VII"), a), "A");
+        MovingRotor movingRotor6 = new MovingRotor("VIII",
+                new Permutation(NAVALA.get("VIII"), a), "A");
 
         allRotors.put("I", reflector);
         allRotors.put("II", movingRotor1);
@@ -179,16 +188,14 @@ public class MachineTest {
 
         int numRotor = 6;
         int pawls = 4;
-        /*
-        String that contains the names of rotors that should happen
-         */
+
         String[] realRotors = {"I", "Beta", "II", "III", "IV", "V"};
         Machine test1 = new Machine(a, 6, 4, allRotors);
         assertEquals(6, test1.numRotors());
         assertEquals(4, test1.numPawls());
 
         test1.insertRotors(realRotors);
-        assertArrayEquals(realRotors, test1.insert());
+        assertArrayEquals(realRotors, test1.insert2());
     }
 
 

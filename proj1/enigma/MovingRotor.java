@@ -1,8 +1,5 @@
 package enigma;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
-
-import static enigma.EnigmaException.*;
 
 /** Class that represents a rotating rotor in the enigma machine.
  *  @author Caedi Seim
@@ -22,14 +19,15 @@ class MovingRotor extends Rotor {
 
     @Override
     boolean atNotch() {
-        return _notches.indexOf(permutation().alphabet().toChar(setting())) != -1;
+        return _notches.indexOf(permutation().alphabet().toChar(setting()))
+                != -1;
     }
 
     @Override
     boolean rotates() {
         return true;
     }
-    // FIXME?
+
     /*
     If the rotor to the right of the moving rotor is at the notch position,
     then, yes, the next turn, the moving rotor will turn.
@@ -45,32 +43,9 @@ class MovingRotor extends Rotor {
         this.set(permutation().wrap(setting() + 1));
     }
 
-//    @Override
-//    void set(int posn) {
-//        _setting += posn;
-//    }
-//
-//    @Override
-//    int setting(){
-//        return _setting;
-//    }
-//
-//    @Override
-//    int convertForward(int p) {
-//        int conversion = _perm.permute(_perm.wrap(p + _setting));
-//        return permutation().wrap(conversion - _setting);
-//    }
-//
-//    @Override
-//    int convertBackward(int e) {
-//        int conversion = _perm.invert((e + _setting) % size());
-//        return permutation().wrap(conversion - _setting);
-//    }
-
-
+    /**
+     * Notch letters.
+     */
     private String _notches;
 
-    private Permutation _perm;
-
-    private int _setting;
 }

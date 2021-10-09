@@ -45,7 +45,7 @@ class Rotor {
 
     /** Return my current setting. */
     int setting() {
-        return _setting; // FIXME
+        return _setting;
     }
 
     /** Set setting() to POSN.  */
@@ -94,8 +94,10 @@ class Rotor {
     /** The permutation implemented by this rotor in its 0 position. */
     private Permutation _permutation;
 
+    /**
+     * Give rotor access to setting.
+     */
     private int _setting;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
 }

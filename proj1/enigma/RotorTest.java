@@ -22,7 +22,7 @@ public class RotorTest {
         assertEquals(0, r.convertForward(1));
 
         Alphabet c = new Alphabet("ABCDEFG12345");
-        Permutation s = new Permutation ("(ABC1) (D23) (EFG4) (5)", c);
+        Permutation s = new Permutation("(ABC1) (D23) (EFG4) (5)", c);
         Rotor r2 = new Rotor("Rotor II", s);
         r2.set(2);
         assertEquals(2, r2.setting());
@@ -37,7 +37,7 @@ public class RotorTest {
         assertEquals(1, r.convertBackward(0));
 
         Alphabet c = new Alphabet("ABCDEFG12345");
-        Permutation s = new Permutation ("(ABC1) (D23) (EFG4) (5)", c);
+        Permutation s = new Permutation("(ABC1) (D23) (EFG4) (5)", c);
         Rotor r2 = new Rotor("Rotor II", s);
         r2.set(2);
         assertEquals(2, r2.setting());

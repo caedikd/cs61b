@@ -4,9 +4,10 @@ package enigma;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 import static enigma.EnigmaException.*;
 
@@ -128,22 +129,19 @@ public final class Main {
                 String conf = _config.next();
                 if (conf.length() > 1) {
                     _alphabet = new Alphabet(conf);
-                }
-                else {
+                } else {
                     throw new EnigmaException("Bad config");
                 }
             }
 
             if (_config.hasNextInt()) {
                 numRotors = _config.nextInt();
-            }
-            else {
+            } else {
                 throw new EnigmaException("Bad config");
             }
             if (_config.hasNextInt()) {
                 numPawls = _config.nextInt();
-            }
-            else {
+            } else {
                 throw new EnigmaException("Bad config");
             }
             _name = _config.next();
@@ -172,21 +170,17 @@ public final class Main {
             String notches = type;
             String cycles = "";
             while (_config.hasNext("\\(.*\\)")) {
-                    cycles += _config.next();
-                    cycles += " ";
+                cycles += _config.next();
+                cycles += " ";
             }
 
             Permutation p = new Permutation(cycles, _alphabet);
             if (type.charAt(0) == 'M') {
                 notches = notches.substring(1);
                 return new MovingRotor(_name, p, notches);
-            }
-
-            else if (type.charAt(0) == 'R') {
+            } else if (type.charAt(0) == 'R') {
                 return new Reflector(_name, p);
-            }
-
-            else {
+            } else {
                 return new FixedRotor(_name, p);
             }
 
@@ -201,10 +195,6 @@ public final class Main {
      * which must have the format specified in the assignment.
      */
     private void setUp(Machine M, String settings) {
-        /* create a new scanner out of settings
-         read rotor names into array call insertrotors onto that then read next item
-        and call set rotors and then read the rest of the line and create a new permutation
-        and pass to set plugboard or call permutation on empty string */
         Scanner settingScan = new Scanner(settings);
         ArrayList<String> scans = new ArrayList<>(M.numRotors());
 
@@ -222,11 +212,9 @@ public final class Main {
                 String n = (settingScan.next());
                 if (scans.contains(n)) {
                     throw new EnigmaException("Duplicate Rotor name");
-                }
-                else if (!alls.containsKey(n)) {
+                } else if (!alls.containsKey(n)) {
                     throw new EnigmaException("Bad Rotor name");
-                }
-                else {
+                } else {
                     scans.add(n);
                 }
             }
@@ -247,8 +235,8 @@ public final class Main {
         }
 
         int numMoving = 0;
-        for (int j = 0; j < M._inserted.length; j++) {
-            if (M._inserted[j].rotates()) {
+        for (int j = 0; j < M.insert().length; j++) {
+            if (M.insert()[j].rotates()) {
                 numMoving++;
             }
         }
@@ -305,10 +293,14 @@ public final class Main {
      */
     private PrintStream _output;
 
+    /**
+     * Easily accesibile rotors.
+     */
     private HashMap<String, Rotor> alls;
 
+    /**
+     * Name for rotors.
+     */
     private String _name;
-
-
 
 }

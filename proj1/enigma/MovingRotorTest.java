@@ -1,6 +1,5 @@
 package enigma;
 
-import net.sf.saxon.expr.Component;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
@@ -66,11 +65,10 @@ public class MovingRotorTest {
     }
 
     @Test
-    //  NAVALB.put("I", " (ZDKSOGPWQT) (AJMV) (BLNX) (CEF) (HU) (IY) (R) ");
-    //        NAVALB_MAP.put("I", "JLEKFCPUYMSNVXGWTROZHAQBID");
-    public void checkAtNotch(){
-        Permutation p = new Permutation(NAVALB.get("I"), new Alphabet(NAVALB_MAP.get("I")));
-        MovingRotor a = new MovingRotor("test", p,"L");
+    public void checkAtNotch() {
+        Permutation p = new Permutation(NAVALB.get("I"),
+                new Alphabet(NAVALB_MAP.get("I")));
+        MovingRotor a = new MovingRotor("test", p, "L");
         a.convertForward(1);
         a.advance();
         assertEquals(true, a.atNotch());

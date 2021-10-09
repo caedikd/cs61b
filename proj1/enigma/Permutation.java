@@ -1,9 +1,5 @@
 package enigma;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.*;
-
 import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
@@ -17,38 +13,16 @@ class Permutation {
      *  is interpreted as a permutation in cycle notation.  Characters in the
      *  alphabet that are not included in any cycle map to themselves.
      *  Whitespace is ignored. */
-    /*
-     The constructor should take whatever cycle specification/alphabet are passed
-      in and do some preprocessing to determine what the permutations are. A good
-      start would be to think about what instance variables you want to track--for
-      example, how are you going to save which letter maps to which in a
-      permutation/its inversion?
-     */
     Permutation(String cycles, Alphabet alphabet) {
-        //what instance variables I want to track for
         _alphabet = alphabet;
         _cycles = cycles.replaceAll("[)(]", "");
         _cycles = _cycles.replaceAll("^\\s+", "");
         _arrayCycles = _cycles.split(" ");
-
-
-        //for (String c: arrayOfStrings) {
-         //   addCycle(c);
-        //}
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
      *  c0c1...cm. */
     private void addCycle(String cycle) {
-        /*
-            you can feed a cycle into the method and it will
-            transform it into whatever representation you choose that
-            will allow you to actually translate one letter to another.
-         */
-        for(int i = 0; i < _arrayCycles.length + 1; i++){
-            for(int j = 0; i < _arrayCycles[i].length(); j++){
-            }
-        }
     }
 
     /** Return the value of P modulo the size of this permutation. */
@@ -68,9 +42,6 @@ class Permutation {
     /** Return the result of applying this permutation to P modulo the
      *  alphabet size. */
     int permute(int p) {
-        //return the index of the newly mapped char in the alphabet
-        // For example,if the newly mapped char is 'C' and our Alphabet is the default
-        // alphabet, we should return 2?
         char find = _alphabet.toChar(wrap(p));
         char to = permute(find);
         return _alphabet.toInt(to);
@@ -88,21 +59,19 @@ class Permutation {
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        // map the int p modulo alphabet size to the next character in the cycle
-        //use wrap?
-        if (_alphabet.contains(p) == false) {
+        if (!_alphabet.contains(p)) {
             throw error("<not in alphabet>");
         }
         for (int i = 0; i < _arrayCycles.length; i++) {
-            if (_arrayCycles[i].length() == 0){
+            if (_arrayCycles[i].length() == 0) {
                 return p;
             }
             for (int j = 0; j < _arrayCycles[i].length(); j++) {
                 if (p == _arrayCycles[i].charAt(j)) {
-                    if (j == _arrayCycles[i].length()-1){
+                    if (j == _arrayCycles[i].length() - 1) {
                         return _arrayCycles[i].charAt(0);
                     }
-                    return _arrayCycles[i].charAt(j+1);
+                    return _arrayCycles[i].charAt(j + 1);
                 }
             }
         }
@@ -111,20 +80,21 @@ class Permutation {
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
-        if (_alphabet.contains(c) == false) {
+        if (!_alphabet.contains(c)) {
             throw error("<not in alphabet>");
         }
         int find = _alphabet.toInt(c);
         for (int i = 0; i < _arrayCycles.length; i++) {
-            if (_arrayCycles[i].length() == 0){
+            if (_arrayCycles[i].length() == 0) {
                 return c;
             }
             for (int j = 0; j < _arrayCycles[i].length(); j++) {
                 if (c == _arrayCycles[i].charAt(j)) {
-                    if (j == 0){
-                        return _arrayCycles[i].charAt(_arrayCycles[i].length() - 1);
+                    if (j == 0) {
+                        return _arrayCycles[i]
+                                .charAt(_arrayCycles[i].length() - 1);
                     }
-                    return _arrayCycles[i].charAt(j-1);
+                    return _arrayCycles[i].charAt(j - 1);
                 }
             }
         }
@@ -151,10 +121,9 @@ class Permutation {
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
 
-    private String _cycleList;
-
+    /** _cycles in a string. */
     private String _cycles;
 
+    /** cycles in an arraylist for accesibility. */
     private String[] _arrayCycles;
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }

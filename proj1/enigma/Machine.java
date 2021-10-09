@@ -28,12 +28,12 @@ class Machine {
      */
     /** Return the number of rotor slots I have. */
     int numRotors() {
-        return _numRotors; // FIXME
+        return _numRotors;
     }
 
     /** Return the number pawls (and thus rotating rotors) I have. */
     int numPawls() {
-        return _pawls; // FIXME
+        return _pawls;
     }
 
     /** Set my rotor slots to the rotors named ROTORS from my set of
@@ -41,7 +41,7 @@ class Machine {
      *  Initially, all rotors are set at their 0 setting. */
     void insertRotors(String[] rotors) {
 
-        if (_allRotors.get(rotors[0]).reflecting() == false) {
+        if (!_allRotors.get(rotors[0]).reflecting()) {
             throw new EnigmaException("Wrong Order");
         }
 
@@ -63,8 +63,8 @@ class Machine {
         if (setting.length() != numRotors() - 1) {
             throw new EnigmaException("Wrong set string");
         }
-        for (int j = 0; j < setting.length(); j++){
-            if (_alphabet.contains(setting.charAt(j)) == false){
+        for (int j = 0; j < setting.length(); j++) {
+            if (!_alphabet.contains(setting.charAt(j))) {
                 throw new EnigmaException("Set characters not in Alphabet");
             }
         }
@@ -74,9 +74,6 @@ class Machine {
         }
 
         for (int i = 0; i < numRotors() - 1; i++) {
-            /*
-            get the rotor at the hashmap and set it to the letters
-             */
             _inserted[i + 1].set(setting.charAt(i));
         }
     }
@@ -97,16 +94,20 @@ class Machine {
         boolean[] advance = new boolean[numRotors()];
         advance[_inserted.length - 1] = true;
         for (int i = numRotors() - 2; i > 0; i--) {
-            advance[i] = ((_inserted[i+1].atNotch() || _inserted[i-1].rotates() && _inserted[i].atNotch()));
-
+            if (((_inserted[i + 1].atNotch()
+                    || _inserted[i - 1].rotates() && _inserted[i].atNotch()))) {
+                advance[i] = true;
+            } else {
+                advance[i] = false;
+            }
         }
+
         for (int i = 1; i < _numRotors; i++) {
-            if (advance[i]){
+            if (advance[i]) {
                 _inserted[i].advance();
             }
         }
 
-        // conversions forward and backward
         int result = c;
         if (_plugBoard != null) {
             result = _plugBoard.permute(c);
@@ -121,11 +122,6 @@ class Machine {
             result = _plugBoard.invert(result);
         }
         return result;
-        /* convert the input character
-        maybe call permutation on
-        first advances the machine (moving rotors as appropriate), then
-        passes the character C through the entire machine - which may be many rotors
-         */
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
@@ -140,14 +136,30 @@ class Machine {
             int val = _alphabet.toInt(msg.charAt(i));
             converted += _alphabet.toChar(convert(val));
         }
-        return converted; // FIXME
+        return converted;
     }
 
-    Rotor[] insert(){
+    /** Accessor method.
+     * @return rotor
+     * */
+    Rotor[] insert() {
         Rotor[] inserted = new Rotor[_inserted.length];
         int i = 0;
-        for (Rotor r: _inserted){
+        for (Rotor r: _inserted) {
             inserted[i] = r;
+            i++;
+        }
+        return inserted;
+    }
+
+    /** Insert the names of the rotors into string.
+     * @return string
+     * */
+    String[] insert2() {
+        String[] inserted = new String[_inserted.length];
+        int i = 0;
+        for (Rotor r: _inserted) {
+            inserted[i] = r.name();
             i++;
         }
         return inserted;
@@ -156,15 +168,19 @@ class Machine {
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
 
+    /** Num Pawls. */
     private int _pawls;
 
+    /** Num Rotors. */
     private int _numRotors;
 
+    /** Hashmap of rotors. */
     private HashMap<String, Rotor> _allRotors;
 
-    public Rotor[] _inserted;
+    /** Rotors in a array. */
+    private Rotor[] _inserted;
 
+    /** The plugboard. */
     private Permutation _plugBoard;
 
-    // FIXME: ADDITIONAL FIELDS HERE, IF NEEDED.
 }

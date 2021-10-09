@@ -47,15 +47,18 @@ public class PermutationTest {
 
     @Test
     public void testInvertChar() {
-        Permutation a = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation a = new Permutation("(BACD)",
+                new Alphabet("ABCD"));
         assertEquals('D', a.invert('B'));
         assertEquals('A', a.invert('C'));
 
-        Permutation q = new Permutation("(A1) (B2) (C3)", new Alphabet("ABC123"));
+        Permutation q = new Permutation("(A1)"
+                + " (B2) (C3)", new Alphabet("ABC123"));
         assertEquals('A', q.invert('1'));
         assertEquals('2', q.invert('B'));
 
-        Permutation p = new Permutation("(BACD) (12E) (F)", new Alphabet("ABCDEF1234"));
+        Permutation p = new Permutation("(BACD)"
+                + " (12E) (F)", new Alphabet("ABCDEF1234"));
         assertEquals('C', p.invert('D'));
         assertEquals('D', p.invert('B'));
         assertEquals('F', p.invert('F'));
@@ -64,15 +67,14 @@ public class PermutationTest {
         assertEquals('4', p.invert('4'));
         assertEquals('3', p.invert('3'));
 
-        //NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
-        //        NAVALA_MAP.put("Gamma", "FSOKANUERHMBTIYCWLQPZXVGJD");
-        Permutation c = new Permutation(NAVALA.get("Gamma"), new Alphabet(NAVALA_MAP.get("Gamma")));
+
+        Permutation c = new Permutation(NAVALA.get("Gamma"),
+                new Alphabet(NAVALA_MAP.get("Gamma")));
         assertEquals('B', c.invert('S'));
         assertEquals('Z', c.invert('D'));
 
-        //        NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
-        //        NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
-        Permutation d = new Permutation(NAVALB.get("III"), new Alphabet(NAVALB_MAP.get("III")));
+        Permutation d = new Permutation(NAVALB.get("III"),
+                new Alphabet(NAVALB_MAP.get("III")));
         assertEquals('B', d.invert('E'));
         assertEquals('M', d.invert('M'));
         assertEquals('I', d.invert('S'));
@@ -85,15 +87,18 @@ public class PermutationTest {
 
     @Test
     public void testPermuteChar() {
-        Permutation a = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation a = new Permutation("(BACD)",
+                new Alphabet("ABCD"));
         assertEquals('A', a.permute('B'));
         assertEquals('D', a.permute('C'));
 
-        Permutation q = new Permutation("(A1) (B2) (C3)", new Alphabet("ABC123"));
+        Permutation q = new Permutation("(A1)"
+                + " (B2) (C3)", new Alphabet("ABC123"));
         assertEquals('A', q.permute('1'));
         assertEquals('2', q.permute('B'));
 
-        Permutation p = new Permutation("(BACD) (12E) (F)", new Alphabet("ABCDEF1234"));
+        Permutation p = new Permutation("(BACD)"
+                + " (12E) (F)", new Alphabet("ABCDEF1234"));
         assertEquals('A', p.permute('B'));
         assertEquals('2', p.permute('1'));
         assertEquals('F', p.permute('F'));
@@ -102,22 +107,21 @@ public class PermutationTest {
         assertEquals('4', p.permute('4'));
         assertEquals('3', p.permute('3'));
 
-        //        NAVALA.put("I", "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
-        //        NAVALA_MAP.put("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
-        Permutation b = new Permutation(NAVALA.get("I"), new Alphabet(NAVALA_MAP.get("I")));
-        assertEquals('M' , b.permute('C'));
-        assertEquals('S' , b.permute('S'));
-        assertEquals('N' , b.permute('K'));
 
-        //NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
-        //        NAVALA_MAP.put("Gamma", "FSOKANUERHMBTIYCWLQPZXVGJD");
-        Permutation c = new Permutation(NAVALA.get("Gamma"), new Alphabet(NAVALA_MAP.get("Gamma")));
+        Permutation b = new Permutation(NAVALA.get("I"),
+                new Alphabet(NAVALA_MAP.get("I")));
+        assertEquals('M', b.permute('C'));
+        assertEquals('S', b.permute('S'));
+        assertEquals('N', b.permute('K'));
+
+
+        Permutation c = new Permutation(NAVALA.get("Gamma"),
+                new Alphabet(NAVALA_MAP.get("Gamma")));
         assertEquals('Q', c.permute('S'));
         assertEquals('A', c.permute('E'));
 
-                NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
-                NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
-        Permutation d = new Permutation(NAVALB.get("III"), new Alphabet(NAVALB_MAP.get("III")));
+        Permutation d = new Permutation(NAVALB.get("III"),
+                new Alphabet(NAVALB_MAP.get("III")));
         assertEquals('K', d.permute('E'));
         assertEquals('B', d.permute('F'));
         assertEquals('Z', d.permute('S'));
@@ -128,15 +132,18 @@ public class PermutationTest {
 
     @Test
     public void testInvertInt() {
-        Permutation a = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation a = new Permutation("(BACD)",
+                new Alphabet("ABCD"));
         assertEquals(3, a.invert(1));
         assertEquals(0, a.invert(2));
 
-        Permutation q = new Permutation("(A1) (B2) (C3)", new Alphabet("ABC123"));
+        Permutation q = new Permutation("(A1)"
+                + " (B2) (C3)", new Alphabet("ABC123"));
         assertEquals(0, q.invert(3));
         assertEquals(4, q.invert(1));
 
-        Permutation p = new Permutation("(BACD) (12E) (F)", new Alphabet("ABCDEF1234"));
+        Permutation p = new Permutation("(BACD)"
+                + " (12E) (F)", new Alphabet("ABCDEF1234"));
         assertEquals(2, p.invert(3));
         assertEquals(3, p.invert(1));
         assertEquals(5, p.invert(5));
@@ -151,15 +158,18 @@ public class PermutationTest {
 
     @Test
     public void testPermuteInt() {
-        Permutation a = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation a = new Permutation("(BACD)",
+                new Alphabet("ABCD"));
         assertEquals(0, a.permute(1));
         assertEquals(3, a.permute(2));
 
-        Permutation q = new Permutation("(A1) (B2) (C3)", new Alphabet("ABC123"));
+        Permutation q = new Permutation("(A1)"
+                + " (B2) (C3)", new Alphabet("ABC123"));
         assertEquals(0, q.permute(3));
         assertEquals(4, q.permute(1));
 
-        Permutation p = new Permutation("(BACD) (12E) (F)", new Alphabet("ABCDEF1234"));
+        Permutation p = new Permutation("(BACD)"
+                + " (12E) (F)", new Alphabet("ABCDEF1234"));
         assertEquals(0, p.permute(1));
         assertEquals(7, p.permute(6));
         assertEquals(5, p.permute(5));
@@ -169,14 +179,12 @@ public class PermutationTest {
         assertEquals(8, p.permute(8));
         assertEquals(1, p.permute(13));
 
-        //        NAVALA.put("I", "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)");
-        //        NAVALA_MAP.put("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
-        Permutation b = new Permutation(NAVALA.get("I"), new Alphabet(NAVALA_MAP.get("I")));
-        assertEquals(20 , b.permute(17));
+        Permutation b = new Permutation(NAVALA.get("I"),
+                new Alphabet(NAVALA_MAP.get("I")));
+        assertEquals(20, b.permute(17));
 
-        //        NAVALB.put("III", " (ZACGODIS) (BEKULYNXPHQVTJWRF) (M) ");
-        //        NAVALB_MAP.put("III", "CEGIKBOQSWUYMXDHVFZJLTRPNA");
-        Permutation d = new Permutation(NAVALB.get("III"), new Alphabet(NAVALB_MAP.get("III")));
+        Permutation d = new Permutation(NAVALB.get("III"),
+                new Alphabet(NAVALB_MAP.get("III")));
         assertEquals(4, d.permute(1));
 
     }
@@ -184,49 +192,29 @@ public class PermutationTest {
 
     @Test(expected = EnigmaException.class)
     public void testNotInAlphabet() {
-        Permutation p = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation p = new Permutation("(BACD)",
+                new Alphabet("ABCD"));
         assertEquals("not in alphabet", p.invert('F'));
     }
 
     @Test(expected = EnigmaException.class)
     public void testNoAlphabet() {
-        Permutation p = new Permutation("(BACD)", new Alphabet(""));
+        Permutation p = new Permutation("(BACD)",
+                new Alphabet(""));
         p.invert('F');
     }
 
     @Test(expected = EnigmaException.class)
     public void testAlphabetNotInPerm() {
-        Permutation p = new Permutation("(BACD)", new Alphabet("TRS"));
+        Permutation p = new Permutation("(BACD)",
+                new Alphabet("TRS"));
         p.invert('B');
     }
 
-//    @Test(expected = EnigmaException.class)
-//    public void testWrongForm() {
-//        Permutation p = new Permutation("(BACD) (AB) (B)", new Alphabet("ABCD"));
-//        p.invert('B');
-//    }
-//
-//    @Test(expected = EnigmaException.class)
-//    public void testWrongForm3() {
-//        Permutation p = new Permutation("(BACD)(AB)(B)", new Alphabet("ABCD"));
-//        p.invert('B');
-//    }
-//
-//    @Test(expected = EnigmaException.class)
-//    public void testWrongForm2() {
-//        Permutation p = new Permutation("ABCD", new Alphabet("ABCD"));
-//        p.invert('A');
-//    }
-//
-//    @Test(expected = EnigmaException.class)
-//    public void testWrongIndex() {
-//        Permutation p = new Permutation("ABCD", new Alphabet("ABCD"));
-//        p.invert(8);
-//    }
-
     @Test(expected = EnigmaException.class)
     public void testCharDoesntExist() {
-        Permutation p = new Permutation("ABCD", new Alphabet("ABCD"));
+        Permutation p = new Permutation("ABCD",
+                new Alphabet("ABCD"));
         p.permute('P');
     }
 
@@ -241,22 +229,10 @@ public class PermutationTest {
     }
 
 
-//    @Test(expected = EnigmaException.class)
-//    public void testMultipleinAlphabet() {
-//        Permutation p = new Permutation("(ABCB)", new Alphabet("ABCD"));
-//        p.permute('B');
-//    }
-
-
-//    @Test(expected = EnigmaException.class)
-//    public void testSpaces() {
-//        Permutation p = new Permutation("(A B) (C D)", new Alphabet("ABCD"));
-//        p.permute('A');
-//    }
-
     @Test(expected = EnigmaException.class)
     public void testNoChar() {
-        Permutation p =  new Permutation("ABCD", new Alphabet("ABCD"));
+        Permutation p =  new Permutation("ABCD",
+                new Alphabet("ABCD"));
         p.permute('E');
     }
 
