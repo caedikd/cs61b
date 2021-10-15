@@ -5,7 +5,7 @@ Q: Above we said that BubbleSort, WipingBubbleSort, and InsertionSort each had t
 A: Complexity is sometimes only used for the worst case scenario, for when the array may get bigger than what we observe.
 
 Q: What information can we gain from empirical analysis of algorithms which might not be as noticeable in asymptotical bounds?
-A:We can see that, at least in the early stages, there might be some discrepancies in the graph whereas the Theta's are the same.
+A:
 
 Q: For any given sorting algorithm, does increasing the array size always mean the sorting takes longer?
 A:No, certain sorting algorithms ssuch as countingSorter do not increase the time despite increasing the size.
