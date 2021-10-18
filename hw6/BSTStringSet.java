@@ -54,8 +54,8 @@ public class BSTStringSet implements StringSet, Iterable<String> {
            use private helper methods
          */
 
-        if (_root != null) {
-            return true;
+        if (_root == null) {
+            return false;
         }
         else {
             Node start = helper(s);
