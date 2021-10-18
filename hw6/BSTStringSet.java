@@ -6,7 +6,7 @@ import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Caedi Seim
  */
 public class BSTStringSet implements StringSet, Iterable<String> {
     /** Creates a new empty set. */
@@ -14,19 +14,81 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         _root = null;
     }
 
+    //implement a set of string stored in a bst
+
+
     @Override
     public void put(String s) {
-        // FIXME: PART A
+        //adds the string S to the string set
+        //we are provided with private inner class Node
+        /*
+            if something is already in there, do nothing
+            else check the alphabetically where it belongs
+            if there is an empty space for it add it
+         */
+        Node start = helper(s);
+        if (start != null) {
+            if (s.compareTo(start.s) < 0) {
+                start.left = new Node(s);
+            }
+            else if (s.compareTo(start.s) > 0) {
+                start.right = new Node(s);
+            }
+        }
+
     }
 
     @Override
     public boolean contains(String s) {
-        return false; // FIXME: PART A
+        /*
+           first start at the root, check alphabetically
+           where it goes, before the root goes left, after
+           goes right
+
+           no recursion
+           use private helper methods
+         */
+
+        Node start = helper(s);
+        if (s.compareTo(start.s) == 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public List<String> asList() {
-        return null; // FIXME: PART A. MUST BE IN SORTED ORDER, ASCENDING
+        //this is in the skeleton
+        ArrayList<String> list = new ArrayList<>();
+        BSTIterator node = new BSTIterator(_root);
+        while (node.hasNext()) {
+            list.add(node.next());
+        }
+        return list;
+    }
+
+    public Node helper(String s) {
+        Node start = _root;
+        boolean go = true;
+        while (go) {
+            Node newNode;
+            if (s.compareTo(start.s) < 0) {
+                newNode = start.left;
+            }
+            else if (s.compareTo(start.s) > 0) {
+                newNode = start.right;
+            }
+            else {
+                return start;
+            }
+            if (newNode == null) {
+                return start;
+            }
+            else {
+                start = newNode;
+            }
+        }
+        return null;
     }
 
 
