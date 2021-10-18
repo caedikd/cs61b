@@ -26,11 +26,11 @@ public class BSTStringSet implements StringSet, Iterable<String> {
             else check the alphabetically where it belongs
             if there is an empty space for it add it
          */
-        Node start = helper(s);
         if (_root == null) {
            _root = new Node(s);
         }
         else {
+            Node start = helper(s);
             if (start != null) {
                 if (s.compareTo(start.s) < 0) {
                     start.left = new Node(s);
@@ -54,9 +54,14 @@ public class BSTStringSet implements StringSet, Iterable<String> {
            use private helper methods
          */
 
-        Node start = helper(s);
-        if (_root != null && s.equals(start.s)) {
+        if (_root != null) {
             return true;
+        }
+        else {
+            Node start = helper(s);
+            if (s.compareTo(start.s) == 0) {
+                return true;
+            }
         }
         return false;
     }
