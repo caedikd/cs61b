@@ -27,12 +27,17 @@ public class BSTStringSet implements StringSet, Iterable<String> {
             if there is an empty space for it add it
          */
         Node start = helper(s);
-        if (start != null) {
-            if (s.compareTo(start.s) < 0) {
-                start.left = new Node(s);
-            }
-            else if (s.compareTo(start.s) > 0) {
-                start.right = new Node(s);
+        if (_root == null) {
+           _root = new Node(s);
+        }
+        else {
+            if (start != null) {
+                if (s.compareTo(start.s) < 0) {
+                    start.left = new Node(s);
+                }
+                else if (s.compareTo(start.s) > 0) {
+                    start.right = new Node(s);
+                }
             }
         }
 
@@ -50,7 +55,7 @@ public class BSTStringSet implements StringSet, Iterable<String> {
          */
 
         Node start = helper(s);
-        if (s.compareTo(start.s) == 0) {
+        if (_root != null && s.equals(start.s)) {
             return true;
         }
         return false;
