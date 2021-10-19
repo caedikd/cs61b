@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,15 +13,18 @@ class ECHashStringSet implements StringSet {
 
     public int _defaultBucket;
 
+    public int _size;
+
     public ECHashStringSet() {
-        _buckets = (LinkedList<String>[]) new LinkedList[_defaultBucket];
+        _size = 0;
+        _buckets = (LinkedList<String>[]) new LinkedList[(int) (1/0.2)];
         for (int i = 0; i < _buckets.length; i++) {
             _buckets[i] = new LinkedList<String>();
         }
     }
 
-    public ECHashStringSet(int defaultBucket) {
-        _defaultBucket = defaultBucket;
+    public ECHashStringSet(int _defaultBucket) {
+        _size = 0;
         _buckets = (LinkedList<String>[]) new LinkedList[_defaultBucket];
         for (int i = 0; i < _buckets.length; i++) {
             _buckets[i] = new LinkedList<String>();
@@ -40,10 +44,7 @@ class ECHashStringSet implements StringSet {
                 _buckets[i].add(s);
             }
         }
-        else {
-            _defaultBucket += 1;
-            _buckets = new LinkedList[_defaultBucket];
-        }
+        _size++;
 //        else {
 //            _defaultBucket += 1;
 //            _buckets = new LinkedList[_defaultBucket];
@@ -70,7 +71,7 @@ class ECHashStringSet implements StringSet {
         // call the default string hashcode, as in s.hashCode()
         //figure out a way to make that default hashcode wrap to fit within
         // the range of 0 to num buckets
-        if (loadFactor() >= 5) {
+        if ((double) _size / _buckets.length >= 5) {
             resized();
         }
         if (_buckets.length == 0) {
@@ -81,27 +82,28 @@ class ECHashStringSet implements StringSet {
     }
 
     public void resized() {
-        int size = _buckets.length * 10;
+        int size = _buckets.length * 5;
         _defaultBucket = size;
         ECHashStringSet copy = new ECHashStringSet(_defaultBucket);
         for (int i = 0; i < _buckets.length; i++) {
             for (String s: _buckets[i]) {
                 copy.put(s);
+                //rehashing step
             }
         }
         _buckets = copy._buckets;
     }
 
-    private int loadFactor() {
-        int count = 0;
-        if (_buckets == null || _buckets.length == 0) {
-            return 0;
-        }
-        for (int i = 0; i < _buckets.length; i++) {
-            count += _buckets[i].size();
-        }
-        return count / _buckets.length;
-    }
+//    private int loadFactor() {
+//        int count = 0;
+//        if (_buckets == null || _buckets.length == 0) {
+//            return 0;
+//        }
+//        for (int i = 0; i < _buckets.length; i++) {
+//            count += _buckets[i].size();
+//        }
+//        return count / _buckets.length;
+//    }
 
     @Override
     public List<String> asList() {
@@ -121,3 +123,4 @@ class ECHashStringSet implements StringSet {
 
 
 }
+
