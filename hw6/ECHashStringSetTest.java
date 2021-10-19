@@ -13,6 +13,9 @@ public class ECHashStringSetTest  {
     public void testResized() {
         ECHashStringSet newset = new ECHashStringSet(4);
         System.out.println(newset._buckets.length);
+        newset.resized();
+        System.out.println(newset._buckets.length);
+
     }
 
     @Test

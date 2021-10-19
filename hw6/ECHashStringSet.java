@@ -65,11 +65,10 @@ class ECHashStringSet implements StringSet {
         return wrapped;
     }
 
-    private void resized() {
+    public void resized() {
         int size = _buckets.length * 2;
         _defaultBucket = size;
-        ECHashStringSet copy = new ECHashStringSet();
-
+        ECHashStringSet copy = new ECHashStringSet(_defaultBucket);
         for (int i = 0; i < _buckets.length; i++) {
             for (String s: _buckets[i]) {
                 copy.put(s);
