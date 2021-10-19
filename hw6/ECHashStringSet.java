@@ -29,13 +29,16 @@ class ECHashStringSet implements StringSet {
         //figure out which index i bucket to go to
         //get linked list at buckets and add it to that
         //if we've reached the load limit, we should resize
-        if (_buckets != null) {
+        if (_buckets != null && _buckets.length != 0) {
             int i = whichBucket(s);
             if (!_buckets[i].contains(s)) {
                 _buckets[i].add(s);
             }
         }
-
+//        else {
+//            _defaultBucket += 1;
+//            _buckets = new LinkedList[_defaultBucket];
+//        }
     }
 
     @Override
@@ -61,12 +64,15 @@ class ECHashStringSet implements StringSet {
         if (loadFactor() >= 5) {
             resized();
         }
+        if (_buckets.length == 0) {
+            return 0;
+        }
         int wrapped = (s.hashCode() & 0x7fffffff) % _buckets.length;
         return wrapped;
     }
 
     public void resized() {
-        int size = _buckets.length * 2;
+        int size = _buckets.length * 5;
         _defaultBucket = size;
         ECHashStringSet copy = new ECHashStringSet(_defaultBucket);
         for (int i = 0; i < _buckets.length; i++) {
@@ -79,7 +85,7 @@ class ECHashStringSet implements StringSet {
 
     private int loadFactor() {
         int count = 0;
-        if (_buckets == null) {
+        if (_buckets == null || _buckets.length == 0) {
             return 0;
         }
         for (int i = 0; i < _buckets.length; i++) {
