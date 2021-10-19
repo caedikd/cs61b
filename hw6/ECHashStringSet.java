@@ -29,9 +29,11 @@ class ECHashStringSet implements StringSet {
         //figure out which index i bucket to go to
         //get linked list at buckets and add it to that
         //if we've reached the load limit, we should resize
-        int i = whichBucket(s);
-        if (!_buckets[i].contains(s)) {
-            _buckets[i].add(s);
+        if (_buckets != null) {
+            int i = whichBucket(s);
+            if (!_buckets[i].contains(s)) {
+                _buckets[i].add(s);
+            }
         }
 
     }
@@ -41,6 +43,9 @@ class ECHashStringSet implements StringSet {
         //figure out which index i bucket s would be in
         // get linked list at buckets[i]
         // find out if that linked list contains S
+        if (_buckets == null) {
+            return false;
+        }
         int i = whichBucket(s);
         if (_buckets[i].contains(s)) {
             return true;
@@ -75,6 +80,9 @@ class ECHashStringSet implements StringSet {
 
     private int loadFactor() {
         int count = 0;
+        if (_buckets == null) {
+            return 0;
+        }
         for (int i = 0; i < _buckets.length; i++) {
             count += _buckets[i].size();
         }
