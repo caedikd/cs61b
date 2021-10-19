@@ -92,6 +92,9 @@ class ECHashStringSet implements StringSet {
     @Override
     public List<String> asList() {
         ArrayList<String> end = new ArrayList<>();
+        if (_buckets == null) {
+            return end;
+        }
         for (int i = 0; i < _buckets.length; i++) {
             if (_buckets[i] != null) {
                 for (int j = 0; j < _buckets[i].size(); j++) {
