@@ -13,13 +13,14 @@ class ECHashStringSet implements StringSet {
     public int _defaultBucket;
 
     public ECHashStringSet() {
-        _buckets = (LinkedList<String>[]) new LinkedList[5];
+        _buckets = (LinkedList<String>[]) new LinkedList[_defaultBucket];
         for (int i = 0; i < _buckets.length; i++) {
             _buckets[i] = new LinkedList<String>();
         }
     }
 
-    public ECHashStringSet(int _defaultBucket) {
+    public ECHashStringSet(int defaultBucket) {
+        _defaultBucket = defaultBucket;
         _buckets = (LinkedList<String>[]) new LinkedList[_defaultBucket];
         for (int i = 0; i < _buckets.length; i++) {
             _buckets[i] = new LinkedList<String>();
@@ -38,6 +39,10 @@ class ECHashStringSet implements StringSet {
             if (!_buckets[i].contains(s)) {
                 _buckets[i].add(s);
             }
+        }
+        else {
+            _defaultBucket += 1;
+            _buckets = new LinkedList[_defaultBucket];
         }
 //        else {
 //            _defaultBucket += 1;
@@ -76,7 +81,7 @@ class ECHashStringSet implements StringSet {
     }
 
     public void resized() {
-        int size = _buckets.length * 5;
+        int size = _buckets.length * 10;
         _defaultBucket = size;
         ECHashStringSet copy = new ECHashStringSet(_defaultBucket);
         for (int i = 0; i < _buckets.length; i++) {
