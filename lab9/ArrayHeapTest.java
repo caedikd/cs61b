@@ -27,6 +27,7 @@ public class ArrayHeapTest {
             hp.insert(items[i], priorities[i]);
         }
         assertEquals("Size should be 4", 4, hp.size());
+        System.out.println();
         for (int i = 0; i < items.length; i++) {
             assertEquals(String.format("%d-th peek call", i),
                     items[i], hp.peek());

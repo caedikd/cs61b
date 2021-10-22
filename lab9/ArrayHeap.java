@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /** A Generic heap class. Unlike Java's priority queue, this heap doesn't just
  * store Comparable objects. Instead, it can store any type of object
  * (represented by type T) and an associated priority value.
- * @author */
+ * @author Caedi Seim*/
 public class ArrayHeap<T> {
 
     /* DO NOT CHANGE THESE METHODS. */
@@ -115,31 +115,46 @@ public class ArrayHeap<T> {
 
     /* FILL IN THE METHODS BELOW. */
 
+    //items with smaller priority queues will be removed first
+
     /** Returns the index of the left child of the node at i. */
     private int getLeftOf(int i) {
         // TODO
-        return 0;
+        int a = 2 * i ;
+        return a;
     }
 
     /** Returns the index of the right child of the node at i. */
     private int getRightOf(int i) {
-        // TODO
-        return 0;
+        int a = 2 * i + 1;
+        return a;
     }
 
     /** Returns the index of the node that is the parent of the
      *  node at i. */
     private int getParentOf(int i) {
-        // TODO
-        return 0;
+        if (i == 0) {
+            return 0;
+        }
+        int pos = (i / 2);
+        return pos;
     }
 
     /** Returns the index of the node with smaller priority. If one
      * node is null, then returns the index of the non-null node.
      * Precondition: at least one of the nodes is not null. */
     private int min(int index1, int index2) {
-        // TODO
-        return 0;
+        if (getNode(index1) == null) {
+            return index2;
+        }
+        else if (getNode(index2) == null) {
+            return index1;
+        }
+        if (getNode(index1)._priority > getNode(index2)._priority) {
+            return index2;
+        }
+        return index1;
+
     }
 
     /** Returns the item with the smallest priority value, but does
@@ -147,26 +162,49 @@ public class ArrayHeap<T> {
      * priority value, returns any of them. Returns null if heap is
      * empty. */
     public T peek() {
-        // TODO
-        return null;
+        if (contents.isEmpty()) {
+            return null;
+        }
+        else {
+            if (getNode(1) == null) {
+                return null;
+            }
+            return getNode(1)._item;
+        }
     }
 
     /** Bubbles up the node currently at the given index until no longer
      *  needed. */
     private void bubbleUp(int index) {
-        // TODO
+        while (index > 1 && (contents.get(index).priority()
+                < contents.get(getParentOf(index)).priority()) ) {
+            swap(index, getParentOf(index));
+            index = getParentOf(index);
+        }
     }
 
     /** Bubbles down the node currently at the given index until no longer
      *  needed. */
     private void bubbleDown(int index) {
-        // TODO
+        if (index == size()) {
+            return;
+        }
+        int smallest = min(index, min(getLeftOf(index), getRightOf(index)));
+        if (index != size() && smallest != index) {
+            swap(index, smallest);
+
+        }
     }
 
     /** Inserts an item with the given priority value. Assume that item is
      * not already in the heap. Same as enqueue, or offer. */
     public void insert(T item, double priority) {
-        // TODO
+        //when inserting a value add to the first null value
+        //then check is the parent values have a higher value and swap
+        //if they do
+        Node newNode = new Node(item, priority);
+        setNode(size() + 1, newNode);
+        bubbleUp(size());
     }
 
     /** Returns the element with the smallest priority value, and removes
@@ -174,8 +212,21 @@ public class ArrayHeap<T> {
      * removes any of them. Returns null if the heap is empty. Same as
      * dequeue, or poll. */
     public T removeMin() {
-        // TODO
-        return null;
+        if (size() == 0) {
+            return null;
+        }
+        if (size() == 1) {
+            return removeNode(1)._item;
+        }
+        else {
+            swap(1, size());
+            Node removed = removeNode(size());
+
+//            Node temp = removeNode(size());
+//            insert(temp._item, temp.priority());
+            bubbleDown(1);
+            return removed._item;
+        }
     }
 
     /** Changes the node in this heap with the given item to have the given
