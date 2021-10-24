@@ -63,6 +63,11 @@ class ConstantBoard extends Board {
         return _board.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return _board.toString();
+    }
+
     /* Mutators modified to do nothing. */
 
     @Override
