@@ -14,7 +14,7 @@ import ucb.util.CommandArgs;
  * @author P. N. Hilfinger
  */
 public class Main {
-
+//testing/correct/default.conf testing/correct/badconf1.in
     /** Location of usage message resource. */
     static final String USAGE = "jump61/Usage.txt";
 

@@ -140,7 +140,11 @@ class Board {
 
     /** Returns the total number of spots on the board. */
     int numPieces() {
-        return size() * size(); // FIXME
+        int count = 0;
+        for (int i = 0; i < _board.size(); i++) {
+            count += _board.get(i).getSpots();
+        }
+        return count; // FIXME
     }
 
     /** Returns the Side of the player who would be next to move.  If the
@@ -210,12 +214,27 @@ class Board {
     /** Returns the winner of the current position, if the game is over,
      *  and otherwise null. */
     final Side getWinner() {
+        numberBlue();
         if (_numRed == _board.size()) {
             return RED;
         } else if (_numBlue == _board.size()) {
             return BLUE;
         }
         return null;  // FIXME
+    }
+
+    private int numberBlue(){
+        _numBlue = 0;
+        _numRed = 0;
+        for (int i = 0; i < _board.size(); i++) {
+            if (_board.get(i).getSide().equals(BLUE)) {
+                _numBlue++;
+            }
+            if (_board.get(i).getSide().equals(RED)) {
+                _numRed++;
+            }
+        }
+        return _numBlue;
     }
 
     /** Return the number of squares of given SIDE. */
@@ -358,8 +377,7 @@ class Board {
         if (getWinner() == null) {
             int numSpots = _board.get(n).getSpots();
             if (numSpots > neighbors(n)) {
-                _board.set(n,
-                        square(player, 1));
+                _board.set(n, square(player, 1));
                 jump(n);
             }
         }
@@ -368,6 +386,7 @@ class Board {
             Board newB = new Board();
             newB.copy(this);
             _history.add(newB);
+
         }
 
 
@@ -528,8 +547,8 @@ class Board {
             return false;
         } else {
             Board B = (Board) obj;
-            if (numPieces() == B.numPieces()) {
-                for (int i = 0; i < numPieces(); i++) {
+            if (_N * _N == B._N * B._N) {
+                for (int i = 0; i < _N * _N; i++) {
                     if (!_board.get(i).equals(B._board.get(i))) {
                         return false;
                     }
