@@ -32,6 +32,17 @@ class Square {
         return _allSquares[side.ordinal()][spots];
     }
 
+    @Override
+    public String toString() {
+        Side side = getSide();
+        char l = '-';
+        if (!side.toString().equals("white")) {
+            l = side.toString().charAt(0);
+        }
+        String output = this.getSpots() + "" + l;
+        return output;
+    }
+
     /** Return the Side controlling this Square. */
     Side getSide() {
         return _side;

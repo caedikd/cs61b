@@ -41,21 +41,67 @@ public class BoardTest {
     }
 
     @Test
+    public void testAddSpot() {
+        Board B = new Board(5);
+        B.set(2, 2, 1, RED);
+        B.addSpot(RED, 2, 2);
+        assertEquals("wrong spots count", 2, B.get_NumSpots(2, 2));
+        assertEquals(4, B.neighbors(2, 2));
+        B = new Board(4);
+        B.addLocations(B.sqNum(1, 1));
+        B.set(1, 1, 1, RED);
+        System.out.println(B.toString());
+
+        B.addSpot(RED, 1, 1);
+        System.out.println(B.toString());
+
+        assertEquals(2, B.get(1, 1).getSpots());
+        B.addSpot(RED, 1, 1);
+        assertEquals(1, B.get(1, 1).getSpots());
+        System.out.println(B.toString());
+
+    }
+
+    @Test
     public void testMove() {
         Board B = new Board(6);
         checkBoard("#0", B);
         B.addSpot(RED, 1, 1);
+        System.out.println(B.toString());
+
+
         checkBoard("#1", B, 1, 1, 2, RED);
         B.addSpot(BLUE, 2, 1);
+        System.out.println(B.toString());
+
         checkBoard("#2", B, 1, 1, 2, RED, 2, 1, 2, BLUE);
         B.addSpot(RED, 1, 1);
+        System.out.println(B.toString());
+
         checkBoard("#3", B, 1, 1, 1, RED, 2, 1, 3, RED, 1, 2, 2, RED);
+
+
         B.undo();
+        System.out.println(B.toString());
+
         checkBoard("#2U", B, 1, 1, 2, RED, 2, 1, 2, BLUE);
+
         B.undo();
         checkBoard("#1U", B, 1, 1, 2, RED);
         B.undo();
         checkBoard("#0U", B);
+    }
+
+    @Test
+    public void testCleared() {
+        Board B = new Board(6);
+        checkBoard("#0", B);
+        B.addSpot(RED, 1, 1);
+        System.out.println(B.toString());
+        B.clear(6);
+        System.out.println(B.toString());
+
+
     }
 
     /** Checks that B conforms to the description given by CONTENTS.

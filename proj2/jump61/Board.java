@@ -6,13 +6,16 @@
 // solutions.
 package jump61;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.Arrays;
 import java.util.ArrayDeque;
 import java.util.Formatter;
-
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import static jump61.Side.*;
+import static jump61.Square.INITIAL;
 import static jump61.Square.square;
 
 /** Represents the state of a Jump61 game.  Squares are indexed either by
@@ -23,7 +26,7 @@ import static jump61.Square.square;
  *  A Board may be given a notifier---a Consumer<Board> whose
  *  .accept method is called whenever the Board's contents are changed.
  *
- *  @author
+ *  @author Caedi Seim
  */
 class Board {
 
@@ -35,6 +38,15 @@ class Board {
     /** An N x N board in initial configuration. */
     Board(int N) {
         this();
+        // calls the Board constructor that does not take in any argument
+        _N = N;
+        _numRed = 0;
+        _numBlue = 0;
+        _numMoves = 1;
+        _board = new ArrayList<>(_N * _N);
+        for (int i = 0; i < size() * size(); i++) {
+            _board.add(INITIAL);
+        }
         // FIXME
     }
 
@@ -42,6 +54,8 @@ class Board {
      *  undo history is clear, and whose notifier does nothing. */
     Board(Board board0) {
         this(board0.size());
+        _history = new ArrayDeque<>();
+        _notifier = NOP;
         // FIXME
         _readonlyBoard = new ConstantBoard(this);
     }
@@ -54,12 +68,30 @@ class Board {
     /** (Re)initialize me to a cleared board with N squares on a side. Clears
      *  the undo history and sets the number of moves to 0. */
     void clear(int N) {
+        _N = N;
+        _numMoves = 1;
+        _numRed = 0;
+        _numBlue = 0;
+        _board = new ArrayList<>(_N * _N);
+        for (int i = 0; i < size() * size(); i++) {
+            _board.add(INITIAL);
+        }
+        _history.clear();
         // FIXME
         announce();
     }
 
     /** Copy the contents of BOARD into me. */
     void copy(Board board) {
+        _N = board.size();
+        _board = new ArrayList<>(_N * _N);
+        _numMoves = 1;
+        _numBlue = board._numBlue;
+        _numRed = board._numRed;
+        for (int i = 0; i < size() * size(); i++) {
+            _board.add(board.get(i));
+        }
+        _history.clear();
         // FIXME
     }
 
@@ -67,12 +99,19 @@ class Board {
      *  history. Assumes BOARD and I have the same size. */
     private void internalCopy(Board board) {
         assert size() == board.size();
+        _N = board.size();
+        _board = new ArrayList<>(_N * _N);
+        _numBlue = board._numBlue;
+        _numRed = board._numRed;
+        for (int i = 0; i < size() * size(); i++) {
+            _board.add(board.get(i));
+        }
         // FIXME
     }
 
     /** Return the number of rows and of columns of THIS. */
     int size() {
-        return 6; // FIXME
+        return _N; // FIXME
     }
 
     /** Returns the contents of the square at row R, column C
@@ -85,8 +124,19 @@ class Board {
      *  squares in row 1 number 0 - size()-1, in row 2 numbered
      *  size() - 2*size() - 1, etc. */
     Square get(int n) {
-        return null; // FIXME
+        if (n >= size() * size()) {
+            throw new GameException("Get out of bounds");
+        }
+        else {
+            return _board.get(n);
+        }
     }
+    /*
+        You can number squares
+        0 1 2 3 4
+        5 6 7 8 9
+        - up until size - 1
+     */
 
     /** Returns the total number of spots on the board. */
     int numPieces() {
@@ -124,6 +174,7 @@ class Board {
     final int sqNum(int r, int c) {
         return (c - 1) + (r - 1) * size();
     }
+    //added in the -1
 
     /** Return a string denoting move (ROW, COL)N. */
     String moveString(int row, int col) {
@@ -144,6 +195,10 @@ class Board {
     /** Returns true iff it would currently be legal for PLAYER to add a spot
      *  to square #N. */
     boolean isLegal(Side player, int n) {
+        if (_board.get(n).getSide() != player &&
+            _board.get(n).getSide() != WHITE) {
+            return false;
+        }
         return true; // FIXME
     }
 
@@ -155,30 +210,53 @@ class Board {
     /** Returns the winner of the current position, if the game is over,
      *  and otherwise null. */
     final Side getWinner() {
+        if (_numRed == _board.size()) {
+            return RED;
+        } else if (_numBlue == _board.size()) {
+            return BLUE;
+        }
         return null;  // FIXME
     }
 
     /** Return the number of squares of given SIDE. */
     int numOfSide(Side side) {
-        return 0; // FIXME
+        if (side == RED) {
+            return _numRed;
+        }
+        else if (side == BLUE) {
+            return _numBlue;
+        }
+        else {
+            return size() * size() - _numBlue - _numRed;
+        }
+         // FIXME
     }
 
     /** Add a spot from PLAYER at row R, column C.  Assumes
      *  isLegal(PLAYER, R, C). */
     void addSpot(Side player, int r, int c) {
+        addSpot(player, sqNum(r, c));
+        //simpleadd
+        //a call to addspot represents a move
         // FIXME
     }
 
-    /** Add a spot from PLAYER at square #N.  Assumes isLegal(PLAYER, N). */
-    void addSpot(Side player, int n) {
-        // FIXME
+    int get_NumSpots(int r, int c) {
+        return _board.get(sqNum(r, c)).getSpots();
     }
+
+
 
     /** Set the square at row R, column C to NUM spots (0 <= NUM), and give
      *  it color PLAYER if NUM > 0 (otherwise, white). */
     void set(int r, int c, int num, Side player) {
         internalSet(r, c, num, player);
         announce();
+        /*
+        informs the rest of the program that it's made a move
+        but what about the moves you want to test, but not announce
+        for our AI
+         */
     }
 
     /** Set the square at row R, column C to NUM spots (0 <= NUM), and give
@@ -191,6 +269,17 @@ class Board {
     /** Set the square #N to NUM spots (0 <= NUM), and give it color PLAYER
      *  if NUM > 0 (otherwise, white). Does not announce changes. */
     private void internalSet(int n, int num, Side player) {
+        if (0 <= num) {
+            if (player == RED) {
+                _numRed++;
+            }
+            else {
+                _numBlue++;
+            }
+            _board.set(n, square(player, num));
+
+        }
+
         // FIXME
     }
 
@@ -213,13 +302,37 @@ class Board {
      *  can only undo back to the last point at which the undo history
      *  was cleared, or the construction of this Board. */
     void undo() {
+        if (_history.isEmpty()) {
+            this.clear(_N);
+        }
+        else {
+            if (this.equals(_history.getLast())) {
+                _history.removeLast();
+                if  (!_history.isEmpty()) {
+                    this.internalCopy(_history.getLast());
+                }
+                else {
+                    this.clear(_N);
+                }
+            }
+        }
         // FIXME
     }
+    /*
+       mainly for the AI
+       make a move, see if its a winning state, then walk that back and try something
+       new
+       - want to have something that stores the undo history, we want the previous
+       states and current states
+    */
 
     /** Record the beginning of a move in the undo history. */
     private void markUndo() {
         // FIXME
     }
+    /*
+        state that you want to save and put it in the undo history
+     */
 
     /** Add DELTASPOTS spots of side PLAYER to row R, column C,
      *  updating counts of numbers of squares of each color. */
@@ -237,18 +350,135 @@ class Board {
      *  here to cut down on allocations. */
     private final ArrayDeque<Integer> _workQueue = new ArrayDeque<>();
 
+    /** Add a spot from PLAYER at square #N.  Assumes isLegal(PLAYER, N). */
+    void addSpot(Side player, int n) {
+
+        //_board.set(n, square(player, _board.get(n).getSpots() + 1));
+        simpleAdd(player, n, 1);
+        if (getWinner() == null) {
+            int numSpots = _board.get(n).getSpots();
+            if (numSpots > neighbors(n)) {
+                _board.set(n,
+                        square(player, 1));
+                jump(n);
+            }
+        }
+        if (_moveHelper == 0) {
+            _numMoves++;
+            Board newB = new Board();
+            newB.copy(this);
+            _history.add(newB);
+        }
+
+
+        // FIXME
+    }
+
     /** Do all jumping on this board, assuming that initially, S is the only
      *  square that might be over-full. */
     private void jump(int S) {
         // FIXME
+        //use board.equals to
+        //remember that objects might point to the same things
+        //board b - new board();
+        //board b2 = b
+        //making changes to b2 will change b
+        //know whether you are referring to a copy or not
+        //use simple add in the jump method
+        //a square will jump if it has > neighbots
+        //
+        if (getWinner() == null) {
+            addLocations(S);
+            _moveHelper++;
+            for (int i = 0; i < _location.size() + 1; i++) {
+                int located = _location.pop();
+                addSpot(_board.get(S).getSide(), located);
+
+            }
+        }
+        Board newB = new Board();
+        newB.copy(this);
+        _history.add(newB);
     }
+    /*
+        when you get a cell with too many spots you need to jump, usually this is a
+        chain reaction, jumping only happens when adding spots
+        - avoid infinite loops, end when board is one color!
+        -
+     */
+
+    /** Add the locations of the neighbors to the queue. */
+    void addLocations(int n) {
+        if (neighbors(n) == 2) {
+            if (n == 0) {
+                _location.add(n + 1);
+                _location.add(n + _N);
+            }
+            else if (n == _N - 1) {
+                _location.add((n - 1));
+                _location.add((n + _N));
+            }
+            else if (n == _N * (_N - 1)) {
+                _location.add(n - _N);
+                _location.add(n + 1);
+            }
+            else if (n == _N * _N - 1) {
+                _location.add(n - _N);
+                _location.add(n - 1);
+            }
+        }
+        else if (neighbors(n) == 3) {
+            if (row(n) == 1) {
+                _location.add(n + _N);
+                _location.add(n + 1);
+                _location.add(n - 1);
+            }
+            else if (row(n) == _N) {
+                _location.add(n + 1);
+                _location.add(n - 1);
+                _location.add(n - _N);
+            }
+            else if (col(n) == 1) {
+                _location.add(n + _N);
+                _location.add(n + 1);
+                _location.add(n - 1);
+            }
+            else if (col(n) == _N) {
+                _location.add(n + 1);
+                _location.add(n - 1);
+                _location.add(n - _N);
+            }
+        }
+        else {
+            _location.add(n - _N);
+            _location.add(n + 1);
+            _location.add(n - 1);
+            _location.add(n + _N);
+        }
+    }
+
+
+
 
     /** Returns my dumped representation. */
     @Override
     public String toString() {
-        Formatter out = new Formatter();
+        //Formatter out = new Formatter();
+        String output = "===";
+        for (int i = 0; i < _N * _N; i++) {
+            if (i % size() == 0) {
+                output += "\n" + "    " + _board.get(i).toString();
+            }
+            else if ((i + 1) % _board.size() == 0){
+                output += " " + _board.get(i).toString() + "\n";
+            }
+            else {
+                output += " " + _board.get(i).toString();
+            }
+        }
+        output += "===";
+        return output;
         // FIXME
-        return out.toString();
     }
 
     /** Returns an external rendition of me, suitable for human-readable
@@ -298,7 +528,14 @@ class Board {
             return false;
         } else {
             Board B = (Board) obj;
-            return this == obj;  // FIXME
+            if (numPieces() == B.numPieces()) {
+                for (int i = 0; i < numPieces(); i++) {
+                    if (!_board.get(i).equals(B._board.get(i))) {
+                        return false;
+                    }
+                }
+            }
+            return true;  // FIXME
         }
     }
 
@@ -327,6 +564,26 @@ class Board {
     /** Use _notifier.accept(B) to announce changes to this board. */
     private Consumer<Board> _notifier;
 
+    /** Size of the board. */
+    private int _N;
+
+    /** Number of moves that have been made */
+    public int _numMoves;
+
+    /** Number of red cubes */
+    private int _numRed;
+
+    /** Number of blue cubes */
+    private int _numBlue;
+
+    /** The board we are using */
+    private ArrayList<Square> _board;
+
+    public ArrayDeque<Board> _history = new ArrayDeque<>();
+
+    public ArrayDeque<Integer> _location = new ArrayDeque<>();
+
+    private int _moveHelper = 0;
     // FIXME: other instance variables here.
 
 }

@@ -11,7 +11,7 @@ import static jump61.GameException.error;
 import static jump61.Utils.*;
 
 /** Main logic for playing (a) game(s) of Jump61.
- *  @author
+ *  @author Caedi Seim
  */
 class Game {
 

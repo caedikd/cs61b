@@ -7,6 +7,10 @@ enum Side {
 
     /** Possible square or player colors. */
     WHITE, RED, BLUE;
+    /*
+    objects of type side can only have white red or blue
+    almost like a new data type
+     */
 
     /** Return the reverse of this Side:: BLUE for RED, RED for BLUE, WHITE for
      *  WHITE. */
