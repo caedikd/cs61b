@@ -199,11 +199,12 @@ class Board {
     /** Returns true iff it would currently be legal for PLAYER to add a spot
      *  to square #N. */
     boolean isLegal(Side player, int n) {
-        if (_board.get(n).getSide() != player &&
-            _board.get(n).getSide() != WHITE) {
-            return false;
+        if (exists(n)) {
+            Side s = this.get(n).getSide();
+            return player.playableSquare(s);
+
         }
-        return true; // FIXME
+        return false; // FIXME
     }
 
     /** Returns true iff PLAYER is allowed to move at this point. */
@@ -463,7 +464,7 @@ class Board {
                 _location.add(n - 1);
             }
             else if (col(n) == _N) {
-                _location.add(n + 1);
+                _location.add(n + _N);
                 _location.add(n - 1);
                 _location.add(n - _N);
             }
