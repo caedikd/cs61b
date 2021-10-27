@@ -201,8 +201,8 @@ class Board {
     boolean isLegal(Side player, int n) {
         if (exists(n)) {
             Side s = this.get(n).getSide();
+            //numberBlue();
             return player.playableSquare(s);
-
         }
         return false; // FIXME
     }
@@ -224,14 +224,16 @@ class Board {
         return null;  // FIXME
     }
 
-    private int numberBlue(){
+    int numberBlue(){
         _numBlue = 0;
         _numRed = 0;
         for (int i = 0; i < _board.size(); i++) {
             if (_board.get(i).getSide().equals(BLUE)) {
+                _legalBlue.add(i);
                 _numBlue++;
             }
             if (_board.get(i).getSide().equals(RED)) {
+                _legalRed.add(i);
                 _numRed++;
             }
         }
@@ -240,6 +242,7 @@ class Board {
 
     /** Return the number of squares of given SIDE. */
     int numOfSide(Side side) {
+        numberBlue();
         if (side == RED) {
             return _numRed;
         }
@@ -297,9 +300,7 @@ class Board {
                 _numBlue++;
             }
             _board.set(n, square(player, num));
-
         }
-
         // FIXME
     }
 
@@ -542,6 +543,16 @@ class Board {
         return neighbors(row(n), col(n));
     }
 
+    ArrayList<Integer> legalRed() {
+        numberBlue();
+        return _legalRed;
+    }
+
+    ArrayList<Integer> legalBlue() {
+        numberBlue();
+        return _legalBlue;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Board)) {
@@ -593,15 +604,23 @@ class Board {
     /** Number of red cubes */
     private int _numRed;
 
-    /** Number of blue cubes */
+    /** Number of blue cubes. */
     private int _numBlue;
 
-    /** The board we are using */
+    /** The board we are using. */
     private ArrayList<Square> _board;
 
+    /** The history of past board states. */
     public ArrayDeque<Board> _history = new ArrayDeque<>();
 
+    /** A queue of neighbor locations. */
     public ArrayDeque<Integer> _location = new ArrayDeque<>();
+
+    /** A queue of the places of legal red moves. */
+    public ArrayList<Integer> _legalRed = new ArrayList<>();
+
+    /** A queue of the places of legal blue moves. */
+    public ArrayList<Integer> _legalBlue = new ArrayList<>();
 
     private int _moveHelper = 0;
     // FIXME: other instance variables here.

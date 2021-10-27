@@ -45,9 +45,20 @@ class AI extends Player {
         int value;
         assert getSide() == work.whoseMove();
         _foundMove = -1;
+        work.numberBlue();
         if (getSide() == RED) {
+            Random r = new Random();
+            int a = work.legalRed().get(r.nextInt(work.legalRed().size()));
+            if (work.isLegal(getSide(), a)) {
+                return a;
+            }
             value = 0; // FIXME
         } else {
+            Random r = new Random();
+            int a = work.legalBlue().get(r.nextInt(work.legalBlue().size()));
+            if (work.isLegal(getSide(), a)) {
+                return a;
+            }
             value = 0; // FIXME
         }
         return _foundMove;
@@ -70,8 +81,19 @@ class AI extends Player {
      *  Use WINNINGVALUE to indicate a win for Red and -WINNINGVALUE to
      *  indicate a win for Blue. */
     private int staticEval(Board b, int winningValue) {
-        return 0; // FIXME
+        if (b.whoseMove().equals(RED)) {
+            return b.numOfSide(b.whoseMove())
+                    - b.numOfSide(b.whoseMove().opposite());
+        }
+        else {
+            return b.numOfSide(b.whoseMove().opposite())
+                    - b.numOfSide(b.whoseMove());
+        }
+
     }
+    /*
+    if whosemove is red then return
+     */
 
     /** A random-number generator used for move selection. */
     private Random _random;
