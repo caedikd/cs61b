@@ -141,15 +141,17 @@ class Board {
     /** Returns the total number of spots on the board. */
     int numPieces() {
         int count = 0;
-        for (int i = 0; i < _board.size(); i++) {
+        for (int i = 0; i < size() * size(); i++) {
             count += _board.get(i).getSpots();
         }
+
         return count; // FIXME
     }
 
     /** Returns the Side of the player who would be next to move.  If the
      *  game is won, this will return the loser (assuming legal position). */
     Side whoseMove() {
+
         return ((numPieces() + size()) & 1) == 0 ? RED : BLUE;
     }
 
@@ -227,15 +229,22 @@ class Board {
     int numberBlue(){
         _numBlue = 0;
         _numRed = 0;
+        _legalRed.clear();
+        _legalBlue.clear();
         for (int i = 0; i < _board.size(); i++) {
             if (_board.get(i).getSide().equals(BLUE)) {
                 _legalBlue.add(i);
                 _numBlue++;
             }
-            if (_board.get(i).getSide().equals(RED)) {
+            else if (_board.get(i).getSide().equals(RED)) {
                 _legalRed.add(i);
                 _numRed++;
             }
+            else {
+                _legalBlue.add(i);
+                _legalRed.add(i);
+            }
+
         }
         return _numBlue;
     }
@@ -364,6 +373,7 @@ class Board {
     /** Add DELTASPOTS spots of color PLAYER to square #N,
      *  updating counts of numbers of squares of each color. */
     private void simpleAdd(Side player, int n, int deltaSpots) {
+
         internalSet(n, deltaSpots + get(n).getSpots(), player);
     }
 
@@ -411,7 +421,7 @@ class Board {
         if (getWinner() == null) {
             addLocations(S);
             _moveHelper++;
-            for (int i = 0; i < _location.size() + 1; i++) {
+            while (_location.size() + 1 != 1) {
                 int located = _location.pop();
                 addSpot(_board.get(S).getSide(), located);
 
@@ -420,6 +430,7 @@ class Board {
         Board newB = new Board();
         newB.copy(this);
         _history.add(newB);
+        _numMoves++;
     }
     /*
         when you get a cell with too many spots you need to jump, usually this is a
@@ -462,7 +473,7 @@ class Board {
             else if (col(n) == 1) {
                 _location.add(n + _N);
                 _location.add(n + 1);
-                _location.add(n - 1);
+                _location.add(n - _N);
             }
             else if (col(n) == _N) {
                 _location.add(n + _N);

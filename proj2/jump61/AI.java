@@ -45,21 +45,18 @@ class AI extends Player {
         int value;
         assert getSide() == work.whoseMove();
         _foundMove = -1;
-        work.numberBlue();
         if (getSide() == RED) {
             Random r = new Random();
-            int a = work.legalRed().get(r.nextInt(work.legalRed().size()));
-            if (work.isLegal(getSide(), a)) {
-                return a;
-            }
-            value = 0; // FIXME
+            _foundMove = work.legalRed().get(r.nextInt(work.legalRed().size()));
+            if (work.isLegal(getSide(), _foundMove)) {
+                return _foundMove;
+            }// FIXME
         } else {
             Random r = new Random();
-            int a = work.legalBlue().get(r.nextInt(work.legalBlue().size()));
-            if (work.isLegal(getSide(), a)) {
-                return a;
-            }
-            value = 0; // FIXME
+            _foundMove = work.legalBlue().get(r.nextInt(work.legalBlue().size()));
+            if (work.isLegal(getSide(), _foundMove)) {
+                return _foundMove;
+            } // FIXME
         }
         return _foundMove;
     }
@@ -91,9 +88,7 @@ class AI extends Player {
         }
 
     }
-    /*
-    if whosemove is red then return
-     */
+
 
     /** A random-number generator used for move selection. */
     private Random _random;

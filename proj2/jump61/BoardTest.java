@@ -79,7 +79,7 @@ public class BoardTest {
         System.out.println(B.toString());
 
         checkBoard("#3", B, 1, 1, 1, RED, 2, 1, 3, RED, 1, 2, 2, RED);
-
+        System.out.println(B._numMoves);
 
         B.undo();
         System.out.println(B.toString());
@@ -100,9 +100,32 @@ public class BoardTest {
         System.out.println(B.toString());
         B.clear(6);
         System.out.println(B.toString());
+    }
+
+    @Test
+    public void testWhoseMove() {
+        Board B = new Board(4);
+        B.addSpot(RED, 2, 1);
+        B.addSpot(BLUE, 1, 1);
+        B.addSpot(RED, 3, 3);
+        B.addSpot(BLUE, 1, 4);
+        B.addSpot(RED, 4, 4);
+        B.addSpot(BLUE, 1, 1);
+        System.out.println(B.toString());
+        System.out.println(B.numPieces());
+        B.addSpot(RED, 3, 3);
+        B.addSpot(BLUE, 2, 1);
+        System.out.println(B.toString());
+        System.out.println(B.legalRed().toString());
+        //System.out.println(B.numPieces());
+
+
+
+
 
 
     }
+
 
     /** Checks that B conforms to the description given by CONTENTS.
      *  CONTENTS should be a sequence of groups of 4 items:
