@@ -53,7 +53,7 @@ class Board {
     /** A board whose initial contents are copied from BOARD0, but whose
      *  undo history is clear, and whose notifier does nothing. */
     Board(Board board0) {
-        this(board0.size());
+        this.copy(board0);
         _history = new ArrayDeque<>();
         _notifier = NOP;
         // FIXME

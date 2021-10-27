@@ -111,13 +111,15 @@ public class BoardTest {
         B.addSpot(BLUE, 1, 4);
         B.addSpot(RED, 4, 4);
         B.addSpot(BLUE, 1, 1);
-        System.out.println(B.toString());
-        System.out.println(B.numPieces());
         B.addSpot(RED, 3, 3);
         B.addSpot(BLUE, 2, 1);
         System.out.println(B.toString());
-        System.out.println(B.legalRed().toString());
         //System.out.println(B.numPieces());
+        Board C = new Board(4);
+        C.addSpot(RED, 1, 1);
+        System.out.println(C.toString());
+        B.copy(C);
+        System.out.println(B.toString());
 
 
 
