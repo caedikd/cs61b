@@ -1,13 +1,4 @@
-// This file contains definitions for an OPTIONAL part of your project.  If you
-// choose not to do the optional point, you can delete this file from your
-// project.
 
-// This file contains a SUGGESTION for the structure of your program.  You
-// may change any of it, or add additional files to this directory (package),
-// as long as you conform to the project specification.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package jump61;
 
 import ucb.gui2.Pad;
@@ -23,7 +14,7 @@ import static jump61.Side.*;
 
 /** A GUI component that displays a Jump61 board, and converts mouse clicks
  *  on that board to commands that are sent to the current Game.
- *  @author
+ *  @author Caedi Seim
  */
 class BoardWidget extends Pad {
 
@@ -93,13 +84,11 @@ class BoardWidget extends Pad {
         if (_board == null) {
             return;
         }
-        // FIXME
     }
 
     /** Color and display the spots on the square at row R and column C
      *  on G.  (Used by paintComponent). */
     private void displaySpots(Graphics2D g, int r, int c) {
-        // FIXME
     }
 
     /** Draw one spot centered at position (X, Y) on G. */
@@ -110,14 +99,10 @@ class BoardWidget extends Pad {
 
     /** Respond to the mouse click depicted by EVENT. */
     public void doClick(String dummy, MouseEvent event) {
-        // x and y coordinates relative to the upper-left corner of the
-        // upper-left square (increasing y is down).
+
         int x = event.getX() - SEPARATOR_SIZE,
             y = event.getY() - SEPARATOR_SIZE;
-        // FIXME:
-        // REPLACE THE FOLLOWING WITH COMPUTATION OF r AND c FROM x and y,
-        // AND SEND THE APPROPRIATE COMMAND TO OUR GAME, IF THE EVENT
-        // OCCURS AT A VALID POSITION.  OTHERWISE, DOES NOTHING.
+
         int r = 1;
         int c = 1;
         _commandQueue.offer(String.format("%d %d", r, c));

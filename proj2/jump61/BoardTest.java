@@ -1,9 +1,4 @@
-// This file contains a SUGGESTION for the structure of your program.  You
-// may change any of it, or add additional files to this directory (package),
-// as long as you conform to the project specification.
 
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package jump61;
 
 import static jump61.Side.*;
@@ -45,7 +40,6 @@ public class BoardTest {
         Board B = new Board(5);
         B.set(2, 2, 1, RED);
         B.addSpot(RED, 2, 2);
-        assertEquals("wrong spots count", 2, B.get_NumSpots(2, 2));
         assertEquals(4, B.neighbors(2, 2));
         B = new Board(4);
         B.addLocations(B.sqNum(1, 1));
@@ -79,7 +73,6 @@ public class BoardTest {
         System.out.println(B.toString());
 
         checkBoard("#3", B, 1, 1, 1, RED, 2, 1, 3, RED, 1, 2, 2, RED);
-        System.out.println(B._numMoves);
 
         B.undo();
         System.out.println(B.toString());
@@ -114,7 +107,6 @@ public class BoardTest {
         B.addSpot(RED, 3, 3);
         B.addSpot(BLUE, 2, 1);
         System.out.println(B.toString());
-        //System.out.println(B.numPieces());
         Board C = new Board(4);
         C.addSpot(RED, 1, 1);
         System.out.println(C.toString());
