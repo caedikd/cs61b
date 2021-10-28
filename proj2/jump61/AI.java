@@ -32,12 +32,22 @@ class AI extends Player {
     private int searchForMove() {
         Board work = new Board(getBoard());
         assert getSide() == work.whoseMove();
+        int value = 0;
         if (getSide() == RED) {
-            minMax(work, 6, true, 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            Random r = new Random();
+            _foundMove = work.legalRed().get(r.nextInt(work.legalRed().size()));
+            if (work.isLegal(getSide(), _foundMove)) {
+                return _foundMove;
+            }
         } else {
-            minMax(work, 6, true, -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            Random r = new Random();
+            _foundMove =
+                    work.legalBlue().get(r.nextInt(work.legalBlue().size()));
+            if (work.isLegal(getSide(), _foundMove)) {
+                return _foundMove;
+            }
         }
-        return _foundMove;
+        return value;
     }
 
 
@@ -58,18 +68,19 @@ class AI extends Player {
         }
 
         if (sense == 1) {
-
             int bestSoFar = Integer.MIN_VALUE;
-
             for (int i = 0; i < board.legalRed().size(); i++) {
                 int sense2 = -1;
                 if (board.whoseMove() == RED) {
                     sense2 = 1;
                 }
+
+
                 int x = board.legalRed().get(i);
                 board.addSpot(RED, board.legalRed().get(i));
                 int response = minMax(board, depth - 1,
                         false, sense2, alpha, beta);
+                board.undo();
 
                 if (response > bestSoFar && saveMove) {
                     _foundMove = x;
@@ -94,6 +105,8 @@ class AI extends Player {
                 board.addSpot(BLUE, board.legalBlue().get(i));
                 int response = minMax(board, depth - 1,
                         false, sense2, alpha, beta);
+                board.undo();
+
                 if (response < bestSoFar && saveMove) {
                     _foundMove = x;
                 }
@@ -125,17 +138,10 @@ class AI extends Player {
             }
             return -winningValue;
         }
-        if (b.whoseMove().equals(RED)) {
-            value = b.numOfSide(b.whoseMove())
-                    - b.numOfSide(b.whoseMove().opposite());
+        value = b.numOfSide(RED)
+                    - b.numOfSide(BLUE);
 
-            return value;
-        } else {
-            value = b.numOfSide(b.whoseMove().opposite())
-                    - b.numOfSide(b.whoseMove());
-            return value;
-        }
-
+        return value;
     }
 
 
@@ -144,4 +150,5 @@ class AI extends Player {
 
     /** Used to convey moves discovered by minMax. */
     private int _foundMove;
+
 }
