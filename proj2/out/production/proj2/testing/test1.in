@@ -1,0 +1,9 @@
+# 2 x 2 test
+#* java -ea jump61.Main
+size 2
+manual blue
+1 1
+1 2
+1 1
+dump
+quit
