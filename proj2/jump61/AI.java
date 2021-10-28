@@ -139,7 +139,7 @@ class AI extends Player {
             return -winningValue;
         }
         value = b.numOfSide(RED)
-                    - b.numOfSide(BLUE);
+                - b.numOfSide(BLUE);
 
         return value;
     }

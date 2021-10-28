@@ -46,7 +46,6 @@ class Board {
     Board(Board board0) {
         this.copy(board0);
         _history = new ArrayDeque<>();
-        _notifier = NOP;
         _readonlyBoard = new ConstantBoard(this);
     }
 
