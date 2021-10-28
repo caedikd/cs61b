@@ -1,16 +1,6 @@
-// This file contains definitions for an OPTIONAL part of your project.  If you
-// choose not to do the optional point, you can delete this file from your
-// project.
 
-// This file contains a SUGGESTION for the structure of your program.  You
-// may change any of it, or add additional files to this directory (package),
-// as long as you conform to the project specification.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package jump61;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import static jump61.Side.*;
@@ -40,29 +30,13 @@ class AI extends Player {
     /** Return a move after searching the game tree to DEPTH>0 moves
      *  from the current position. Assumes the game is not over. */
     private int searchForMove() {
-        //return value should be the index of the square here
         Board work = new Board(getBoard());
         assert getSide() == work.whoseMove();
         if (getSide() == RED) {
             minMax(work, 6, true, 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        }
-        else {
+        } else {
             minMax(work, 6, true, -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
-//        int value = 0;
-//        if (getSide() == RED) {
-//            Random r = new Random();
-//            _foundMove = work.legalRed().get(r.nextInt(work.legalRed().size()));
-//            if (work.isLegal(getSide(), _foundMove)) {
-//                return _foundMove;
-//            }// FIXME
-//        } else {
-//            Random r = new Random();
-//            _foundMove = work.legalBlue().get(r.nextInt(work.legalBlue().size()));
-//            if (work.isLegal(getSide(), _foundMove)) {
-//                return _foundMove;
-//            } // FIXME
-//        }
         return _foundMove;
     }
 
@@ -79,7 +53,6 @@ class AI extends Player {
     private int minMax(Board board, int depth, boolean saveMove,
                        int sense, int alpha, int beta) {
         int best;
-        //if depth == 0 or game over in board position, return static eval of position
         if (depth == 0 || board.getWinner() != null) {
             return staticEval(board, Integer.MAX_VALUE);
         }
@@ -87,7 +60,6 @@ class AI extends Player {
         if (sense == 1) {
 
             int bestSoFar = Integer.MIN_VALUE;
-            //list of moves = board.legalRed()
 
             for (int i = 0; i < board.legalRed().size(); i++) {
                 int sense2 = -1;
@@ -96,12 +68,9 @@ class AI extends Player {
                 }
                 int x = board.legalRed().get(i);
                 board.addSpot(RED, board.legalRed().get(i));
-                //add the spot there, then check the heuristic
                 int response = minMax(board, depth - 1,
                         false, sense2, alpha, beta);
-                //this will eventually call a static eval when depth = 0
-                //then will return + if win for red or - if win for blue
-                //if its a win for red we want it to be bigger right?
+
                 if (response > bestSoFar && saveMove) {
                     _foundMove = x;
                 }
@@ -114,8 +83,7 @@ class AI extends Player {
                 }
             }
             return bestSoFar;
-        }
-        else {
+        } else {
             int bestSoFar = Integer.MAX_VALUE;
             for (int i = 0; i < board.legalBlue().size(); i++) {
                 int sense2 = -1;
@@ -139,15 +107,9 @@ class AI extends Player {
             }
             return bestSoFar;
         }
-        //save move happens on the first recursion and is set to false after
-        //so when we set depth to 4 and save the move to found move,
-        //we would want to save a move in the _foundMove if save move is true
-        //save move is true when
-        //found move should be assinged to the best move to make at the current
-        //depth, so maybe savemove when we are at the current depth
     }
     /*
-    Sense is 1 if red -1 if blue
+    .Sense is 1 if red -1 if blue
     feeding legal moves to both the maximizer and minimizer which
     recursively evaluates the heuristic of that move
      */
@@ -168,35 +130,11 @@ class AI extends Player {
                     - b.numOfSide(b.whoseMove().opposite());
 
             return value;
-        }
-        else {
-            //if move is blue then red - blue, if blue is in a better position
-            //it should return winning value
+        } else {
             value = b.numOfSide(b.whoseMove().opposite())
                     - b.numOfSide(b.whoseMove());
             return value;
         }
-        /*
-            if red wins, we return winningvalue, and -winningvalue if
-            blue wins. But if neither wins, do we return a number of
-            smaller magnitude? If things are better for red, then return
-            a big value but not as large as winningvalue? And if it's better
-            for blue, a large negative value but not as big as -winningvalue
-         */
-
-        /*
-        possibly having more squares per num pieces
-        if game is won return the number of sides
-        The closer a board score is to negative infinity the better it is for blue
-        The closer a board score is to positive infinity the better it is for red
-
-         Therefore, blue wants to search for the move that will produce
-         the “minimal”, or most negative board score - because it’s the
-         best for them. However, remember that red is the other player in
-         the game, and doesn’t want that. Red wants the board score to be
-         better for them, or making it as close to positive infinity as they
-         can.
-         */
 
     }
 
