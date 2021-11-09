@@ -32,10 +32,11 @@ public class Dog implements Serializable { // FIXME
      * @return Dog read from file
      */
     public static Dog fromFile(String name) {
-        File pointer = new File(DOG_FOLDER, "newDog.txt");
-        if (Utils.readContentsAsString(pointer).contains(name)) {
-            Dog dogDone = Utils.readObject(pointer, Dog.class);
-            return dogDone;
+        String child = name + ".txt";
+        File pointer = new File(DOG_FOLDER, child);
+        if (pointer.exists()) {
+            Dog newDog = new Dog(Utils.readObject(pointer, Dog.class);
+            return newDog;
         }
         throw new IllegalArgumentException();
     }
@@ -53,8 +54,8 @@ public class Dog implements Serializable { // FIXME
      * Saves a dog to a file for future use.
      */
     public void saveDog() throws IOException {
-        File newDog = new File(DOG_FOLDER, "newDog.txt");
-        Utils.writeContents(newDog, "Dog", _name, _breed, "_age");
+        File newDog = new File(DOG_FOLDER, _name + ".txt");
+        Utils.writeObject(newDog, this);
         // FIXME
     }
 
