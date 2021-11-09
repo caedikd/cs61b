@@ -1,15 +1,15 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 /** Represents a dog that can be serialized.
  * @author Sean Dooher
 */
 public class Dog implements Serializable { // FIXME
-
     /** Folder that dogs live in. */
-    static final File DOG_FOLDER = new File("C:/Users/Caedi/repo/capersDir/.capers/dog"); // FIXME
+    static final File DOG_FOLDER = new File("C:/Users/caedi/repo/lab11/capers/dogs"); // FIXME
 
     /**
      * Creates a dog object with the specified parameters.
@@ -18,6 +18,7 @@ public class Dog implements Serializable { // FIXME
      * @param age Age of dog
      */
     public Dog(String name, String breed, int age) {
+        DOG_FOLDER.mkdir();
         _age = age;
         _breed = breed;
         _name = name;
@@ -31,7 +32,7 @@ public class Dog implements Serializable { // FIXME
      * @return Dog read from file
      */
     public static Dog fromFile(String name) {
-        File pointer = new File(DOG_FOLDER, "newDog");
+        File pointer = new File(DOG_FOLDER, "newDog.txt");
         if (Utils.readContentsAsString(pointer).contains(name)) {
             Dog dogDone = Utils.readObject(pointer, Dog.class);
             return dogDone;
@@ -51,9 +52,9 @@ public class Dog implements Serializable { // FIXME
     /**
      * Saves a dog to a file for future use.
      */
-    public void saveDog() {
-        File newDog = new File(DOG_FOLDER, "newDog");
-        Utils.writeContents(newDog, "Dog", _name, _breed, _age);
+    public void saveDog() throws IOException {
+        File newDog = new File(DOG_FOLDER, "newDog.txt");
+        Utils.writeContents(newDog, "Dog", _name, _breed, "_age");
         // FIXME
     }
 

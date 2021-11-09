@@ -92,8 +92,6 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
-//        _currentStory += args[1];
-//        System.out.println(_currentStory + "1");
         String current = args[1];
         if (!Utils.readContentsAsString(_story).isEmpty()) {
             current = Utils.readContentsAsString(_story) + "\n" + args[1];
@@ -111,11 +109,11 @@ public class Main {
      * Also prints out the dog's information using toString().
      * @param args Array in format: {'Dog', name, breed, age}
      */
-    public static void makeDog(String[] args) {
+    public static void makeDog(String[] args) throws IOException {
         validateNumArgs("dog", args, 4);
         Dog newDog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
+        System.out.println(newDog.toString());
         newDog.saveDog();
-        System.out.println(args.toString());
         // FIXME
     }
 
@@ -125,10 +123,12 @@ public class Main {
      * Chooses dog to advance based on the first non-command argument of args.
      * @param args Array in format: {'birthday', name}
      */
-    public static void celebrateBirthday(String[] args) {
+    public static void celebrateBirthday(String[] args) throws IOException {
         validateNumArgs("birthday", args, 2);
         // FIXME
-        File temp = new File("C:/Users/Caedi/repo/capersDir/.capers/dog");
+        Dog newDog = Dog.fromFile(args[1]);
+        newDog.haveBirthday();
+        newDog.saveDog();
 //        String temp1 = Utils.readContentsAsString(temp);
 //        String[] splitted = temp1.split("\\s+");
 //        Dog x = new Dog(splitted[0], splitted[1], splitted[2]);
