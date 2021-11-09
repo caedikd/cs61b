@@ -35,7 +35,7 @@ public class Dog implements Serializable { // FIXME
         String child = name + ".txt";
         File pointer = new File(DOG_FOLDER, child);
         if (pointer.exists()) {
-            Dog newDog = new Dog(Utils.readObject(pointer, Dog.class);
+            Dog newDog = Utils.readObject(pointer, Dog.class);
             return newDog;
         }
         throw new IllegalArgumentException();
