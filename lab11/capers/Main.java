@@ -113,6 +113,7 @@ public class Main {
         validateNumArgs("dog", args, 4);
         Dog newDog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
         System.out.println(newDog.toString());
+        System.out.println("");
         newDog.saveDog();
         // FIXME
     }
@@ -128,6 +129,7 @@ public class Main {
         // FIXME
         Dog newDog = Dog.fromFile(args[1]);
         newDog.haveBirthday();
+        System.out.println("");
         newDog.saveDog();
 //        String temp1 = Utils.readContentsAsString(temp);
 //        String[] splitted = temp1.split("\\s+");
