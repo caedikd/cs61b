@@ -1,6 +1,7 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
 
 /** Canine Capers: A Gitlet Prelude.
  * @author Sean Dooher
@@ -10,7 +11,11 @@ public class Main {
     static final File CWD = new File(".");
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // FIXME
+    static final File CAPERS_FOLDER = new File("."); // FIXME
+    private static String _currentStory = "";
+
+    private static File _story;
+
 
     /**
      * Runs one of three commands:
@@ -40,21 +45,26 @@ public class Main {
      *
      * @param args arguments from the command line
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             exitWithError("Must have at least one argument");
         }
         setupPersistence();
-        switch (args[0]) {
+        switch (args[0])
+        {
         case "story":
             writeStory(args);
             break;
-        // FIXME
+        case "dog": makeDog(args);
+            break;
+        case "birthday": celebrateBirthday(args);
+            break;
         default:
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
         return;
     }
+
 
     /**
      * Does required filesystem operations to allow for persistence.
@@ -66,7 +76,12 @@ public class Main {
      *    - story -- file containing the current story
      *
      */
-    public static void setupPersistence() {
+    public static void setupPersistence() throws IOException {
+        File capers = new File(CAPERS_FOLDER,"capers");
+        capers.mkdir();
+        File dogs = new File(capers,"dogs");
+        dogs.mkdir();
+        _story = new File(capers, "story.txt");
         // FIXME
     }
 
@@ -77,6 +92,16 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
+//        _currentStory += args[1];
+//        System.out.println(_currentStory + "1");
+        String current = args[1];
+        if (!Utils.readContentsAsString(_story).isEmpty()) {
+            current = Utils.readContentsAsString(_story) + "\n" + args[1];
+        }
+        Utils.writeContents(_story, current);
+        System.out.println(current);
+        System.out.println("");
+
         // FIXME
     }
 
@@ -88,6 +113,9 @@ public class Main {
      */
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
+        Dog newDog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
+        newDog.saveDog();
+        System.out.println(args.toString());
         // FIXME
     }
 
@@ -100,6 +128,12 @@ public class Main {
     public static void celebrateBirthday(String[] args) {
         validateNumArgs("birthday", args, 2);
         // FIXME
+        File temp = new File("C:/Users/Caedi/repo/capersDir/.capers/dog");
+//        String temp1 = Utils.readContentsAsString(temp);
+//        String[] splitted = temp1.split("\\s+");
+//        Dog x = new Dog(splitted[0], splitted[1], splitted[2]);
+//        System.out.println(args.toString());
+
     }
 
     /**
