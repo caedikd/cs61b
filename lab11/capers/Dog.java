@@ -9,7 +9,7 @@ import java.io.Serializable;
 */
 public class Dog implements Serializable { // FIXME
     /** Folder that dogs live in. */
-    static final File DOG_FOLDER = new File("C:/Users/caedi/repo/lab11/capers/dogs"); // FIXME
+    static final File DOG_FOLDER = new File(System.getProperty("user.dir")); // FIXME
 
     /**
      * Creates a dog object with the specified parameters.
