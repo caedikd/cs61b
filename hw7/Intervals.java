@@ -13,6 +13,7 @@ public class Intervals {
      *  <x,y> with x <= y, representing intervals of ints, this returns the
      *  total length covered by the union of the intervals. */
     public static int coveredLength(List<int[]> intervals) {
+        if (intervals.size() == 0) { return 0; }
         // REPLACE WITH APPROPRIATE STATEMENTS.
         intervals.sort((interval1, interval2) -> interval1[0] - interval2[0]);
         int[] prev_int = intervals.get(0);
