@@ -14,7 +14,14 @@ public class Intervals {
      *  total length covered by the union of the intervals. */
     public static int coveredLength(List<int[]> intervals) {
         // REPLACE WITH APPROPRIATE STATEMENTS.
-        return 0;
+        intervals.sort((interval1, interval2) -> interval1[0] - interval2[0]);
+        int[] prev_int = intervals.get(0);
+        int total_spanned = prev_int[1] - prev_int[0];
+        for (int[] inter : intervals) {
+            total_spanned += Math.max(0, inter[1] - Math.max(inter[0], prev_int[1]));
+            prev_int = new int[]{0, Math.max(inter[1], prev_int[1])};
+        }
+        return total_spanned;
     }
 
     /** Test intervals. */

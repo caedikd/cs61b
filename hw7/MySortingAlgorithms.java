@@ -42,8 +42,17 @@ public class MySortingAlgorithms {
     public static class InsertionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // FIXME
+            int[] newArray = new int[array.length];
+            for (int i = 0; i < k; i++) {
+                while (i >= 1 && array[i] < array[i-1]) {
+                    int temp = array[i];
+                    array[i] = array[i-1];
+                    array[i-1] = temp;
+                    i -= 1;
+                }
+            }
         }
+            // FIXME
 
         @Override
         public String toString() {
@@ -60,7 +69,18 @@ public class MySortingAlgorithms {
     public static class SelectionSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // FIXME
+            //sort up to k times
+                for (int min = 0; min < k; min++) {
+                    for (int i = min + 1; i < k; i++) {
+                            if (array[min] > array[i]) {
+                                int temp = array[min];
+                                array[min] = array[i];
+                                array[i] = temp;
+                            }
+
+                    }
+            }
+
         }
 
         @Override
@@ -77,7 +97,43 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            // FIXME
+            int[] realArray = Arrays.copyOf(array, k);
+
+            realArray = sort(realArray);
+
+            for (int i = 0; i < k; i++){
+                array[i] = realArray[i];
+            }
+        }
+
+        private int[] sort(int[] array) {
+            if (array.length <= 1) {
+                return  array;
+            }
+            int mid = array.length / 2;
+            int[] arr1 = sort(Arrays.copyOfRange(array, 0, mid));
+            int[] arr2 = sort(Arrays.copyOfRange(array, mid, array.length));
+
+            return merge(arr1, arr2);
+        }
+
+        private int[] merge(int[] arr1, int[] arr2) {
+            int n = arr1.length + arr2.length;
+            int[] ret = new int[n];
+            int i = 0;
+            int j = 0;
+            for (int idx = 0; idx < n; idx++) {
+                int elem1 = i < arr1.length ? arr1[i] : Integer.MAX_VALUE;
+                int elem2 = j < arr2.length ? arr2[j] : Integer.MAX_VALUE;
+                if (elem1 < elem2) {
+                    ret[idx] = elem1;
+                    i++;
+                } else {
+                    ret[idx] = elem2;
+                    j++;
+                }
+            }
+            return ret;
         }
 
         // may want to add additional methods
