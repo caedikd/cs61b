@@ -41,6 +41,15 @@ public class Log {
             }
         }
         System.out.println(staged);
+
+        String removed = "=== Removed Files ===" + "\n";
+        System.out.println(removed);
+
+        String modif = "=== Modifications Not Staged For Commit ===" + "\n";
+        System.out.println(modif);
+
+        String untracked = "=== Untracked Files ===" + "\n";
+
     }
 
     /**
