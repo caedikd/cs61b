@@ -20,7 +20,8 @@ public class Log {
         List<String> reversOrdered = new ArrayList<String>(keys);
         Collections.reverse(reversOrdered);
         for (String key : reversOrdered) {
-            System.out.println(commits.get(key));;
+            Commit commitObj = (Commit) commits.get(key);
+            System.out.println(commitObj.toString());
         }
     }
 

@@ -28,7 +28,7 @@ public class Commit implements Serializable {
 
     private static final SimpleDateFormat format =
             new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z");
-    static String _message;
+    private String _message;
     private static String _parentId;
     private Date _commitDate;
     private Blob _pointing;
@@ -115,7 +115,6 @@ public class Commit implements Serializable {
         File newlyCommitted = new File(init.commits, newCommit.sha1());
         Utils.writeObject(newlyCommitted, newCommit);
         Utils.writeObject(_head, newCommit.blobsTracked);
-
     }
 
     public String sha1() {
