@@ -20,13 +20,30 @@ public class Main {
                 new init();
                 break;
             case "commit":
+                if (args.length == 1) {
+                    throw new GitletException("Please enter a commit message.");
+                }
+                Commit.commit(args[1]);
                 break;
             case "add":
+                Add.add(args[1]);
                 break;
             case "rm":
                 break;
+            case "checkout":
+                if (args.length == 1) {
+                    throw new GitletException("Nothing entered to checkout.");
+                }
+                if (args[1].equals("--")) {
+                    Log.checkout1(args[2]);
+                }
+
+                break;
             case "log":
                 Log.basic();
+                break;
+            case "status":
+                Log.status();
                 break;
             default:
                 exitWithError(String.format("Unknown command: %s", args[0]));

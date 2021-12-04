@@ -1,4 +1,6 @@
 package gitlet;
+import com.sun.java.accessibility.util.GUIInitializedListener;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -23,6 +25,7 @@ public class init {
     static File blobs = new File(GITLET_DIR, "blobs");
     static File master = new File(branches, "master");
     static File remove = new File(GITLET_DIR, "remove");
+    static File add = new File(GITLET_DIR, "add");
     static File head = new File(GITLET_DIR, "head");
 
     /** Constructor that initalizes all the directories if there isn't
@@ -37,13 +40,18 @@ public class init {
             commits.mkdir();
             branches.mkdir();
             blobs.mkdir();
+
+            //staging file
+            add.mkdir();
             /* Write in and serialize the empty first commit object
                  */
-            Commit commit = new Commit("null", "initial commit", null);
-            File initialCommit = new File(commits, commit.sha1());
-            Utils.writeObject(initialCommit, commit);
-            Utils.writeObject(master, commit.sha1());
-            Utils.writeObject(head, commit.sha1());
+            Commit commit = new Commit("initial commit", null);
+            Branch branch = new Branch("master", null);
+            System.out.println(Branch._head);
+//            File initialCommit = new File(commits, commit.sha1());
+//            Utils.writeObject(initialCommit, commit);
+//            Utils.writeObject(master, commit.sha1());
+//            Utils.writeObject(head, commit.sha1());
         }
     }
 

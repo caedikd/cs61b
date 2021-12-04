@@ -1,9 +1,12 @@
 package gitlet;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 
 /** Track the commits.
@@ -22,71 +25,97 @@ import java.util.LinkedHashMap;
 
 public class Commit implements Serializable {
 
-    static final File COMMIT_FOLDER = new File(String.valueOf(init.commits));
 
     private static final SimpleDateFormat format =
-            new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy z");
-    private final String _message;
-    private final String _parentId;
+            new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z");
+    static String _message;
+    private static String _parentId;
     private Date _commitDate;
     private Blob _pointing;
 
-    static LinkedHashMap<String, Commit> commitTree;
+    /** LinkedHashMap filled with the SHA1 ID's of the blobs, these get filled
+     *  with the help of add's staging area, each commit set the blobRef's to
+     *  the staging area, then clear the staging area.
+     */
+    static LinkedHashMap<String, String> blobsTracked;
+
+    /**
+     * Single file using the most recent file, or current commit.
+     */
+    static File _head = new File(init.commits, "currentCommit");
+    static File _commitTree = new File(init.commits, "commitTree");
 
     /** Each commit is identified by its sha-1 id, which includes
      * the files (blob) refs of its files, parent refs,
      * log message and commit time.
+     *
+     * may want to put blobs in a linkedhashmap?
      */
+    static LinkedHashMap<String, Commit> commitTree;
     private String _sha1;
 
-    public Commit(String parent, String message, Blob pointing) {
+
+    //maybe a linkedhashset of blobs and their respective sha1 ids
+    //this would probably only be for the initial commit
+    public Commit(String message, LinkedHashMap<String, String> blobRefs) {
         //initial commit has no associated files and parent, sha-1 id only contains
         //log message and commit time
         _message = message;
-        _parentId = parent;
-        if (_parentId.equals("null")) {
+        //_parentId = parent;
+        if (_message.equals("initial commit")) {
             _commitDate = new Date();
             _commitDate.setTime(0);
         }
         else {
             _commitDate = new Date();
         }
-        _pointing = pointing;
+        this.blobsTracked = blobRefs;
+        _sha1 = Utils.sha1(_message, this._commitDate.toString());
 
-        _sha1 = Utils.sha1(Utils.serialize(this));
-        commitTree = new LinkedHashMap<>();
+        if (_commitTree.exists()) {
+            commitTree = Utils.readObject(_commitTree, LinkedHashMap.class);
+        }
+        else {
+            commitTree = new LinkedHashMap<>();
+        }
         commitTree.put(_sha1, this);
+        Utils.writeObject(_commitTree, commitTree);
+        Utils.writeObject(_head, blobsTracked);
 
-//        Utils.writeObject(outfile, this);
-
-        //create new file
-        /* idea: save the sha1 as the commit message and then save the
-         details of the commit
-        in a linkedlisthashset ?
-
-        or Serialize the commit object, which will have a saved
-        linkedhashset, then when you deserialize, look
-
-        Serialization: the process of translating an object to a
-        series of bytes that can then be stored in the file,
-        then we can deserialize the bytes and get the
-        original object back.
-         */
     }
 
+    /**
+     * Get blobs from the staging area in add and commit them and remove them
+     * from the staging area.
+     * @param message
+     */
     public static void commit(String message) {
-//        try {
-//            if (message.length() == 0) {
-//                System.out.println("Please enter a commit message");
-//                return;
-//            }
-//            File history = new File(COMMIT_FOLDER, String.valueOf(init.branches));
-//            if (history != null) {
-//                File parent = new File("commits.dir", history);
-//
-//            }
-//
-//        }
+        if (_head.exists()) {
+            _head.delete();
+        }
+        if (message.length() == 0) {
+            throw new GitletException("Please enter a commit message");
+        }
+        LinkedHashMap stagedMap = Utils.readObject(Add.staging, LinkedHashMap.class);
+        if (stagedMap.isEmpty()) {
+            throw new GitletException("No changes added to the commit.");
+        }
+        Set<String> keys = stagedMap.keySet();
+        if (blobsTracked == null) {
+            blobsTracked = new LinkedHashMap<>();
+        }
+        for (String key : keys) {
+            blobsTracked.put(key, (String) stagedMap.get(key));
+        }
+        //_parentId = _message;
+        Commit newCommit = new Commit(message, stagedMap);
+
+        //clearing the staging area
+        Add.staging.delete();
+        File newlyCommitted = new File(init.commits, newCommit.sha1());
+        Utils.writeObject(newlyCommitted, newCommit);
+        Utils.writeObject(_head, newCommit.blobsTracked);
+
     }
 
     public String sha1() {
@@ -100,7 +129,7 @@ public class Commit implements Serializable {
     public String toString() {
         return "===\n" + "commit " + _sha1 + "\n"
                 + "Date: " + format.format(_commitDate) + "\n"
-                + _message;
+                + _message + "\n";
     }
 
 
