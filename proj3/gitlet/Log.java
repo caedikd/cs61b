@@ -49,6 +49,7 @@ public class Log {
         System.out.println(modif);
 
         String untracked = "=== Untracked Files ===" + "\n";
+        System.out.println(untracked);
 
     }
 
