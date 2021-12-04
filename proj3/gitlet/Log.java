@@ -58,7 +58,7 @@ public class Log {
         File overwriting = new File(CWD, fileName);
 
         if (overwriting.exists()) {
-            
+
         }
 
 

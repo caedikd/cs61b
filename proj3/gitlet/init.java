@@ -47,7 +47,6 @@ public class init {
                  */
             Commit commit = new Commit("initial commit", null);
             Branch branch = new Branch("master", null);
-            System.out.println(Branch._head);
 //            File initialCommit = new File(commits, commit.sha1());
 //            Utils.writeObject(initialCommit, commit);
 //            Utils.writeObject(master, commit.sha1());
