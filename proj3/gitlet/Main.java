@@ -35,8 +35,16 @@ public class Main {
                 if (args.length == 1) {
                     throw new GitletException("Nothing entered to checkout.");
                 }
+
                 if (args[1].equals("--")) {
                     Log.checkout1(args[2]);
+                }
+                if (args.length == 4) {
+                    if (!args[2].equals("--")) {
+                        System.out.println("Incorrect operands.");
+                        System.exit(0);
+                    }
+                    Log.checkout2(args[1], args[3]);
                 }
                 break;
             case "log":

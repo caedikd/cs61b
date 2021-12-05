@@ -81,7 +81,7 @@ public class Log {
         //get the byte array of the blob with the file name
         File blobFile = new File(init.blobs, fileName);
         Blob blobFromFile = Utils.readObject(blobFile, Blob.class);
-        Utils.writeContents(overwriting, blobFromFile._code);
+        Utils.writeContents(overwriting, blobFromFile.codeGetter());
     }
 
     /**
@@ -90,7 +90,25 @@ public class Log {
      * overwriting the version of the file that's already there
      * if there is one. The new version of the file isn't staged.
      */
-    public static void checkout2() {
+    public static void checkout2(String commitID, String FileName) {
+        LinkedHashMap commits = Utils.readObject(Commit._commitTree, LinkedHashMap.class);
+        Set<String> keys = commits.keySet();
+        List<String> reversOrdered = new ArrayList<String>(keys);
+        Collections.reverse(reversOrdered);
+        int i = 0;
+        for (String key : reversOrdered) {
+            Commit commitObj = (Commit) commits.get(key);
+            if (commitObj.sha1().equals(commitID)) {
+                checkout1(FileName);
+                i = 1;
+                break;
+            }
+        }
+        if (i == 0) {
+            System.out.println("No commit with that id exists.");
+            System.exit(0);
+        }
+
 
     }
 }

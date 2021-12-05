@@ -8,10 +8,14 @@ public class Blob implements Serializable {
 
     static File newBlob;
     static String _fileName;
-    public byte[] _code;
+    private byte[] _code;
 
     /** This is the SHA ID */
     static String _ID;
+
+    public byte[] codeGetter() {
+        return _code;
+    }
 
     public Blob(String fileName, byte[] code, String ID) {
         _fileName = fileName;
