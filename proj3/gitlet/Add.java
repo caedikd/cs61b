@@ -29,7 +29,8 @@ public class Add implements Serializable {
 
         File temp = new File(init.CWD, fileName);
         if (!temp.exists()) {
-            throw new GitletException("File does not exist.");
+            System.out.println("File does not exist.");
+            System.exit(0);
         }
 
         //getting the sha1 id of the file that is dependent of contents of file
@@ -44,7 +45,7 @@ public class Add implements Serializable {
         if (!(committed == null) && committed.containsKey(fileName)) {
             if (committed.get(fileName).equals(id)) {
                 System.out.print("No changes added to the commit.");
-                return;
+                System.exit(0);
             }
         }
             //the sha id is different so add to the staging area, then in commit
