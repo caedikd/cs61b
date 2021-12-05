@@ -37,7 +37,7 @@ public class Commit implements Serializable {
      *  with the help of add's staging area, each commit set the blobRef's to
      *  the staging area, then clear the staging area.
      */
-    static LinkedHashMap<String, String> blobsTracked;
+    private static LinkedHashMap<String, String> blobsTracked;
 
     /**
      * Single file using the most recent file, or current commit.
@@ -104,6 +104,7 @@ public class Commit implements Serializable {
         if (blobsTracked == null) {
             blobsTracked = new LinkedHashMap<>();
         }
+
         for (String key : keys) {
             blobsTracked.put(key, (String) stagedMap.get(key));
         }

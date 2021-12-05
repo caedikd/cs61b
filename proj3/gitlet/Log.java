@@ -29,14 +29,23 @@ public class Log {
      * Prints out the status of the files.
      */
     public static void status() {
-        String branches = "=== Branches ===" + "\n" + Branch._head + "\n";
-        System.out.println(branches);
+        String branches2 = "=== Branches ===" + "\n";
+        LinkedHashMap branches = Utils.readObject(Branch._activeBranch, LinkedHashMap.class);
+        Set<String> keys = branches.keySet();
+        List<String> reversOrdered = new ArrayList<String>(keys);
+        Collections.reverse(reversOrdered);
+        for (String key : reversOrdered) {
+            branches2 += (key + "\n");
+        }
+        System.out.println(branches2);
+
+
 
         String staged = "=== Staged Files ===" + "\n";
         if (Add.staging.exists()) {
             LinkedHashMap stagedMap = Utils.readObject(Add.staging, LinkedHashMap.class);
-            Set<String> keys = stagedMap.keySet();
-            for (String key : keys) {
+            Set<String> keys1 = stagedMap.keySet();
+            for (String key : keys1) {
                 staged += key + "\n";
             }
         }
@@ -69,7 +78,7 @@ public class Log {
         File overwriting = new File(CWD, fileName);
 
         if (overwriting.exists()) {
-
+            //Utils.writeObject(overwriting, );
         }
 
 
