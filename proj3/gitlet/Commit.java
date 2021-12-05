@@ -93,13 +93,14 @@ public class Commit implements Serializable {
         if (_head.exists()) {
             _head.delete();
         }
-        if (message.length() == 0) {
-            throw new GitletException("Please enter a commit message");
+        if (!Add.staging.exists()) {
+            System.out.println("No changes added to the commit.");
+            System.exit(0);
         }
         LinkedHashMap stagedMap = Utils.readObject(Add.staging, LinkedHashMap.class);
         if (stagedMap.isEmpty()) {
             System.out.println("No changes added to the commit.");
-            return;
+            System.exit(0);
         }
         Set<String> keys = stagedMap.keySet();
         if (blobsTracked == null) {
