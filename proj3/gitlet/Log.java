@@ -72,17 +72,16 @@ public class Log {
     public static void checkout1(String fileName) {
         File commitFile = new File(String.valueOf(Commit._head));
         LinkedHashMap committed = Utils.readObject(commitFile, LinkedHashMap.class);
-        if ((committed == null) || !committed.containsKey(fileName)) {
-            throw new GitletException("File does not exist in that commit.");
+        if (!(committed == null) && !committed.containsKey(fileName)) {
+            System.out.println("File does not exist in that commit.");
+            System.exit(0);
         }
         File overwriting = new File(CWD, fileName);
 
-        if (overwriting.exists()) {
-            //Utils.writeObject(overwriting, );
-        }
-
-
-
+        //get the byte array of the blob with the file name
+        File blobFile = new File(init.blobs, fileName);
+        Blob blobFromFile = Utils.readObject(blobFile, Blob.class);
+        Utils.writeContents(overwriting, blobFromFile._code);
     }
 
     /**

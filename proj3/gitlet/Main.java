@@ -38,7 +38,6 @@ public class Main {
                 if (args[1].equals("--")) {
                     Log.checkout1(args[2]);
                 }
-
                 break;
             case "log":
                 Log.basic();

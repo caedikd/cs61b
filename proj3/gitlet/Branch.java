@@ -23,7 +23,6 @@ public class Branch implements Serializable {
     }
 
     public static void change() {
-
     }
 
     public String toString() {

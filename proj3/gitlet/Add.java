@@ -53,7 +53,7 @@ public class Add implements Serializable {
             //committing clears everything in the staging area and probably adds the
             //commit to a data structure
             //whether or not the file is the same as one already added happens here in add
-                File blobs = new File(init.blobs, id);
+                File blobs = new File(init.blobs, fileName);
                 Blob blob = new Blob(fileName, inside, id);
                 Utils.writeObject(blobs, blob);
                 if (staging.length() == 0 && staged == null) {
