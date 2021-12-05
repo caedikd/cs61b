@@ -98,7 +98,8 @@ public class Commit implements Serializable {
         }
         LinkedHashMap stagedMap = Utils.readObject(Add.staging, LinkedHashMap.class);
         if (stagedMap.isEmpty()) {
-            throw new GitletException("No changes added to the commit.");
+            System.out.println("No changes added to the commit.");
+            return;
         }
         Set<String> keys = stagedMap.keySet();
         if (blobsTracked == null) {

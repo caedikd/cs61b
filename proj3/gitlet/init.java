@@ -33,7 +33,7 @@ public class init {
      */
     public init() throws IOException {
         if (GITLET_DIR.exists()) {
-            throw new GitletException("A Gitlet version-control system already exists in the current directory.");
+            System.out.println("A Gitlet version-control system already exists in the current directory.");
         }
         else {
             GITLET_DIR.mkdir();
