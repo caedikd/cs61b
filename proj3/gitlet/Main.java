@@ -20,8 +20,9 @@ public class Main {
                 new init();
                 break;
             case "commit":
-                if (args.length == 1) {
-                    throw new GitletException("Please enter a commit message.");
+                if (args.length == 1 || args[1].isBlank()) {
+                    System.out.println("Please enter a commit message.");
+                    System.exit(0);
                 }
                 Commit.commit(args[1]);
                 break;
@@ -46,7 +47,7 @@ public class Main {
                 Log.status();
                 break;
             default:
-                exitWithError(String.format("Unknown command: %s", args[0]));
+                exitWithError("No command with that name exists.");
         }
         return;
 
@@ -56,7 +57,7 @@ public class Main {
         if (message != null && !message.equals("")) {
             System.out.println(message);
         }
-        System.exit(-1);
+        System.exit(0);
     }
 
 }

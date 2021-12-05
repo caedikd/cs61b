@@ -43,7 +43,7 @@ public class Add implements Serializable {
         LinkedHashMap committed = Utils.readObject(commitFile, LinkedHashMap.class);
         if (!(committed == null) && committed.containsKey(fileName)) {
             if (committed.get(fileName).equals(id)) {
-                System.out.print("No changes were made");
+                System.out.print("No changes added to the commit.");
                 return;
             }
         }
