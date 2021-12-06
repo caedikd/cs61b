@@ -138,6 +138,7 @@ public class Commit implements Serializable {
         //clear staging area
         Add.staging.delete();
         Add.modified.delete();
+        Add.rmStaging.delete();
 
 //        //change the head
 //        parentHead.setCurrentCommitSha(newCommit.sha1());
