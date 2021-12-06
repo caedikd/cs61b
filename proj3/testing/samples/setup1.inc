@@ -6,4 +6,3 @@ I prelude1.inc
 <<<
 > add f.txt
 <<<
--------------

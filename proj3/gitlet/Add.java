@@ -66,8 +66,13 @@ public class Add implements Serializable {
             stagedAdd.put(fileName, inside);
         }
         else {
+            if (modified.exists()) {
+                stagedMod = Utils.readObject(modified, LinkedHashMap.class);
+            }
+            else {
+                stagedMod = new LinkedHashMap();
+            }
             stagedAdd = new LinkedHashMap();
-            stagedMod = new LinkedHashMap();
             stagedAdd.put(fileName, inside);
             stagedMod.put(fileName, inside);
         }

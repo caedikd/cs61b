@@ -72,29 +72,26 @@ public class Log {
 
         String modif = "=== Modifications Not Staged For Commit ===" + "\n";
         //check for deleted files
-        if (Add.modified.exists()) {
-            LinkedHashMap stagedMap = Utils.readObject(Add.modified, LinkedHashMap.class);
-            List<String> x = alphabetical(Add.modified);
-            for (String a: x) {
-                File newFile = new File(init.CWD, a);
-                byte[] inside = Utils.readContents(newFile);
-                String id = Utils.sha1(inside);
-                if (!newFile.exists()) {
-                    modif += a + "(deleted)" + "\n";
-                }
-                else if(newFile.exists()) {
-                    if (stagedMap.get(a).equals(inside)) {
-                        modif += a + "(modified)" + "\n";
-                    }
-                }
-            }
-
-        }
-
-
+//        if (Add.modified.exists()) {
+//            LinkedHashMap stagedMap = Utils.readObject(Add.modified, LinkedHashMap.class);
+//            List<String> x = alphabetical(Add.modified);
+//            for (String a: x) {
+//                File newFile = new File(init.CWD, a);
+//                byte[] inside = Utils.readContents(newFile);
+//                String id = Utils.sha1(inside);
+//                if (!newFile.exists()) {
+//                    modif += a + "(deleted)" + "\n";
+//                }
+//                else if(newFile.exists()) {
+//                    if (stagedMap.get(a).equals(inside)) {
+//                        modif += a + "(modified)" + "\n";
+//                    }
+//                }
+//            }
+//        }
         System.out.println(modif);
 
-        String untracked = "=== Untracked Files ===" + "\n";
+        String untracked = "=== Untracked Files ===" ;
         System.out.println(untracked);
 
     }
