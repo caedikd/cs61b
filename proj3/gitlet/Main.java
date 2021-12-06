@@ -30,12 +30,12 @@ public class Main {
                 Add.add(args[1]);
                 break;
             case "rm":
+                Add.rm(args[1]);
                 break;
             case "checkout":
                 if (args.length == 1) {
                     throw new GitletException("Nothing entered to checkout.");
                 }
-
                 if (args[1].equals("--")) {
                     Log.checkout1(args[2]);
                 }
@@ -49,6 +49,9 @@ public class Main {
                 break;
             case "log":
                 Log.basic();
+                break;
+            case "branch":
+
                 break;
             case "status":
                 Log.status();

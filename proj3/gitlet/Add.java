@@ -19,14 +19,17 @@ import java.util.LinkedHashMap;
 
 public class Add implements Serializable {
 
-    static File staging = new File(init.add, "staging");
+    static File staging = new File(init.add, "addStaging");
+    static File rmStaging = new File(init.add, "rmStaging");
+    static File modified =  new File(init.add, "staged");
 
 
-    static LinkedHashMap staged;
+    static LinkedHashMap stagedAdd;
+    static LinkedHashMap stagedRem;
+    static LinkedHashMap stagedMod;
+
     /** Adds the file to the staging directory given the fileName. */
     public static void add(String fileName) throws IOException {
-        staging.createNewFile();
-
         File temp = new File(init.CWD, fileName);
         if (!temp.exists()) {
             System.out.println("File does not exist.");
@@ -39,46 +42,37 @@ public class Add implements Serializable {
         byte[] inside = Utils.readContents(temp);
         String id = Utils.sha1(inside);
 
+        Head currHead = new Head(init.head);
+        String currentSha = currHead.getCurrentCommitSha();
+        File commitMetadata = new File(init.commits, currentSha +"/" +currentSha);
 
-        File commitFile = new File(String.valueOf(Commit._head));
-        LinkedHashMap committed = Utils.readObject(commitFile, LinkedHashMap.class);
-        if (!(committed == null) && committed.containsKey(fileName)) {
-            if (committed.get(fileName).equals(id)) {
+        if (commitMetadata.exists()) {
+            stagedAdd = Utils.readObject(commitMetadata, LinkedHashMap.class);
+            if (stagedAdd.containsKey(fileName) && stagedAdd.get(fileName).equals(id)) {
                 System.out.println("No changes added to the commit.");
                 System.exit(0);
             }
+            if (modified.exists()) {
+                stagedMod = Utils.readObject(modified, LinkedHashMap.class);
+            }
+            else {
+                stagedMod = new LinkedHashMap();
+            }
+            stagedMod.put(fileName, inside);
+            stagedAdd.put(fileName, inside);
         }
-            //the sha id is different so add to the staging area, then in commit
-            //you will commit everything in the staging area?
-            //committing clears everything in the staging area and probably adds the
-            //commit to a data structure
-            //whether or not the file is the same as one already added happens here in add
-                File blobs = new File(init.blobs, fileName);
-                Blob blob = new Blob(fileName, inside, id);
-                Utils.writeObject(blobs, blob);
-                if (staging.length() == 0 && staged == null) {
-                    staged = new LinkedHashMap();
-                }
-                else {
-                    staged = Utils.readObject(staging, LinkedHashMap.class);
-                }
-                //putting the file name and shaid into a hashmap
-                staged.put(fileName, id);
-                Utils.writeObject(staging, staged);
-                //staging should map the file contents to a file name in the form of a hashmap
+        else {
+            stagedAdd = new LinkedHashMap();
+            stagedMod = new LinkedHashMap();
+            stagedAdd.put(fileName, inside);
+            stagedMod.put(fileName, inside);
+        }
 
-                //File temp2 = new File(staging, fileName);
-                //System.out.println("sha" + id);
-//                Utils.writeContents(temp2, id);
-//                System.out.println((Utils.readContents(temp2)));
-                //temp.delete();
-                //Utils.writeObject(staging, staged);
-
-
-
-
+        Utils.writeObject(modified, stagedMod);
+        Utils.writeObject(staging, stagedAdd);
 
     }
+
     /**
      * If the current working version of the file is identical to
      * the version in the current commit, do not stage it to be added,
@@ -87,5 +81,49 @@ public class Add implements Serializable {
      * file will no longer be staged for removal (see gitlet rm), if
      * it was at the time of the command.
      */
+    public static void rm(String fileName) {
+        File temp = new File(init.CWD, fileName);
+        //staging only exists if there are files written to it in a hashmap
+        int i = 0;
+
+        if (rmStaging.exists()) {
+            stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
+        }
+        else {
+            stagedRem = new LinkedHashMap();
+        }
+
+        if (modified.exists()) {
+            LinkedHashMap stagedAdd = Utils.readObject(modified, LinkedHashMap.class);
+            if (stagedAdd.containsKey(fileName)) {
+                stagedRem.put(fileName, stagedAdd.get(fileName));
+                Utils.writeObject(rmStaging, stagedRem);
+                stagedAdd.remove(fileName);
+                i += 1;
+            }
+            Utils.writeObject(modified, stagedAdd);
+        }
+        else {
+            Head currHead = new Head(init.head);
+            String currentSha = currHead.getCurrentCommitSha();
+            File commitMetadata = new File(init.commits, currentSha +"/" +currentSha);
+            if (commitMetadata.exists()) {
+                LinkedHashMap trackedFiles = Utils.readObject(commitMetadata, LinkedHashMap.class);
+                if (trackedFiles.containsKey(fileName)) {
+                    stagedRem.put(fileName, trackedFiles.get(fileName));
+                    i += 1;
+                    temp.delete();
+                }
+                Utils.writeObject(rmStaging, stagedRem);
+            }
+        }
+
+        if (i == 0) {
+            System.out.println("No reason to remove the file.");
+            System.exit(0);
+        }
+
+
+    }
 
 }

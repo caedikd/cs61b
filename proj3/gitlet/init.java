@@ -43,10 +43,12 @@ public class init {
 
             //staging file
             add.mkdir();
+            head.createNewFile();
             /* Write in and serialize the empty first commit object
                  */
-            Commit commit = new Commit("initial commit", null);
             Branch branch = new Branch("master", null);
+            Head head = new Head("master");
+            Commit commit = new Commit("null", "initial commit", null);
 //            File initialCommit = new File(commits, commit.sha1());
 //            Utils.writeObject(initialCommit, commit);
 //            Utils.writeObject(master, commit.sha1());
