@@ -151,4 +151,17 @@ public class Log {
         }
 
     }
+
+    public static void checkout3(String branchName) {
+        File newFile = new File(init.branches, branchName);
+        if (!newFile.exists()) {
+            System.out.println("No such branch exists. ");
+            System.exit(0);
+        }
+        Head head = new Head((init.head));
+        if (head.getCurrentBranch().equals(branchName)) {
+            System.out.println("No need to checkout the current branch.");
+            System.exit(0);
+        }
+    }
 }

@@ -36,6 +36,9 @@ public class Main {
                 if (args.length == 1) {
                     throw new GitletException("Nothing entered to checkout.");
                 }
+                if (args.length == 2) {
+                    Log.checkout3(args[1]);
+                }
                 if (args[1].equals("--")) {
                     Log.checkout1(args[2]);
                 }
@@ -48,6 +51,9 @@ public class Main {
                 }
                 break;
             case "log":
+                Log.basic();
+                break;
+            case "global-log":
                 Log.basic();
                 break;
             case "branch":
