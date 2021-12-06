@@ -31,7 +31,16 @@ public class Add implements Serializable {
     /** Adds the file to the staging directory given the fileName. */
     public static void add(String fileName) throws IOException {
         File temp = new File(init.CWD, fileName);
-        if (!temp.exists()) {
+
+        if (rmStaging.exists()) {
+            stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
+            if (stagedRem.containsKey(fileName)) {
+                stagedRem.remove(fileName);
+                Utils.writeObject(rmStaging, stagedRem);
+            }
+            System.exit(0);
+        }
+        else if (!temp.exists()) {
             System.out.println("File does not exist.");
             System.exit(0);
         }
@@ -52,6 +61,13 @@ public class Add implements Serializable {
                 String[] pathSha = (String[]) stagedAdd.get(fileName);
                 if (pathSha[0].equals(id)) {
                     //System.out.println("No changes added to the commit.");
+                    if (rmStaging.exists()) {
+                        stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
+                        if (stagedRem.containsKey(fileName)) {
+                            stagedRem.remove(fileName);
+                            Utils.writeObject(rmStaging, stagedRem);
+                        }
+                    }
                     System.exit(0);
                 }
 
