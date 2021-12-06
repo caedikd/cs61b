@@ -11,27 +11,18 @@ public class Branch implements Serializable {
     static File _activeBranch = new File(String.valueOf(init.branches));
     static LinkedHashMap<String, Commit> _commitTree;
     static ArrayList<String> _log;
-//    private String _head;
-
-    static LinkedHashMap<String, Commit> branches;
 
     public Branch(String name, LinkedHashMap commitTree) throws IOException {
         _activeBranch = new File(_activeBranch,  name);
-        _commitTree = new LinkedHashMap<>();
+        if (commitTree == null) {
+            _commitTree = new LinkedHashMap<>();
+        }
+        else {
+            _commitTree = commitTree;
+        }
         Utils.writeObject(_activeBranch, _commitTree);
 
     }
-
-//    public void checkoutBranch(String branchName) {
-//        File branchNamed = new File(init.branches, branchName);
-//        if (branchNamed.exists()) {
-//            Head newHead = new Head(init.head);
-//            newHead.setCurrentBranch(branchName);
-//            File currentBranchFile = new File(init.branches, branchName);
-//            //currentBranch = currentBranchFile.getName();
-//            ArrayList<String> shas = Utils.readObject(currentBranchFile, ArrayList.class);
-//        }
-//    }
 
     public static void updateTree(LinkedHashMap commitTree) {
         List<String> lKeys = new ArrayList<String>(commitTree.keySet());
@@ -41,14 +32,19 @@ public class Branch implements Serializable {
 //        if (commitTreed != null) {
             commitTreed.put(lKeys.get(0), commitTree.get(lKeys.get(0)));
             Utils.writeObject(branchFile, commitTreed);
+    }
 
-
-
-
+    public static void newBranch(String branchName) throws IOException {
+        File newBranch = new File(init.branches, branchName);
+        Head currentHead = new Head(init.head);
+        File branchFile = new File(init.branches, currentHead.getCurrentBranch());
+        LinkedHashMap commitTreed = Utils.readObject(branchFile, LinkedHashMap.class);
+        if (newBranch.exists()) {
+            System.out.println("A branch with that name already exists.");
+        }
+        Branch newbranchVar = new Branch(branchName, commitTreed);
 
     }
 
-//    public String toString() {
-//        //return _head;
-//    }
+
 }

@@ -22,7 +22,7 @@ public class Log {
         List<String> reversOrdered = new ArrayList<String>(keys);
         Collections.reverse(reversOrdered);
         for (String key : reversOrdered) {
-            System.out.println(commits.get(key));
+            System.out.println(commits.get(key).toString());
         }
     }
 
@@ -168,5 +168,7 @@ public class Log {
             System.out.println("No need to checkout the current branch.");
             System.exit(0);
         }
+
+        head.setCurrentBranch(branchName);
     }
 }

@@ -57,10 +57,13 @@ public class Main {
                 Log.basic();
                 break;
             case "branch":
+                Branch.newBranch(args[1]);
                 break;
             case "status":
                 Log.status();
                 break;
+            case "find":
+                Find.find(args[1]);
             default:
                 exitWithError("No command with that name exists.");
         }

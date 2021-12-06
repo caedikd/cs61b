@@ -4,11 +4,8 @@ import sun.rmi.rmic.Util;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
 
 /** Track the commits.
@@ -32,7 +29,7 @@ public class Commit implements Serializable {
             new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z");
     private String _message;
     private Date _commitDate;
-    private static LinkedHashMap previousMetaDataLL;
+    private static LinkedHashMap previousMetaDataLL = new LinkedHashMap();
 
 
     /**
@@ -66,12 +63,16 @@ public class Commit implements Serializable {
         Head head = new Head(init.head);
         head.setCurrentCommitSha(_sha1);
 
+        String[] array = new String[] {"null", "null"};
+        previousMetaDataLL.put(_message, array);
         _shaName = new File(init.commits, _sha1);
         _shaName.mkdir();
         _metaSha = new File(_shaName, _sha1);
+        Utils.writeObject(_metaSha, previousMetaDataLL);
+
 
         _commitTree = new LinkedHashMap();
-        _commitTree.put(this._sha1, this.toString());
+        _commitTree.put(this._sha1, this);
         Branch.updateTree(_commitTree);
 
     }
@@ -90,11 +91,22 @@ public class Commit implements Serializable {
         Head parentHead = new Head(init.head);
         File previousCommit = new File(init.commits, parentHead.getCurrentCommitSha());
         File previousMetaData = new File(previousCommit, parentHead.getCurrentCommitSha());
+        File branchFile = new File(init.branches, parentHead.getCurrentBranch());
+        LinkedHashMap commits = Utils.readObject(branchFile, LinkedHashMap.class);
+        Set<String> keyed = commits.keySet();
+        List<String> reversOrdered = new ArrayList<String>(keyed);
+        Collections.reverse(reversOrdered);
+        Commit prior = (Commit) commits.get(reversOrdered.get(0));
+        String priorMessage = prior._message;
+
+
         if (previousMetaData.exists()) {
             previousMetaDataLL = Utils.readObject(previousMetaData, LinkedHashMap.class);
+            previousMetaDataLL.remove(priorMessage);
         }
         else {
             previousMetaDataLL = new LinkedHashMap();
+
         }
 
         if (Add.staging.exists()) {
@@ -104,7 +116,6 @@ public class Commit implements Serializable {
                 System.out.println("No changes added to the commit.");
                 System.exit(0);
             }
-
 
             Commit newCommit = new Commit(parentHead.getCurrentCommitSha(), message, stagedMap);
 
@@ -121,6 +132,7 @@ public class Commit implements Serializable {
                 String sha1OfAdded = Utils.sha1(stagedMap.get(key));
                 String[] pathSha = new String[] {sha1OfAdded, init.commits + "/" + newCommit._sha1 + "/" + key};
                 previousMetaDataLL.put(key, pathSha);
+                previousMetaDataLL.put(newCommit._message, pathSha);
 
                 //create new Files
                 File addedCopies = new File(newCommit._shaName, key);
@@ -131,12 +143,14 @@ public class Commit implements Serializable {
             }
         }
         else if (Add.rmStaging.exists()) {
+            LinkedHashMap priorMap = Utils.readObject(previousMetaData, LinkedHashMap.class);
+            Commit newCommit = new Commit(parentHead.getCurrentCommitSha(), message, priorMap);
+            String[] empty = new String[] {"null", "null"};
+            previousMetaDataLL.put(newCommit._message, empty);
+            Utils.writeObject(newCommit._metaSha, previousMetaDataLL);
             Add.rmStaging.delete();
 
         }
-
-
-
 
 
         //clear staging area
@@ -144,8 +158,6 @@ public class Commit implements Serializable {
         Add.modified.delete();
         Add.rmStaging.delete();
 
-//        //change the head
-//        parentHead.setCurrentCommitSha(newCommit.sha1());
     }
 
     public String sha1() {
