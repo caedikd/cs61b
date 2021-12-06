@@ -104,8 +104,8 @@ public class Add implements Serializable {
         if (modified.exists()) {
             LinkedHashMap stagedAdd = Utils.readObject(modified, LinkedHashMap.class);
             if (stagedAdd.containsKey(fileName)) {
-                stagedRem.put(fileName, stagedAdd.get(fileName));
-                Utils.writeObject(rmStaging, stagedRem);
+//                stagedRem.put(fileName, stagedAdd.get(fileName));
+//                Utils.writeObject(rmStaging, stagedRem);
                 stagedAdd.remove(fileName);
                 i += 1;
             }
