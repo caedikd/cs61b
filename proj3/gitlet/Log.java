@@ -90,7 +90,8 @@ public class Log {
         }
         System.out.println(modif);
 
-        String untracked = "=== Untracked Files ===" ;
+        String untracked = "=== Untracked Files ===";
+
         System.out.println(untracked);
 
     }
@@ -147,6 +148,10 @@ public class Log {
                 String[] pathSha = (String[]) allFilesinCommit.get(fileName);
                 File path = new File(pathSha[1]);
                 Utils.writeContents(newFile, Utils.readContents(path));
+            }
+            else {
+                System.out.println("File does not exist in that commit.");
+                System.exit(0);
             }
         }
 
