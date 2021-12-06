@@ -82,22 +82,12 @@ public class Commit implements Serializable {
      * @param message
      */
     public static void commit(String message) {
-        if (!Add.staging.exists()) {
-            System.out.println("No changes added to the commit.");
-            System.exit(0);
-        }
-
-        //filename and id in a llhm from addstaging area
-        LinkedHashMap stagedMap = Utils.readObject(Add.modified, LinkedHashMap.class);
-        if (stagedMap.isEmpty()) {
+        if (!Add.staging.exists() && !Add.rmStaging.exists()) {
             System.out.println("No changes added to the commit.");
             System.exit(0);
         }
 
         Head parentHead = new Head(init.head);
-
-        //getting the previous commit's metadata hashmap, if this is the second commit after init, create a new
-        //LHM to store in the metadata file
         File previousCommit = new File(init.commits, parentHead.getCurrentCommitSha());
         File previousMetaData = new File(previousCommit, parentHead.getCurrentCommitSha());
         if (previousMetaData.exists()) {
@@ -107,31 +97,45 @@ public class Commit implements Serializable {
             previousMetaDataLL = new LinkedHashMap();
         }
 
-        Commit newCommit = new Commit(parentHead.getCurrentCommitSha(), message, stagedMap);
-
-        //for each new file added in the staging area add their filename and SHAID (by changing the byte array given)
-        Set<String> keys = stagedMap.keySet();
-        for (String key: keys) {
-            File temp = new File(init.CWD, key);
-            if (!temp.exists()) {
-                System.out.println("File does not exist.");
+        if (Add.staging.exists()) {
+            //filename and id in a llhm from addstaging area
+            LinkedHashMap stagedMap = Utils.readObject(Add.modified, LinkedHashMap.class);
+            if (stagedMap.isEmpty()) {
+                System.out.println("No changes added to the commit.");
                 System.exit(0);
             }
-            //add this to the meta data, if a file with the same name is already there, it will be overwritten
-            //otherwise this will just contain the parent's data
-            String sha1OfAdded = Utils.sha1(stagedMap.get(key));
-            String[] pathSha = new String[] {sha1OfAdded, init.commits + "/" + newCommit._sha1 + "/" + key};
-            previousMetaDataLL.put(key, pathSha);
 
-            //create new Files
-            File addedCopies = new File(newCommit._shaName, key);
 
-            //writing the byte arrays to the pointing files in the commit directory
-            Utils.writeContents(addedCopies, stagedMap.get(key));
+            Commit newCommit = new Commit(parentHead.getCurrentCommitSha(), message, stagedMap);
+
+            //for each new file added in the staging area add their filename and SHAID (by changing the byte array given)
+            Set<String> keys = stagedMap.keySet();
+            for (String key: keys) {
+                File temp = new File(init.CWD, key);
+                if (!temp.exists()) {
+                    System.out.println("File does not exist.");
+                    System.exit(0);
+                }
+                //add this to the meta data, if a file with the same name is already there, it will be overwritten
+                //otherwise this will just contain the parent's data
+                String sha1OfAdded = Utils.sha1(stagedMap.get(key));
+                String[] pathSha = new String[] {sha1OfAdded, init.commits + "/" + newCommit._sha1 + "/" + key};
+                previousMetaDataLL.put(key, pathSha);
+
+                //create new Files
+                File addedCopies = new File(newCommit._shaName, key);
+
+                //writing the byte arrays to the pointing files in the commit directory
+                Utils.writeContents(addedCopies, stagedMap.get(key));
+                Utils.writeObject(newCommit._metaSha, previousMetaDataLL);
+            }
+        }
+        else if (Add.rmStaging.exists()) {
+            Add.rmStaging.delete();
+
         }
 
-        //writing the updated metadata object to the current commit
-        Utils.writeObject(newCommit._metaSha, previousMetaDataLL);
+
 
 
 

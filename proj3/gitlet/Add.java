@@ -60,7 +60,6 @@ public class Add implements Serializable {
             if (stagedAdd.containsKey(fileName)) {
                 String[] pathSha = (String[]) stagedAdd.get(fileName);
                 if (pathSha[0].equals(id)) {
-                    //System.out.println("No changes added to the commit.");
                     if (rmStaging.exists()) {
                         stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
                         if (stagedRem.containsKey(fileName)) {
