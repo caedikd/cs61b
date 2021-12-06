@@ -12,7 +12,7 @@ public class Main {
      *  <COMMAND> <OPERAND> .... */
     public static void main(String... args) throws IOException {
         if (args.length == 0) {
-            exitWithError("Must have at least one argument");
+            exitWithError("Please enter a command.");
         }
         switch (args[0])
         {

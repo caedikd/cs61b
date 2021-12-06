@@ -121,6 +121,8 @@ public class Add implements Serializable {
                     stagedRem.put(fileName, trackedFiles.get(fileName));
                     i += 1;
                     temp.delete();
+                    trackedFiles.remove(fileName);
+                    Utils.writeObject(commitMetadata, trackedFiles);
                 }
                 Utils.writeObject(rmStaging, stagedRem);
             }

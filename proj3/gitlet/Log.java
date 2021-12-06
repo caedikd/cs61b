@@ -38,6 +38,11 @@ public class Log {
      * Prints out the status of the files.
      */
     public static void status() {
+        File initialized = new File(String.valueOf(init.GITLET_DIR));
+        if (!initialized.exists()) {
+            System.out.println("Not in an initialized Gitlet directory.");
+            System.exit(0);
+        }
 
         String branches2 = "=== Branches ===" + "\n";
         Head head = new Head(init.head);

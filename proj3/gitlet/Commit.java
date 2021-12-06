@@ -103,6 +103,7 @@ public class Commit implements Serializable {
      * @param message
      */
     public static void commit(String message) {
+
         if (!Add.staging.exists()) {
             System.out.println("No changes added to the commit.");
             System.exit(0);
@@ -110,6 +111,7 @@ public class Commit implements Serializable {
 
         //filename and id in a llhm from addstaging area
         LinkedHashMap stagedMap = Utils.readObject(Add.modified, LinkedHashMap.class);
+        LinkedHashMap stagedRm = Utils.readObject(Add.rmStaging, LinkedHashMap.class);
         if (stagedMap.isEmpty()) {
             System.out.println("No changes added to the commit.");
             System.exit(0);
@@ -157,6 +159,7 @@ public class Commit implements Serializable {
         //clear staging area
         Add.staging.delete();
         Add.modified.delete();
+        Add.rmStaging.delete();
 
 //        //change the head
 //        parentHead.setCurrentCommitSha(newCommit.sha1());
