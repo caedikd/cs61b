@@ -107,19 +107,29 @@ public class Log {
      * of the file is not staged.
      */
     public static void checkout1(String fileName) {
-//        File commitFile = new File(String.valueOf(Commit._head));
-//        LinkedHashMap committed = Utils.readObject(commitFile, LinkedHashMap.class);
-//        if (!(committed == null) && !committed.containsKey(fileName)) {
-//            System.out.println("File does not exist in that commit.");
-//            System.exit(0);
-//        }
-//        File overwriting = new File(CWD, fileName);
-//
-//        //get the byte array of the blob with the file name
-//        //what if two files from init blobs have the same name?
-//        File blobFile = new File(init.blobs, fileName);
-//        Blob blobFromFile = Utils.readObject(blobFile, Blob.class);
-//        Utils.writeContents(overwriting, blobFromFile.codeGetter());
+        File newFile = new File(init.CWD, fileName);
+        Head head = new Head(init.head);
+        String shaCommit = head.getCurrentCommitSha();
+        File commitFile = new File(init.commits, shaCommit);
+        File fileInCommit = new File(commitFile, shaCommit);
+
+        //deserialize
+        if (fileInCommit.exists()) {
+            LinkedHashMap allFilesinCommit = Utils.readObject(fileInCommit, LinkedHashMap.class);
+            if (allFilesinCommit.containsKey(fileName)) {
+                String[] pathSha = (String[]) allFilesinCommit.get(fileName);
+                File path = new File(pathSha[1]);
+                Utils.writeContents(newFile, Utils.readContents(path));
+            }
+            else {
+                System.out.println("File does not exist in that commit.");
+                System.exit(0);
+            }
+        }
+        else {
+            System.out.println("File does not exist in that commit.");
+            System.exit(0);
+        }
     }
 
     /**

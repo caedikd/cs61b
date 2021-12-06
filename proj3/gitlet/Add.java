@@ -48,9 +48,13 @@ public class Add implements Serializable {
 
         if (commitMetadata.exists()) {
             stagedAdd = Utils.readObject(commitMetadata, LinkedHashMap.class);
-            if (stagedAdd.containsKey(fileName) && stagedAdd.get(fileName).equals(id)) {
-                System.out.println("No changes added to the commit.");
-                System.exit(0);
+            if (stagedAdd.containsKey(fileName)) {
+                String[] pathSha = (String[]) stagedAdd.get(fileName);
+                if (pathSha[0].equals(id)) {
+                    System.out.println("No changes added to the commit.");
+                    System.exit(0);
+                }
+
             }
             if (modified.exists()) {
                 stagedMod = Utils.readObject(modified, LinkedHashMap.class);

@@ -140,7 +140,10 @@ public class Commit implements Serializable {
             }
             //add this to the meta data, if a file with the same name is already there, it will be overwritten
             //otherwise this will just contain the parent's data
-            previousMetaDataLL.put(key, Utils.sha1(stagedMap.get(key)));
+            String sha1OfAdded = Utils.sha1(stagedMap.get(key));
+            String[] pathSha = new String[] {sha1OfAdded, init.commits + "/" + newCommit._sha1 + "/" + key};
+            previousMetaDataLL.put(key, pathSha);
+
             //create new Files
             File addedCopies = new File(newCommit._shaName, key);
 
