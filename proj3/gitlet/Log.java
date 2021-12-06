@@ -10,19 +10,19 @@ public class Log {
      */
     static File CWD = new File(System.getProperty("user.dir"));
 
-
     /**
      * Does the basic form of log where it ignores all merged parents and
      * just starts on the current head and goes down to the initial.
      */
     public static void basic() {
-        LinkedHashMap commits = Utils.readObject(Commit._commitTree, LinkedHashMap.class);
+        Head head = new Head(init.head);
+        File branchFile = new File(init.branches, head.getCurrentBranch());
+        LinkedHashMap commits = Utils.readObject(branchFile, LinkedHashMap.class);
         Set<String> keys = commits.keySet();
         List<String> reversOrdered = new ArrayList<String>(keys);
         Collections.reverse(reversOrdered);
         for (String key : reversOrdered) {
-            Commit commitObj = (Commit) commits.get(key);
-            System.out.println(commitObj.toString());
+            System.out.println(commits.get(key));
         }
     }
 
@@ -47,13 +47,7 @@ public class Log {
         String branches2 = "=== Branches ===" + "\n";
         Head head = new Head(init.head);
         branches2 += "*" + head.getCurrentBranch() + "\n";
-//        LinkedHashMap branches = Utils.readObject(Branch._activeBranch, LinkedHashMap.class);
-//        Set<String> keys = branches.keySet();
-//        List<String> reversOrdered = new ArrayList<String>(keys);
-//        Collections.reverse(reversOrdered);
-//        for (String key : reversOrdered) {
-//            branches2 += (key + "\n");
-//        }
+
         System.out.println(branches2);
 
         String staged = "=== Staged Files ===" + "\n";
@@ -140,26 +134,21 @@ public class Log {
      * overwriting the version of the file that's already there
      * if there is one. The new version of the file isn't staged.
      */
-    public static void checkout2(String commitID, String FileName) {
-//        LinkedHashMap commits = Utils.readObject(Commit._commitTree, LinkedHashMap.class);
-//        Set<String> keys = commits.keySet();
-//        List<String> reversOrdered = new ArrayList<String>(keys);
-//        Collections.reverse(reversOrdered);
-//        int i = 0;
-//        for (String key : reversOrdered) {
-//            Commit commitObj = (Commit) commits.get(key);
-//            if (commitObj.sha1().equals(commitID)) {
-//                LinkedHashMap blobs = (LinkedHashMap) commits.get(commitID).blobs();
-//
-//                i = 1;
-//                break;
-//            }
-//        }
-//        if (i == 0) {
-//            System.out.println("No commit with that id exists.");
-//            System.exit(0);
-//        }
-
+    public static void checkout2(String commitID, String fileName) {
+        File newFile = new File(init.CWD, fileName);
+        File commitFile = new File(init.commits, commitID + "/" + commitID);
+        if (!commitFile.exists()) {
+            System.out.println("No commit with that id exists.");
+            System.exit(0);
+        }
+        else {
+            LinkedHashMap allFilesinCommit = Utils.readObject(commitFile, LinkedHashMap.class);
+            if (allFilesinCommit.containsKey(fileName)) {
+                String[] pathSha = (String[]) allFilesinCommit.get(fileName);
+                File path = new File(pathSha[1]);
+                Utils.writeContents(newFile, Utils.readContents(path));
+            }
+        }
 
     }
 }

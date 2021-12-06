@@ -32,22 +32,13 @@ public class Commit implements Serializable {
             new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z");
     private String _message;
     private Date _commitDate;
-
-//    /** LinkedHashMap filled with the SHA1 ID's of the blobs, these get filled
-//     *  with the help of add's staging area, each commit set the blobRef's to
-//     *  the staging area, then clear the staging area.
-//     */
-//    private static LinkedHashMap<String, String> blobsTracked;
     private static LinkedHashMap previousMetaDataLL;
-
-    private static byte[] contentsOfFile;
 
 
     /**
      * Single file using the most recent file, or current commit.
      */
-    //static File _head = new File(init.commits, "currentCommit");
-    static File _commitTree = new File(init.commits, "commitTree");
+    static LinkedHashMap _commitTree;
 
     static File _shaName;
     static File _metaSha;
@@ -71,7 +62,6 @@ public class Commit implements Serializable {
             _commitDate = new Date();
         }
 
-//        this.blobsTracked = blobRefs;
         _sha1 = Utils.sha1(_message, this._commitDate.toString());
         Head head = new Head(init.head);
         head.setCurrentCommitSha(_sha1);
@@ -80,20 +70,9 @@ public class Commit implements Serializable {
         _shaName.mkdir();
         _metaSha = new File(_shaName, _sha1);
 
-        /*
-        Add the sha to the current branch if it exists
-         */
-//        if (_commitTree.exists()) {
-//            commitTree = Utils.readObject(_commitTree, LinkedHashMap.class);
-//        }
-//
-//        else {
-//            commitTree = new LinkedHashMap<>();
-//        }
-//        blobsTrackedCopy = blobRefs;
-//        commitTree.put(_sha1, this);
-//        Utils.writeObject(_commitTree, commitTree);
-//        Utils.writeObject(_head, blobsTracked);
+        _commitTree = new LinkedHashMap();
+        _commitTree.put(this._sha1, this.toString());
+        Branch.updateTree(_commitTree);
 
     }
 
@@ -153,6 +132,8 @@ public class Commit implements Serializable {
 
         //writing the updated metadata object to the current commit
         Utils.writeObject(newCommit._metaSha, previousMetaDataLL);
+
+
 
         //clear staging area
         Add.staging.delete();

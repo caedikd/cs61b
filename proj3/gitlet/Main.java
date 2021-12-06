@@ -51,7 +51,6 @@ public class Main {
                 Log.basic();
                 break;
             case "branch":
-
                 break;
             case "status":
                 Log.status();

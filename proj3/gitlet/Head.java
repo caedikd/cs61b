@@ -16,10 +16,10 @@ public class Head implements Serializable {
         currentBranch = branchName;
         if (currentBranchFile.exists()) {
             if (currentBranchFile.length() != 0) {
-                ArrayList<String> shas = Utils.readObject(currentBranchFile, ArrayList.class);
-                if (shas != null) {
-                    currentCommitSha = shas.get(shas.size()-1);
-                }
+//                ArrayList<String> shas = Utils.readObject(currentBranchFile, ArrayList.class);
+//                if (shas != null) {
+//                    currentCommitSha = shas.get(shas.size()-1);
+//                }
             }
 
         }
