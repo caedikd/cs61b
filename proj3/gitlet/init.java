@@ -1,5 +1,4 @@
 package gitlet;
-import com.sun.java.accessibility.util.GUIInitializedListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,50 +9,112 @@ import java.io.IOException;
  * files and has the commit message "initial commit". It has
  * a single branch: master, which initially points to this initial
  * commit, and master will be the current branch.
+ * @author caedi
  */
-public class init {
-    static File CWD = new File(System.getProperty("user.dir"));
+class Init {
+    /** Folders holding the user's inputted data and files. */
+    private static File cWD = new File(System.getProperty("user.dir"));
 
     /** Main folder that the data will be held in. */
-    static File GITLET_DIR = new File(CWD, ".gitlet");
+    private static File gitletDir = new File(cWD, ".gitlet");
 
     /** Folder for commits, will keep and change the pointers. */
-    static File commits = new File(GITLET_DIR, "commits");
+    private static File commits = new File(gitletDir, "commits");
 
     /** Folders holding the user's inputted data and files. */
-    static File branches = new File(GITLET_DIR, "branches");
-    static File blobs = new File(GITLET_DIR, "blobs");
-    static File master = new File(branches, "master");
-    static File remove = new File(GITLET_DIR, "remove");
-    static File add = new File(GITLET_DIR, "add");
-    static File head = new File(GITLET_DIR, "head");
+    private static File branches = new File(gitletDir, "branches");
+
+    /** Folders holding the user's inputted data and files. */
+    private static File blobs = new File(gitletDir, "blobs");
+
+
+    /** Folders holding the user's inputted data and files. */
+    private static File remove = new File(gitletDir, "remove");
+
+    /** Folders holding the user's inputted data and files. */
+    private static File add = new File(gitletDir, "add");
+
+    /** Folders holding the user's inputted data and files. */
+    private static File head = new File(gitletDir, "head");
 
     /** Constructor that initalizes all the directories if there isn't
      * a cwd already there.
      */
-    public init() throws IOException {
-        if (GITLET_DIR.exists()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
-        }
-        else {
-            GITLET_DIR.mkdir();
+    Init() throws IOException {
+        if (gitletDir.exists()) {
+            System.out.println("A Gitlet version-control "
+                + "system already exists in the current directory.");
+        } else {
+            gitletDir.mkdir();
             commits.mkdir();
             branches.mkdir();
             blobs.mkdir();
 
-            //staging file
             add.mkdir();
             head.createNewFile();
-            /* Write in and serialize the empty first commit object
-                 */
+
             Branch branch = new Branch("master", null);
-            Head head = new Head("master");
-            Commit commit = new Commit("null", "initial commit", null);
-//            File initialCommit = new File(commits, commit.sha1());
-//            Utils.writeObject(initialCommit, commit);
-//            Utils.writeObject(master, commit.sha1());
-//            Utils.writeObject(head, commit.sha1());
+            Head head1 = new Head("master");
+            Commit commit = new Commit("", "initial commit", null);
         }
     }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getAdd() {
+        return add;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getCommits() {
+        return commits;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getBlobs() {
+        return blobs;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getCWD() {
+        return cWD;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getBranches() {
+        return branches;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     *
+     * */
+    public static File getGitletDir() {
+        return gitletDir;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getHead() {
+        return head;
+    }
+
+    /** Folders holding the user's inputted data and files.
+     * @return file
+     * */
+    public static File getRemove() {
+        return remove;
+    }
+
 
 }

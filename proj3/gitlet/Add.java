@@ -12,56 +12,93 @@ import java.util.LinkedHashMap;
  */
 
 /**
- * use the add directory as the place that will hold the file. there will be a hashmap of blobs that will be serialized
+ * use the add directory as the place that will hold the file.
+ * there will be a hashmap of blobs that will be serialized
  * into this file that are the things that are supposed to be added
- * in status we will unserialize from this file and get the names of things that will be added
+ * in status we will unserialize from this file and get the
+ * names of things that will be added
+ * @author caedi
  */
-
 public class Add implements Serializable {
 
-    static File staging = new File(init.add, "addStaging");
-    static File rmStaging = new File(init.add, "rmStaging");
-    static File modified =  new File(init.add, "staged");
+    /** File private var. */
+    private static File staging = new File(Init.getAdd(), "addStaging");
 
+    /**
+     * File accessor.
+     * @return File
+     */
+    public static File getStaging() {
+        return staging;
+    }
 
-    static LinkedHashMap stagedAdd;
-    static LinkedHashMap stagedRem;
-    static LinkedHashMap stagedMod;
+    /**
+     * File accessor.
+     * @return File
+     */
+    public static File getModified() {
+        return modified;
+    }
 
-    /** Adds the file to the staging directory given the fileName. */
+    /**
+     * File accessor.
+     * @return File
+     */
+    public static File getRmStaging() {
+        return rmStaging;
+    }
+
+    /** File private var. */
+    private static File rmStaging = new File(Init.getAdd(), "rmStaging");
+    /** File private var. */
+    private static File modified =  new File(Init.getAdd(), "staged");
+
+    /** File private var. */
+    private static LinkedHashMap stagedAdd;
+
+    /** File private var. */
+    private static LinkedHashMap stagedRem;
+
+    /** File private var. */
+    private static LinkedHashMap stagedMod;
+
+    /** Adds the file to the staging directory given the fileName.
+     * @param fileName name
+     * */
     public static void add(String fileName) throws IOException {
-        File temp = new File(init.CWD, fileName);
+        File temp = new File(Init.getCWD(), fileName);
 
         if (rmStaging.exists()) {
-            stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
+            stagedRem = Utils.readObject(rmStaging,
+                    LinkedHashMap.class);
             if (stagedRem.containsKey(fileName)) {
                 stagedRem.remove(fileName);
                 Utils.writeObject(rmStaging, stagedRem);
             }
             System.exit(0);
-        }
-        else if (!temp.exists()) {
+        } else if (!temp.exists()) {
             System.out.println("File does not exist.");
             System.exit(0);
         }
 
-        //getting the sha1 id of the file that is dependent of contents of file
-        //we should probably have something in commit that keeps track of sha - ids
-        //for each committed file
+
         byte[] inside = Utils.readContents(temp);
         String id = Utils.sha1(inside);
 
-        Head currHead = new Head(init.head);
+        Head currHead = new Head(Init.getHead());
         String currentSha = currHead.getCurrentCommitSha();
-        File commitMetadata = new File(init.commits, currentSha +"/" +currentSha);
+        File commitMetadata = new File(Init.getCommits(),
+                currentSha + "/" + currentSha);
 
         if (commitMetadata.exists()) {
-            stagedAdd = Utils.readObject(commitMetadata, LinkedHashMap.class);
+            stagedAdd = Utils.readObject(commitMetadata,
+                    LinkedHashMap.class);
             if (stagedAdd.containsKey(fileName)) {
                 String[] pathSha = (String[]) stagedAdd.get(fileName);
                 if (pathSha[0].equals(id)) {
                     if (rmStaging.exists()) {
-                        stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
+                        stagedRem = Utils.readObject(rmStaging,
+                                LinkedHashMap.class);
                         if (stagedRem.containsKey(fileName)) {
                             stagedRem.remove(fileName);
                             Utils.writeObject(rmStaging, stagedRem);
@@ -73,28 +110,34 @@ public class Add implements Serializable {
             }
             if (modified.exists()) {
                 stagedMod = Utils.readObject(modified, LinkedHashMap.class);
-            }
-            else {
+            } else {
                 stagedMod = new LinkedHashMap();
             }
             stagedMod.put(fileName, inside);
             stagedAdd.put(fileName, inside);
-        }
-        else {
-            if (modified.exists()) {
-                stagedMod = Utils.readObject(modified, LinkedHashMap.class);
-            }
-            else {
-                stagedMod = new LinkedHashMap();
-            }
-            stagedAdd = new LinkedHashMap();
-            stagedAdd.put(fileName, inside);
-            stagedMod.put(fileName, inside);
+        } else {
+            case1(fileName, inside);
         }
 
         Utils.writeObject(modified, stagedMod);
         Utils.writeObject(staging, stagedAdd);
 
+    }
+
+    /**
+     * Remove lines.
+     * @param fileName fn
+     * @param inside inside
+     */
+    public static void case1(String fileName, byte[] inside) {
+        if (modified.exists()) {
+            stagedMod = Utils.readObject(modified, LinkedHashMap.class);
+        } else {
+            stagedMod = new LinkedHashMap();
+        }
+        stagedAdd = new LinkedHashMap();
+        stagedAdd.put(fileName, inside);
+        stagedMod.put(fileName, inside);
     }
 
     /**
@@ -104,34 +147,33 @@ public class Add implements Serializable {
      * happen when a file is changed, added, and then changed back). The
      * file will no longer be staged for removal (see gitlet rm), if
      * it was at the time of the command.
+     * @param fileName fn
      */
     public static void rm(String fileName) {
-        File temp = new File(init.CWD, fileName);
-        //staging only exists if there are files written to it in a hashmap
+        File temp = new File(Init.getCWD(), fileName);
         int i = 0;
         if (rmStaging.exists()) {
             stagedRem = Utils.readObject(rmStaging, LinkedHashMap.class);
-        }
-        else {
+        } else {
             stagedRem = new LinkedHashMap();
         }
 
         if (modified.exists()) {
-            LinkedHashMap stagedAdd = Utils.readObject(modified, LinkedHashMap.class);
-            if (stagedAdd.containsKey(fileName)) {
-//                stagedRem.put(fileName, stagedAdd.get(fileName));
-//                Utils.writeObject(rmStaging, stagedRem);
-                stagedAdd.remove(fileName);
+            LinkedHashMap stagedAdd1 =
+                    Utils.readObject(modified, LinkedHashMap.class);
+            if (stagedAdd1.containsKey(fileName)) {
+                stagedAdd1.remove(fileName);
                 i += 1;
             }
-            Utils.writeObject(modified, stagedAdd);
-        }
-        else {
-            Head currHead = new Head(init.head);
+            Utils.writeObject(modified, stagedAdd1);
+        } else {
+            Head currHead = new Head(Init.getHead());
             String currentSha = currHead.getCurrentCommitSha();
-            File commitMetadata = new File(init.commits, currentSha +"/" +currentSha);
+            File commitMetadata = new File(Init.getCommits(),
+                    currentSha + "/" + currentSha);
             if (commitMetadata.exists()) {
-                LinkedHashMap trackedFiles = Utils.readObject(commitMetadata, LinkedHashMap.class);
+                LinkedHashMap trackedFiles =
+                        Utils.readObject(commitMetadata, LinkedHashMap.class);
                 if (trackedFiles.containsKey(fileName)) {
                     stagedRem.put(fileName, trackedFiles.get(fileName));
                     i += 1;
@@ -147,7 +189,6 @@ public class Add implements Serializable {
             System.out.println("No reason to remove the file.");
             System.exit(0);
         }
-
 
     }
 
